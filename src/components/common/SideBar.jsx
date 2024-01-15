@@ -69,7 +69,7 @@ const SideBar = () => {
           onClick={(e) => setAnchorEl(e.currentTarget)}
           className="body-medium !font-semibold text-black capitalize max-w-[20rem] overflow-hidden text-ellipsis whitespace-nowrap text-white py-[1rem]"
         >
-          {user?.name?.split(" ")[0] ?? "Admin"}
+          {user?.name?.split(" ")[0] ?? "Teacher"}
         </span>
       </div>
       <div className="gap-16 border-b-2 border-gray-100 ml-12 mr-12" />
