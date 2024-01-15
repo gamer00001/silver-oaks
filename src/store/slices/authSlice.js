@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const loginUser = asyncCatch("authSlice/loginUser", async ({ body }) =>
-  axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/auth/login`, body)
+  axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/auth/login`, body)
 );
 
 export const forgetPassword = asyncCatch(
