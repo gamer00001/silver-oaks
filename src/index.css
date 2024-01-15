@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('react-date-range/dist/styles.css');
+@import url('react-date-range/dist/theme/default.css');
+@import url("react-slideshow-image/dist/styles.css");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 57.5%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 52.5%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  html {
+    font-size: 48.5%;
+  }
+}
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 42.5%;
+  }
+}
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 37.5%;
+  }
+}
+
+.table, .th, .td {
+  border: 1px solid #DEBB5B;
+  border-collapse: collapse;
+}
+
+@layer utilities {
+  .meri-body {
+    @apply text-[1.6rem] text-center font-Merriweather font-bold leading-[120%];
+  }
+
+  .body-regular {
+    @apply text-[1.6rem] font-normal leading-[120%];
+  }
+
+  .body-medium {
+    @apply text-[1.6rem] font-medium leading-[120%];
+  }
+
+  .button {
+    @apply text-[2rem] font-bold leading-[120%];
+  }
+
+  .meri-button {
+    @apply text-[2rem] font-bold leading-[120%] font-Merriweather;
+  }
+
+  .caption {
+    @apply text-[1.3rem] font-bold leading-[120%];
+  }
+
+  .overline-custom {
+    @apply text-[1rem] leading-[120%];
+  }
+
+  .h3-bold {
+    @apply text-[2.7rem] md:text-[3.3rem] xl:text-[3.9rem] font-bold leading-[120%];
+  }
+
+  .meri-h3 {
+    @apply text-[2.7rem] md:text-[3.3rem] xl:text-[3.9rem] font-bold leading-[120%] font-Merriweather;
+  }
+
+  .h4-bold {
+    @apply text-[2.4rem] md:text-[2.7rem] xl:text-[3.1rem] font-bold leading-[120%];
+  }
+
+  .meri-h4 {
+    @apply text-[2.4rem] md:text-[2.7rem] xl:text-[3.1rem] font-bold leading-[120%] font-Merriweather;
+  }
+
+  .h5-bold {
+    @apply text-[2rem] md:text-[2.2rem] xl:text-[2.5rem] font-bold leading-[120%];
+  }
+
+  .meri-h5 {
+    @apply text-[2rem] md:text-[2.2rem] xl:text-[2.5rem] font-bold leading-[120%] font-Merriweather;
+  }
+
+  .h11-bold {
+    @apply text-[3rem] md:text-[3.5rem] xl:text-[4.2rem] leading-[120%] font-bold;
+  }
+
+  .grid-center {
+    @apply grid items-center justify-center justify-items-center;
+  }
+
+  .opacity {
+    @apply hover:opacity-70 duration-300 transition-opacity;
+  }
+  .opacity-button {
+    @apply enabled:hover:opacity-70 duration-300 transition-opacity;
+  }
+
+  .scrollbar {
+    &::-webkit-scrollbar {
+      @apply w-[.4rem] h-[.4rem];
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply bg-[#f1f1f1];
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply bg-[#888]  rounded-[1000rem];
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      @apply bg-[#555];
+    }
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+      @apply hidden;
+    }
+  }
+
+  .PhoneInput {
+    @apply grid grid-cols-[auto_1fr] items-center gap-[.8rem] border border-custom-accent rounded-[.8rem] px-[1.6rem] py-[1.48rem] focus-within:ring-1;
+
+    & > .PhoneInputCountry {
+      @apply grid grid-cols-[auto_auto] items-center gap-[1.6rem];
+
+      & > .PhoneInputCountryIcon {
+        @apply w-[3.3rem] h-[2.2rem] bg-none shadow-lg;
+      }
+
+      & > .PhoneInputCountrySelectArrow {
+        @apply w-[.7rem] h-[.7rem] mx-0 opacity-100 rotate-45 translate-y-[-.2rem];
+      }
+    }
+
+    & > .PhoneInputInput {
+      @apply text-custom-dark-gren overline-custom border-none outline-none bg-transparent;
+    }
+  }
+}
