@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Chart1, Chart2, ChartContainer, Pie1, Pie2 } from "@/assets/common";
 
 const demoActivityData = [
   {
@@ -67,6 +68,33 @@ const Dashboard = () => {
         {(statusData.loading || reportData.loading) && (
           <Loader type="screen-bg" />
         )}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="flex justify-center items-center mt-4"
+        >
+          <MUICard className="flex justify-center items-center">
+            <CardContent className=" bg-[#ECFFF5]">
+              {/* {demoActivityData.map((activity, index) => ( */}
+              <div class="flex justify-center items-center">
+                <img src={Chart1} className="" />
+                <img src={Pie1} className="absolute ml-96 w-[12rem]" />
+              </div>
+              {/* ))} */}
+            </CardContent>
+          </MUICard>
+          <MUICard className="flex justify-center items-center">
+            <CardContent  className=" bg-[#FFF8F0]">
+              {/* {demoActivityData.map((activity, index) => ( */}
+              <div class="flex justify-center items-center">
+                <img src={Chart2} className="" />
+                <img src={Pie2} className="absolute  ml-96 w-[12rem]" />
+              </div>
+              {/* ))} */}
+            </CardContent>
+          </MUICard>
+        </motion.div>
         <div className="pt-9 px-[1.7rem]">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -77,36 +105,37 @@ const Dashboard = () => {
             <MUICard
               style={{ backgroundColor: "#F3E7C6", borderRadius: "1rem" }}
             >
-          <CardContent>
-            <div class="grid grid-cols-2">
-              <div className="grid grid-rows-3 gap-[0.2rem] px-[1.7rem]">
-                <h1 className="h5-bold">
-                  Check Your Students Activities and Updates
-                </h1>
-                <span className="body-medium text-custom-dark-gren">
-                  Explore the latest updates and events on your dashboard. Stay
-                  informed and make the most of your teaching experience!
-                </span>
-                <div className="grid grid-cols-2">
-                  <div className="flex flex-row justify-center">
-                    <Courses />
-                    <span className="body-medium py-[1.7rem] pl-4">
-                      Total courses 7
+              <CardContent>
+                <div class="grid grid-cols-2">
+                  <div className="grid grid-rows-3 gap-[0.2rem] px-[1.7rem]">
+                    <h1 className="h5-bold">
+                      Check Your Students Activities and Updates
+                    </h1>
+                    <span className="body-medium text-custom-dark-gren">
+                      Explore the latest updates and events on your dashboard.
+                      Stay informed and make the most of your teaching
+                      experience!
                     </span>
+                    <div className="grid grid-cols-2">
+                      <div className="flex flex-row justify-center">
+                        <Courses />
+                        <span className="body-medium py-[1.7rem] pl-4">
+                          Total courses 7
+                        </span>
+                      </div>
+                      <div className="flex flex-row justify-center">
+                        <Classes />
+                        <span className="body-medium py-[1.7rem] pl-4">
+                          Total Grades 7
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-row justify-center">
-                    <Classes />
-                    <span className="body-medium py-[1.7rem] pl-4">
-                      Total Grades 7
-                    </span>
-                  </div>
+                  <DashboardPhoto />
                 </div>
-              </div>
-              <DashboardPhoto />
-            </div>
-          </CardContent>
-        </MUICard>
-        </motion.div>
+              </CardContent>
+            </MUICard>
+          </motion.div>
         </div>
         <div className="grid gap-[1.6rem] px-[1.7rem] py-[1.7rem]">
           <motion.h1
@@ -115,7 +144,7 @@ const Dashboard = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="h5-bold text-custom-dark-gren"
           >
-            Upcoming Activities
+            Student population
           </motion.h1>
         </div>
         <div className="pt-9 px-[1.7rem]">
@@ -125,24 +154,16 @@ const Dashboard = () => {
             transition={{ duration: 0.5, delay: 0.8 }}
             className="flex justify-center items-center"
           >
-        <MUICard className="flex justify-center items-center">
-          <CardContent>
-            {demoActivityData.map((activity, index) => (
-              <div class="p-4 justify-between">
-                <Activity
-                  key={index}
-                  date={activity.date}
-                  heading={activity.heading}
-                  link={activity.link}
-                  status={activity.status}
-                  time={activity.time}
-                  readStatus={activity.readStatus}
-                />
-              </div>
-            ))}
-          </CardContent>
-        </MUICard>
-        </motion.div>
+            <MUICard className="flex justify-center items-center">
+              <CardContent>
+                {/* {demoActivityData.map((activity, index) => ( */}
+                <div class="p-4 flex justify-center items-center">
+                  <img src={ChartContainer} className="w-1/2" />
+                </div>
+                {/* ))} */}
+              </CardContent>
+            </MUICard>
+          </motion.div>
         </div>
       </div>
     </motion.div>
