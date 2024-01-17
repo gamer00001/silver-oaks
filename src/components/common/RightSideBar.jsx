@@ -5,8 +5,11 @@ import { ModalTop, MyInput } from ".";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { AddEventSchema } from "@/schema";
+import { useNavigate } from "react-router-dom";
+import Tick from "@/assets/Icons/Tick";
+import Flag from "@/assets/Icons/Flag";
 
-export const allowedPathsForRightSidebar = ["/", "/my-courses", "/course"];
+export const allowedPathsForRightSidebar = ["/", "/my-courses", "/course", "/notifications"];
 
 const RightSideBar = () => {
 
@@ -14,6 +17,7 @@ const RightSideBar = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
   const [date, setDate] = useState();
+  const navigate = useNavigate()
 
   const addEvent = () => {
     setIsAddEvent(!isAddEvent);
@@ -38,9 +42,12 @@ const RightSideBar = () => {
           color="#7A1315"
         />
       </div>
-      <div className="grid gap-[1.6rem] px-[1.7rem] py-[1.7rem]">
-        <h1 className="h5-bold text-custom-dark-gren">Announcements</h1>
+      <div className="flex flex-row justify-between items-center gap-[1.6rem] px-[1.7rem] py-[1.7rem] ">
+        <h1 className="h5-bold text-custom-dark-gren">Notifications</h1>
+        <h1 className="text-[1.5rem] text-red-800 cursor-pointer" onClick={()=>navigate('/notifications')}>see all</h1>
       </div>
+      <NotificationCard Title="New Features in the Gradebook" Time="Yesterday" Logo={<Tick/>}/>
+      <NotificationCard Title="Parent-Teacher Conference Schedule" Time="23 June 2021" Logo={<Flag/>}/>
       <img src={teaching} />
 
       <ModalTop
@@ -72,6 +79,17 @@ function renderEventContent(eventInfo) {
       <i>{eventInfo.event.title}</i>
     </>
   );
+}
+
+const NotificationCard = ({Title, Time, Logo}) =>{
+  return(
+  <div className="p-4 flex flex-row">
+    {Logo}
+    <div className="flex flex-col ml-4">
+    <h1 className="text-[1.7rem] font-semibold">{Title}</h1>
+    <h1>{Time}</h1>
+    </div>
+  </div>);
 }
 
 const AddNewEventModal = ({ value, onAdd, onClose, editIndex, date }) => {

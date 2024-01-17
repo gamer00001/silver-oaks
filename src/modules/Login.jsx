@@ -5,6 +5,7 @@ import { toast } from "@/utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/store";
+import { SOIESLogo} from "@/assets/common";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -45,7 +46,8 @@ const Login = () => {
   });
   return (
     <div className="w-3/4 min-h-screen grid items-center grid-cols-1 p-[5rem] md:p-[5rem_5rem_5rem_0rem]">
-      <div className="grid gap-[4.3rem] max-w-[73rem]">
+      <div className="grid gap-[4.3rem] max-w-[73rem] p-16">
+      <img className="w-[8rem]" src={SOIESLogo} alt="Silver Oaks Icon" />
         <div className="grid gap-[1.2rem]">
           <h1 className="text-custom-red text-[3.8rem] font-bold leading-[140%]">
             Welcome

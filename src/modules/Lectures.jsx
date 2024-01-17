@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import gradeImg from "@/assets/common/grade1.png";
-import { CardContent } from "@mui/material";
+import { CardContent, Switch, ToggleButton } from "@mui/material";
 import MUICard from "@mui/material/Card";
 import { useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
@@ -11,26 +11,28 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 import { Avatar } from "@/assets/common";
+import { ModalTop } from "@/components/common";
+import Warning from "@/assets/Icons/Warning";
 
 const Lectures = () => {
   const lectures = [
     {
-      id: '2354262',
+      id: "2354262",
       lectureNo: "01",
       title: "ICT and Emerging Technologies",
-      link: 'https://www.youtube.com/watch?v=_CZe_bZyd5M'
+      link: "https://www.youtube.com/watch?v=_CZe_bZyd5M",
     },
     {
-      id: '463645643',
+      id: "463645643",
       lectureNo: "02",
       title: "Cloud Computing",
-      link: 'https://www.youtube.com/watch?v=8C_kHJ5YEiA'
+      link: "https://www.youtube.com/watch?v=8C_kHJ5YEiA",
     },
     {
-      id: '34654373',
+      id: "34654373",
       lectureNo: "03",
       title: "Computer Program",
-      link: 'https://www.youtube.com/watch?v=5AmWpf6H7Ac'
+      link: "https://www.youtube.com/watch?v=5AmWpf6H7Ac",
     },
   ];
 
@@ -42,7 +44,12 @@ const Lectures = () => {
       </div>
       {lectures.map((item, k) => (
         <div className="w-5/6">
-          <LectureCard lid={item.id} lectureNo={item.lectureNo} title={item.title} link={item.link}/>
+          <LectureCard
+            lid={item.id}
+            lectureNo={item.lectureNo}
+            title={item.title}
+            link={item.link}
+          />
         </div>
       ))}
     </div>
@@ -113,6 +120,8 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
   const [menu, setIsMenu] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [warning, setWarning] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
@@ -134,7 +143,12 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
               </h1>
               <h1 className="body-medium">{title}</h1>
             </div>
-            <div className={`flex flex-row ${expanded ? "block" : "hidden"} cursor-pointer`} onClick={()=>window.open(link)}>
+            <div
+              className={`flex flex-row ${
+                expanded ? "block" : "hidden"
+              } cursor-pointer`}
+              onClick={() => window.open(link)}
+            >
               <PlayIcon />
               <h1 className="font-bold text-[1.5rem] text-custom-red">
                 {title}
@@ -142,10 +156,10 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
             </div>
           </div>
           <div className="flex flex-col gap-2 justify-end items-end">
-            <div onClick={() => setIsMenu(!menu)}>
+            {/* <div onClick={() => setIsMenu(!menu)}>
               <MenuIcon />
-            </div>
-            {menu && <VisibilityMenu />}
+            </div> */}
+            <Switch color="error" checked={checked} onChange={() => setWarning(true)} />
             <button
               className="text-[2rem] font-semibold text-custom-red"
               onClick={() => navigate(`/course/${id}/lecture/${lid}`)}
@@ -155,6 +169,23 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
           </div>
         </div>
       </CardContent>
+      <ModalTop
+        onClose={() => setWarning(false)}
+        open={warning}
+        className="bg-white flex flex-col justify-center items-center p-8 gap-4"
+      >
+        <Warning/>
+        <h1 className="text-[1.5rem] text-red-800">Alert</h1>
+        <h1 className="text-[2rem]">Are you sure you want to change the visibility of this lecture from students?</h1>
+        <button className="bg-custom-red pl-8 pr-8 pt-4 pb-4 w-96 rounded-xl text-[2rem] text-white hover:opcaity-70" onClick={()=>{
+          setWarning(false);
+          setChecked(true);
+        }}>Hide</button>
+        <button className="bg-white pl-8 pr-8 pt-4 pb-4 w-96 rounded-xl text-[2rem] text-black border border-solid border-black hover:opcaity-70" onClick={()=>{
+           setWarning(false);
+           setChecked(false);
+        }}>Unhide</button>
+      </ModalTop>
     </MUICard>
   );
 };

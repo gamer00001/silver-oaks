@@ -17,7 +17,6 @@ import { allowedPathsForRightSidebar } from "./RightSideBar";
 import SearchForm from "./SearchForm";
 
 const allowedPathsForSearch = [
-  "/",
   "/downloads",
   "/notifications",
   '/my-courses',

@@ -51,7 +51,7 @@ const SideBar = () => {
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
       <div className="px-[1.9rem]">
         <Link to="/" className="outline-custom-button-color">
-          <img className="w-[5rem]" src={Logo} alt="Silver Oaks Icon" />
+          <img className="w-[12rem]" src={Logo} alt="Silver Oaks Icon" />
         </Link>
       </div>
       <div className="flex flex-row gap-4 px-[1.9rem]">

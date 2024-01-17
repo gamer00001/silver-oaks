@@ -2,7 +2,7 @@ import QuizIcon from "@/assets/Icons/QuizIcon";
 import { MyPagination } from "@/components/common";
 import SearchForm from "@/components/common/SearchForm";
 import { useQueryParams } from "@/hooks";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { CSVLink } from "react-csv";
+import html2canvas from "html2canvas";
 
 const Reports = () => {
   const { page, query } = useQueryParams({ page: 1, query: "" });
@@ -166,6 +167,38 @@ const Table = () => {
 };
 
 const Graph = () => {
+
+  const chartContainerRef = useRef(null);
+
+  const [chartImage, setChartImage] = useState(null);
+
+  const downloadChartImage = async () => {
+    if (chartContainerRef && chartContainerRef.current) {
+      try {
+        // Set a temporary state to trigger a re-render with the chart visible
+        setChartImage("loading");
+
+        // Wait for the re-render to complete
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        const canvas = await html2canvas(chartContainerRef.current);
+        const dataURL = canvas.toDataURL("image/png");
+
+        const link = document.createElement("a");
+        link.href = dataURL;
+        link.download = `barchart_${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error exporting chart as image:", error);
+      } finally {
+        // Reset the temporary state
+        setChartImage(null);
+      }
+    }
+  };
+
   const data = [
     {
       name: "0-10",
@@ -198,27 +231,56 @@ const Graph = () => {
   ];
 
   return (
-    <div className="flex justify-center items-center">
-      <BarChart
-        width={1000}
-        height={600}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
+      <div className="flex flex-col justify-center items-center">
+      <div style={{ display: chartImage === "loading" ? "none" : "block" }}>
+        <BarChart
+          width={1000}
+          height={600}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Bar dataKey="pv" fill="#DEBB5B" />
+        </BarChart>
+      </div>
+
+      <div
+        ref={chartContainerRef}
+        style={{ display: chartImage === "loading" ? "block" : "none" }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Bar
-          dataKey="pv"
-          fill="#DEBB5B"
-          activeBar={<Rectangle fill="pink" stroke="blue" />}
-        />
-      </BarChart>
+        <BarChart
+          width={1000}
+          height={600}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Bar dataKey="pv" fill="#DEBB5B" />
+        </BarChart>
+      </div>
+
+      <div className="flex flex-row justify-end mt-8">
+        <button
+          onClick={downloadChartImage}
+          className="p-[1.3rem_6.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
+        >
+          Download Image
+        </button>
+      </div>
     </div>
   );
 };

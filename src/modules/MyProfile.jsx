@@ -67,6 +67,12 @@ const MyProfile = () => {
                 value={user?.phone || "--"}
                 className="col-span-12 sm:col-span-6"
               />
+               <MyInput
+                type="id"
+                label="ID"
+                value={user?.id || "--"}
+                className="col-span-12 sm:col-span-6"
+              />
               <MyInput
                 type="textarea"
                 label="Bio"

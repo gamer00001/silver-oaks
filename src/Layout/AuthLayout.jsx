@@ -3,6 +3,7 @@ import bg1 from "../assets/Login/bgLogin1.png";
 import bg2 from "../assets/Login/bgLogin2.png";
 import bg3 from "../assets/Login/bgLogin3.png";
 import { useEffect, useState } from "react";
+import { SOIESLogo, TitleLogo } from "@/assets/common";
 
 const slideImages = [
   {
@@ -44,11 +45,14 @@ const AuthLayout = () => {
           transition: "background 0.5s ease-in-out",
         }}
       >
+        <div className="">
         <img
           src={slideImages[currentSlide].url}
-          className="z-50 transition-opacity duration-500 ease-in-out"
+          className="z-50 transition-opacity duration-500 ease-in-out w-[66rem]"
           alt={`Slide ${currentSlide + 1}`}
         />
+        <img className="w-46 absolute bottom-3" src={TitleLogo}/>
+        </div>
       </div>
     </div>
   );

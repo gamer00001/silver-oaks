@@ -14,17 +14,17 @@ import Visible from "@/assets/Icons/Visible";
 const Exam = () => {
   const Exam = [
     {
-      title: "Term Exam 1",
+      title: "Term Assesment 1",
       attempts: "23",
       total: "26"
     },
     {
-      title: "Term Exam 2",
+      title: "Term Assesment 2",
       attempts: "23",
       total: "26"
     },
     {
-      title: "Term Exam 3",
+      title: "Term Assesment 3",
       attempts: "23",
       total: "26"
     },
@@ -65,7 +65,7 @@ const ExamCard = ({ examNo, title, attempts, total }) => {
                 </span>
               </NavLink>
               <h1 className="font-extrabold text-[1.5rem]">
-                Exam {examNo}:{" "}
+                Assesment {examNo}:{" "}
               </h1>
               <h1 className="body-medium">{title}</h1>
             </div>

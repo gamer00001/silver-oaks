@@ -28,7 +28,7 @@ const CourseHeader = () => {
       to: "./attendance",
     },
     {
-      title: "Exam",
+      title: "Assesment",
       to: "./exam",
     },
   ];
