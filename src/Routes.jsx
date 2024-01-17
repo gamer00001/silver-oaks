@@ -280,7 +280,7 @@ const headerLayoutRoutes = [
 ];
 
 const headerSidebarLayoutRoutes = [
-  <Route key="headerSidebarLayoutRoutes" >
+  <Route key="headerSidebarLayoutRoutes" element={<ProtectedRoute />}>
     <Route element={<HeaderSidebar />}>
       {headerLayoutRoutes}
 
