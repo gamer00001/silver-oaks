@@ -14,15 +14,15 @@ import Visible from "@/assets/Icons/Visible";
 const Assignments = () => {
   const Assignments = [
     {
-      id: '345634',
+      id: '268534685',
       assignmentNo: "01",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
+      title: "Scratch",
+      attempts: "13",
+      total: "15",
       grading: '2'
     },
     {
-      id: '3254663',
+      id: '345634',
       assignmentNo: "02",
       title: "ICT and Emerging Technologies",
       attempts: "23",
@@ -30,8 +30,16 @@ const Assignments = () => {
       grading: '2'
     },
     {
-      id: '7567343',
+      id: '3254663',
       assignmentNo: "03",
+      title: "ICT and Emerging Technologies",
+      attempts: "23",
+      total: "26",
+      grading: '2'
+    },
+    {
+      id: '7567343',
+      assignmentNo: "04",
       title: "ICT and Emerging Technologies",
       attempts: "23",
       total: "26",

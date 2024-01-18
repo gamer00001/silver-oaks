@@ -19,18 +19,24 @@ const Lectures = () => {
     {
       id: "2354262",
       lectureNo: "01",
+      title: "Scratch",
+      link: "https://docs.google.com/presentation/d/1SkOjHBSHhxAxj_0axCBLs2SJzR0JO-Fk/edit?usp=sharing&ouid=102005332110788828487&rtpof=true&sd=true",
+    },
+    {
+      id: "2354262",
+      lectureNo: "02",
       title: "ICT and Emerging Technologies",
       link: "https://www.youtube.com/watch?v=_CZe_bZyd5M",
     },
     {
       id: "463645643",
-      lectureNo: "02",
+      lectureNo: "03",
       title: "Cloud Computing",
       link: "https://www.youtube.com/watch?v=8C_kHJ5YEiA",
     },
     {
       id: "34654373",
-      lectureNo: "03",
+      lectureNo: "04",
       title: "Computer Program",
       link: "https://www.youtube.com/watch?v=5AmWpf6H7Ac",
     },
@@ -131,12 +137,12 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
               <NavLink>
-                <span
+                {/* <span
                   className="ml-auto"
                   onClick={() => setExpanded(!expanded)}
                 >
                   {expanded ? "▼" : "▲"}
-                </span>
+                </span> */}
               </NavLink>
               <h1 className="font-extrabold text-[1.5rem]">
                 Lecture {lectureNo}:{" "}
@@ -144,9 +150,7 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
               <h1 className="body-medium">{title}</h1>
             </div>
             <div
-              className={`flex flex-row ${
-                expanded ? "block" : "hidden"
-              } cursor-pointer`}
+              className={`flex flex-row cursor-pointer`}
               onClick={() => window.open(link)}
             >
               <PlayIcon />
