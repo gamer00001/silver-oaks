@@ -20,19 +20,19 @@ const Lectures = () => {
   const lectures = [
     {
       id: "2354262",
-      lectureNo: "02",
+      lectureNo: "01",
       title: "ICT and Emerging Technologies",
       link: "https://www.youtube.com/watch?v=_CZe_bZyd5M",
     },
     {
       id: "463645643",
-      lectureNo: "03",
+      lectureNo: "02",
       title: "Cloud Computing",
       link: "https://www.youtube.com/watch?v=8C_kHJ5YEiA",
     },
     {
       id: "34654373",
-      lectureNo: "04",
+      lectureNo: "03",
       title: "Computer Program",
       link: "https://www.youtube.com/watch?v=5AmWpf6H7Ac",
     },
