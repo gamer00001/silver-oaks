@@ -12,7 +12,37 @@ import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 
 const Assignments = () => {
+
+  const {id} = useParams()
+  
   const Assignments = [
+    {
+      id: '345634',
+      assignmentNo: "01",
+      title: "ICT and Emerging Technologies",
+      attempts: "23",
+      total: "26",
+      grading: '2'
+    },
+    {
+      id: '3254663',
+      assignmentNo: "02",
+      title: "ICT and Emerging Technologies",
+      attempts: "23",
+      total: "26",
+      grading: '2'
+    },
+    {
+      id: '7567343',
+      assignmentNo: "03",
+      title: "ICT and Emerging Technologies",
+      attempts: "23",
+      total: "26",
+      grading: '2'
+    },
+  ];
+
+  const AssignmentsDemo = [
     {
       id: '268534685',
       assignmentNo: "01",
@@ -50,11 +80,17 @@ const Assignments = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
       <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
-      {Assignments.map((item, k) => (
+      {id==43657457?AssignmentsDemo.map((item, k) => (
         <div className="w-5/6">
           <QuizCard aid={item.id} assignmentNo={item.assignmentNo} title={item.title} attempts={item.attempts} total={item.total} grading={item.grading}/>
         </div>
-      ))}
+      )):
+      Assignments.map((item, k) => (
+        <div className="w-5/6">
+          <QuizCard aid={item.id} assignmentNo={item.assignmentNo} title={item.title} attempts={item.attempts} total={item.total} grading={item.grading}/>
+        </div>
+      ))
+      }
     </div>
   );
 };

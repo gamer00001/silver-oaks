@@ -48,7 +48,7 @@ const AuthLayout = () => {
         <div className="">
         <img
           src={slideImages[currentSlide].url}
-          className="z-50 transition-opacity duration-500 ease-in-out w-[66rem]"
+          className="z-50 transition-opacity duration-500 ease-in-out w-[26rem] xl:w-[46rem]"
           alt={`Slide ${currentSlide + 1}`}
         />
         <img className="w-46 absolute bottom-3" src={TitleLogo}/>

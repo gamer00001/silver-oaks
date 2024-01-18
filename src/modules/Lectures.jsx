@@ -15,7 +15,30 @@ import { ModalTop } from "@/components/common";
 import Warning from "@/assets/Icons/Warning";
 
 const Lectures = () => {
+
+  const {id} = useParams();
   const lectures = [
+    {
+      id: "2354262",
+      lectureNo: "02",
+      title: "ICT and Emerging Technologies",
+      link: "https://www.youtube.com/watch?v=_CZe_bZyd5M",
+    },
+    {
+      id: "463645643",
+      lectureNo: "03",
+      title: "Cloud Computing",
+      link: "https://www.youtube.com/watch?v=8C_kHJ5YEiA",
+    },
+    {
+      id: "34654373",
+      lectureNo: "04",
+      title: "Computer Program",
+      link: "https://www.youtube.com/watch?v=5AmWpf6H7Ac",
+    },
+  ];
+
+  const lecturesDemo = [
     {
       id: "2354262",
       lectureNo: "01",
@@ -48,7 +71,7 @@ const Lectures = () => {
       <div className="w-5/6">
         <Post />
       </div>
-      {lectures.map((item, k) => (
+      {id==43657457?lecturesDemo.map((item, k) => (
         <div className="w-5/6">
           <LectureCard
             lid={item.id}
@@ -57,7 +80,18 @@ const Lectures = () => {
             link={item.link}
           />
         </div>
-      ))}
+      )):
+      lectures.map((item, k) => (
+        <div className="w-5/6">
+          <LectureCard
+            lid={item.id}
+            lectureNo={item.lectureNo}
+            title={item.title}
+            link={item.link}
+          />
+        </div>
+      ))
+      }
     </div>
   );
 };
