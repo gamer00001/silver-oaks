@@ -10,32 +10,10 @@ import {
   Logout,
   Login,
   MyProfile,
-  Subscribers,
   ForgetPassword,
   ResetPassword,
   MyProfileEdit,
   MyProfileChangePassword,
-  ToursCreate,
-  Brochures,
-  BrochuresCreate,
-  BrochuresEdit,
-  ToursEdit,
-  DestinationsCreate,
-  DestinationsEdit,
-  BlogsCreate,
-  BlogsEdit,
-  Tours,
-  Destinations,
-  Blogs,
-  Applications,
-  PaymentGateway,
-  ApplicationsTailor,
-  ApplicationsCouple,
-  ApplicationsGroup,
-  ApplicationsPlanMyTrip,
-  ApplicationsContactUs,
-  ApplicationsInvitationLetter,
-  ToursDuplicate,
   NotFound404,
 } from "@/modules";
 import Notifications from "./modules/Notifications";
@@ -197,85 +175,7 @@ const headerLayoutRoutes = [
         <MyReactHelmet title="Manage Events" element={<ManageEvents />} />
       }
     />
-    <Route
-      path="/blogs"
-      element={<MyReactHelmet title="Blogs" element={<Blogs />} />}
-    />
 
-    <Route
-      path="/downloads"
-      element={<MyReactHelmet title="Downloads" element={<Brochures />} />}
-    />
-
-    <Route path="/applications">
-      <Route
-        index
-        element={
-          <MyReactHelmet title="Applications" element={<Applications />} />
-        }
-      />
-      <Route
-        path="tailor-made-tours"
-        element={
-          <MyReactHelmet
-            title="Tailor-Made Tour Applications"
-            element={<ApplicationsTailor />}
-          />
-        }
-      />
-      <Route
-        path="couple-tours"
-        element={
-          <MyReactHelmet
-            title="Couple Tour Applications"
-            element={<ApplicationsCouple />}
-          />
-        }
-      />
-      <Route
-        path="group-tours"
-        element={
-          <MyReactHelmet
-            title="Group Tour Applications"
-            element={<ApplicationsGroup />}
-          />
-        }
-      />
-      <Route
-        path="plan-my-trip"
-        element={
-          <MyReactHelmet
-            title="Plan My Trip Applications"
-            element={<ApplicationsPlanMyTrip />}
-          />
-        }
-      />
-      <Route
-        path="contact-us"
-        element={
-          <MyReactHelmet
-            title="Contact Us Applications"
-            element={<ApplicationsContactUs />}
-          />
-        }
-      />
-      <Route
-        path="invitation-letter"
-        element={
-          <MyReactHelmet
-            title="Invitation Letter Applications"
-            element={<ApplicationsInvitationLetter />}
-          />
-        }
-      />
-    </Route>
-
-    <Route
-      path="/payment-gateway"
-      element={
-        <MyReactHelmet title="Payment Gateway" element={<PaymentGateway />} />
-      }
-    />
   </Route>,
 ];
 
@@ -306,79 +206,6 @@ const headerSidebarLayoutRoutes = [
         />
       </Route>
 
-      <Route path="/tours">
-        <Route
-          path="create"
-          element={
-            <MyReactHelmet title="Create Tour" element={<ToursCreate />} />
-          }
-        />
-        <Route
-          path="edit/:type/:tourId"
-          element={<MyReactHelmet title="Edit Tour" element={<ToursEdit />} />}
-        />
-        <Route
-          path="duplicate/:type/:tourId"
-          element={
-            <MyReactHelmet
-              title="Duplicate Tour"
-              element={<ToursDuplicate />}
-            />
-          }
-        />
-      </Route>
-
-      <Route path="/downloads">
-        <Route
-          path="create"
-          element={
-            <MyReactHelmet
-              title="Create Download"
-              element={<BrochuresCreate />}
-            />
-          }
-        />
-        <Route
-          path="edit/:brochureId"
-          element={
-            <MyReactHelmet title="Edit Download" element={<BrochuresEdit />} />
-          }
-        />
-      </Route>
-
-      <Route path="/destinations">
-        <Route
-          path="create"
-          element={
-            <MyReactHelmet
-              title="Create Destination"
-              element={<DestinationsCreate />}
-            />
-          }
-        />
-        <Route
-          path="edit/:destinationId"
-          element={
-            <MyReactHelmet
-              title="Edit Destination"
-              element={<DestinationsEdit />}
-            />
-          }
-        />
-      </Route>
-
-      <Route path="/blogs">
-        <Route
-          path="create"
-          element={
-            <MyReactHelmet title="Create Blog" element={<BlogsCreate />} />
-          }
-        />
-        <Route
-          path="edit/:blogId"
-          element={<MyReactHelmet title="Edit Blog" element={<BlogsEdit />} />}
-        />
-      </Route>
     </Route>
   </Route>,
 ];

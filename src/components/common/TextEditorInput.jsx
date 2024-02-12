@@ -1,5 +1,4 @@
 import { CONSTANTS } from "@/constants";
-import { imageUpload } from "@/store";
 import styled from "@emotion/styled";
 import { useCallback, useState } from "react";
 import { useMemo, useRef } from "react";
@@ -129,24 +128,6 @@ const TextEditorInput = ({
     async (file) =>
       new Promise((resolve) => {
         setIsLoading(true);
-        dispatch(
-          imageUpload({
-            payload: { images: [file] },
-            onSuccess: ({ files }) => {
-              setIsLoading(false);
-              resolve(
-                files && files[0]
-                  ? `${CONSTANTS.VITE_BACKEND_STATIC_URL}/${files[0]}`
-                  : ""
-              );
-            },
-            isRunDefaultError: false,
-            onError: () => {
-              setIsLoading(false);
-              resolve("");
-            },
-          })
-        );
       }),
     [dispatch]
   );

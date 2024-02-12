@@ -1,21 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
   authReducer,
-  uploadReducer,
-  blogReducer,
-  subscriptionReducer,
-  paymentReducer,
-  contactUsReducer,
-  tailorApplicationReducer,
-  planMyTripApplicationReducer,
-  groupApplicationReducer,
-  coupleApplicationReducer,
-  invitationLetterApplicationReducer,
-  tourReducer,
-  destinationsReducer,
-  brochuresReducer,
-  statsReducer,
-  courseReducer
+  courseReducer,
+  dashboardReducer,
+  eventReducer
 } from "./slices";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -28,21 +16,9 @@ const authPersistConfig = {
 const store = configureStore({
   reducer: {
     authReducer: persistReducer(authPersistConfig, authReducer),
-    uploadReducer,
-    blogReducer,
-    subscriptionReducer,
-    paymentReducer,
-    contactUsReducer,
-    tailorApplicationReducer,
-    planMyTripApplicationReducer,
-    groupApplicationReducer,
-    coupleApplicationReducer,
-    invitationLetterApplicationReducer,
-    tourReducer,
-    destinationsReducer,
-    brochuresReducer,
-    statsReducer,
-    courseReducer
+    courseReducer,
+    dashboardReducer,
+    eventReducer
   },
 });
 

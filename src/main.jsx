@@ -17,11 +17,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           persistor={persistedStore}
           loading={<Loader type="screen" />}
         >
-          <CheckTokenSession>
+          {/* <CheckTokenSession> */}
             <GlobalContextProvider>
               <App />
             </GlobalContextProvider>
-          </CheckTokenSession>
+          {/* </CheckTokenSession> */}
         </PersistGate>
       </StoreProvider>
     </BrowserRouter>

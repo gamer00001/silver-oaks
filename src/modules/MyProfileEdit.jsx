@@ -7,7 +7,6 @@ import { useCallback } from "react";
 import { editProfileSchema } from "@/schema";
 import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
-import { imageUpload, updateProfile } from "@/store";
 import toast from "react-hot-toast";
 
 const MyProfileEdit = () => {
@@ -47,33 +46,15 @@ const MyProfileEdit = () => {
       delete copy.image;
 
       const f1 = () =>
-        dispatch(
-          updateProfile({
-            payload: {
-              body: {
-                ...user,
-                ...copy,
-              },
-            },
-            onSuccess: () => {
-              toast.success("Successfully updated profile!");
-              navigate("/my-profile");
-            },
-          })
-        );
+       {
+
+       }
 
       if (typeof copy.profile_image === "string") f1();
       else
-        dispatch(
-          imageUpload({
-            payload: { images: [copy.profile_image] },
-            onSuccess: (data) => {
-              console.log(data);
-              copy.profile_image = data.files[0];
-              f1();
-            },
-          })
-        );
+       {
+        
+       }
     },
   });
 

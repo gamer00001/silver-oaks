@@ -17,9 +17,10 @@ const asyncCatch = (name, cb) =>
       try {
         payload.config = {
           headers: {
-            Authorization: `Bearer ${
+            "Authorization": `Bearer ${
               getState().authReducer?.loginUserData?.token
             }`,
+            'content-type': 'application/json'
           },
         };
         const { data } = await cb(payload, {

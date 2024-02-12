@@ -28,6 +28,7 @@ const Login = () => {
     },
     validationSchema: LoginSchema,
     onSubmit: (body) => {
+      localStorage.setItem('email', body.email);
       dispatch(
         loginUser({
           payload: {

@@ -9,13 +9,16 @@ import { useFormik } from "formik";
 import { AddEventSchema, dayToDayIniteraySchema } from "@/schema";
 import { motion } from 'framer-motion';
 import * as XLSX from 'xlsx'; // Import xlsx library
+import { useDispatch } from "react-redux";
+import { addEvent } from "@/store/actions/eventActions";
 
 const ManageEvents = () => {
   const [isAddEvent, setIsAddEvent] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
+  const dispatch = useDispatch();
 
-  const addEvent = () => {
+  const addCalanderEvent = () => {
     setIsAddEvent(!isAddEvent);
   };
 
@@ -50,7 +53,7 @@ const ManageEvents = () => {
       <h1 className="text-[4rem] font-bold -mt-24">Manage Events</h1>
       <div className="flex justify-end">
         <motion.button
-          onClick={addEvent}
+          onClick={addCalanderEvent}
           className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-4 transition-opacity "
           whileHover={{ scale: 1.05 }}
         >
@@ -63,7 +66,7 @@ const ManageEvents = () => {
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             events={events}
-            dateClick={addEvent}
+            dateClick={addCalanderEvent}
             eventContent={renderEventContent}
           />
         </StyleWrapper>
@@ -93,6 +96,17 @@ const ManageEvents = () => {
           onAdd={(newEvent) => {
             setEvents([...events, newEvent]);
             handleCloseAddEventModal();
+            dispatch(
+              addEvent({
+                payload: {
+                  body:{
+                    newEvent
+                  },
+                },
+                onSuccess: () => console.log("Hello"), 
+                onError: () => navigate("/404", { replace: true }),
+              })
+            );
           }}
           onClose={() => {
             handleCloseAddEventModal();
@@ -132,11 +146,11 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
         ? value[editIndex]
         : {
             title: "",
-            date: "",
+            eventDate: "",
             type: "",
             description: "",
             location: "",
-            duration: "",
+            time: "",
           },
     validationSchema: AddEventSchema,
     onSubmit: (v) =>  {onAdd(values)},
@@ -174,11 +188,11 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
                 type="date"
                 placeholder="Enter date"
                 className="col-span-1 sm:col-span-6"
-                value={values.date}
+                value={values.eventDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.date && errors.date}
-                name="date"
+                error={touched.eventDate && errors.eventDate}
+                name="eventDate"
               />
             </div>
           </div>
@@ -239,18 +253,18 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
           </div>
           <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
             <div>
-              <h1 className="body-medium h5">Duration</h1>
+              <h1 className="body-medium h5">Time</h1>
             </div>
             <div>
               <MyInput
                 type="number"
-                placeholder="Enter Duration in days"
+                placeholder="Enter time in days"
                 className="col-span-1 sm:col-span-6"
-                value={values.duration}
+                value={values.time}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.duration && errors.duration}
-                name="duration"
+                error={touched.time && errors.time}
+                name="time"
               />
             </div>
           </div>
