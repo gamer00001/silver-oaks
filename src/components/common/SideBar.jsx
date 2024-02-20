@@ -4,11 +4,11 @@ import { useGlobalContext } from "@/hooks";
 import CoursesIcon from "@/assets/Icons/CoursesIcon";
 import Events from "@/assets/Icons/Events";
 import Desktop from "@/assets/Icons/Desktop";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
 import { useLocation } from "react-router-dom";
-
+import { getCourses } from "@/store/actions/coursesActions";
 
 const routes = [
   {
@@ -47,6 +47,16 @@ const SideBar = () => {
     loginUserData: { user },
   } = useSelector((s) => s.authReducer);
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getCourses({
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  }, []);
+
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
       <div className="px-[1.9rem]">
@@ -89,8 +99,9 @@ export default SideBar;
 const SideBarItem = ({ route }) => {
   const { setIsSidebarOpen } = useGlobalContext();
   const [expanded, setExpanded] = useState(false);
+  const { coursesData } = useSelector((s) => s.courseReducer);
   const { pathname } = useLocation();
-  console.log(pathname)
+  console.log(pathname);
   const handleItemClick = () => {
     setIsSidebarOpen(false);
     if (route.name === "My Courses") {
@@ -131,11 +142,17 @@ const SideBarItem = ({ route }) => {
                 : "hidden max-h-0"
             }`}
           >
-            {route.courses.map((course, index) => (
+            {coursesData?.data?.courseList?.map((course, index) => (
               <li className="px-[2.9rem] md:px-0 ">
-                <NavLink to={`/course/lectures/${course.id}`}>
-                  <span className={`md:pl-24  body-medium hover:text-custom-golden ${pathname.includes(course.id)?'text-custom-golden':'text-white'}`}>
-                    {course.name}
+                <NavLink to={`/course/lectures/${course.courseId}`}>
+                  <span
+                    className={`md:pl-24  body-medium hover:text-custom-golden ${
+                      pathname.includes(course.courseId)
+                        ? "text-custom-golden"
+                        : "text-white"
+                    }`}
+                  >
+                    {course.courseName}
                   </span>
                 </NavLink>
               </li>

@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Grade1 from "@/assets/common/grade1.png";
+import Grade2 from "@/assets/common/grade2.png";
+import Grade3 from "@/assets/common/grade3.png";
+import Grade4 from "@/assets/common/grade4.png";
 
-const CourseCard = ({ img, title, location, id }) => {
+const CourseCard = ({ grade, title, location, id }) => {
   return (
     <Link
       className="px-[2rem] py-[1rem] rounded-[.8rem] text-[1.6rem] font-bold leading-[120%] text-custom-dark-gren hover:opacity-70 transition-opacity duration-300"
@@ -21,7 +25,18 @@ const CourseCard = ({ img, title, location, id }) => {
         >
           <img
             className="w-full h-[26.5rem] object-cover object-center"
-            src={img}
+            src={
+              (grade === "1" && Grade1) ||
+              (grade === "2" && Grade2) ||
+              (grade === "3" && Grade3) ||
+              (grade === "4" && Grade4) ||
+              (grade === "5" && Grade1) ||
+              (grade === "6" && Grade2) ||
+              (grade === "7" && Grade3) ||
+              (grade === "8" && Grade4) ||
+              (grade === "9" && Grade1) ||
+              (grade === "10" && Grade2)
+            }
             alt={title || "--"}
           />
         </motion.div>

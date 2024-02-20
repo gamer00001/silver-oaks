@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import gradeImg from "@/assets/common/grade1.png";
 import { CardContent, Switch, ToggleButton } from "@mui/material";
 import MUICard from "@mui/material/Card";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
 import LectureIcon from "@/assets/Icons/LectureIcon";
 import PlayIcon from "@/assets/Icons/PlayIcon";
@@ -11,87 +11,53 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 import { Avatar } from "@/assets/common";
-import { ModalTop } from "@/components/common";
+import { Loader, ModalTop } from "@/components/common";
 import Warning from "@/assets/Icons/Warning";
+import {
+  changeLectureStatus,
+  getLectures,
+} from "@/store/actions/lecturesActions";
 
 const Lectures = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { lecturesData, lectureStatusData } = useSelector(
+    (s) => s.lectureReducer
+  );
 
-  const {id} = useParams();
-  const lectures = [
-    {
-      id: "2354262",
-      lectureNo: "01",
-      title: "ICT and Emerging Technologies",
-      link: "https://www.youtube.com/watch?v=_CZe_bZyd5M",
-    },
-    {
-      id: "463645643",
-      lectureNo: "02",
-      title: "Cloud Computing",
-      link: "https://www.youtube.com/watch?v=8C_kHJ5YEiA",
-    },
-    {
-      id: "34654373",
-      lectureNo: "03",
-      title: "Computer Program",
-      link: "https://www.youtube.com/watch?v=5AmWpf6H7Ac",
-    },
-  ];
-
-  const lecturesDemo = [
-    {
-      id: "2354262",
-      lectureNo: "01",
-      title: "Scratch",
-      link: "https://docs.google.com/presentation/d/1SkOjHBSHhxAxj_0axCBLs2SJzR0JO-Fk/edit?usp=sharing&ouid=102005332110788828487&rtpof=true&sd=true",
-    },
-    {
-      id: "2354262",
-      lectureNo: "02",
-      title: "ICT and Emerging Technologies",
-      link: "https://www.youtube.com/watch?v=_CZe_bZyd5M",
-    },
-    {
-      id: "463645643",
-      lectureNo: "03",
-      title: "Cloud Computing",
-      link: "https://www.youtube.com/watch?v=8C_kHJ5YEiA",
-    },
-    {
-      id: "34654373",
-      lectureNo: "04",
-      title: "Computer Program",
-      link: "https://www.youtube.com/watch?v=5AmWpf6H7Ac",
-    },
-  ];
+  useEffect(() => {
+    dispatch(
+      getLectures({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: id,
+          },
+        },
+      })
+    );
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
+      {(lecturesData.loading || lectureStatusData.loading) && (
+        <Loader type="screen" />
+      )}
       <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
       <div className="w-5/6">
         <Post />
       </div>
-      {id==43657457?lecturesDemo.map((item, k) => (
+      {lecturesData?.data?.lectureList?.map((item, k) => (
         <div className="w-5/6">
           <LectureCard
-            lid={item.id}
-            lectureNo={item.lectureNo}
-            title={item.title}
-            link={item.link}
+            lid={item?.lectureId}
+            lectureNo={k + 1}
+            title={item?.lectureTitle}
+            link={item?.videoURL}
+            status={!item?.visible}
           />
         </div>
-      )):
-      lectures.map((item, k) => (
-        <div className="w-5/6">
-          <LectureCard
-            lid={item.id}
-            lectureNo={item.lectureNo}
-            title={item.title}
-            link={item.link}
-          />
-        </div>
-      ))
-      }
+      ))}
     </div>
   );
 };
@@ -155,13 +121,14 @@ const Post = () => {
   );
 };
 
-const LectureCard = ({ lid, lectureNo, title, link }) => {
+const LectureCard = ({ lid, lectureNo, title, link, status }) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const [warning, setWarning] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(status);
+  const dispatch = useDispatch();
 
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
@@ -197,7 +164,11 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
             {/* <div onClick={() => setIsMenu(!menu)}>
               <MenuIcon />
             </div> */}
-            <Switch color="error" checked={checked} onChange={() => setWarning(true)} />
+            <Switch
+              color="error"
+              checked={checked}
+              onChange={() => setWarning(true)}
+            />
             <button
               className="text-[2rem] font-semibold text-custom-red"
               onClick={() => navigate(`/course/${id}/lecture/${lid}`)}
@@ -212,17 +183,72 @@ const LectureCard = ({ lid, lectureNo, title, link }) => {
         open={warning}
         className="bg-white flex flex-col justify-center items-center p-8 gap-4"
       >
-        <Warning/>
+        <Warning />
         <h1 className="text-[1.5rem] text-red-800">Alert</h1>
-        <h1 className="text-[2rem]">Are you sure you want to change the visibility of this lecture from students?</h1>
-        <button className="bg-custom-red pl-8 pr-8 pt-4 pb-4 w-96 rounded-xl text-[2rem] text-white hover:opcaity-70" onClick={()=>{
-          setWarning(false);
-          setChecked(true);
-        }}>Hide</button>
-        <button className="bg-white pl-8 pr-8 pt-4 pb-4 w-96 rounded-xl text-[2rem] text-black border border-solid border-black hover:opcaity-70" onClick={()=>{
-           setWarning(false);
-           setChecked(false);
-        }}>Unhide</button>
+        <h1 className="text-[2rem]">
+          Are you sure you want to change the visibility of this lecture from
+          students?
+        </h1>
+        <button
+          className="bg-custom-red pl-8 pr-8 pt-4 pb-4 w-96 rounded-xl text-[2rem] text-white hover:opcaity-70"
+          onClick={() => {
+            setWarning(false);
+            dispatch(
+              changeLectureStatus({
+                onError: () => navigate("/404", { replace: true }),
+                onSuccess: () =>
+                  dispatch(
+                    getLectures({
+                      onError: () => navigate("/404", { replace: true }),
+                      payload: {
+                        query: {
+                          courseId: id,
+                        },
+                      },
+                    })
+                  ),
+                payload: {
+                  query: {
+                    courseId: id,
+                    status: false,
+                  },
+                },
+              })
+            );
+          }}
+        >
+          Hide
+        </button>
+        <button
+          className="bg-white pl-8 pr-8 pt-4 pb-4 w-96 rounded-xl text-[2rem] text-black border border-solid border-black hover:opcaity-70"
+          onClick={() => {
+            setWarning(false);
+            dispatch(
+              changeLectureStatus({
+                onError: () => navigate("/404", { replace: true }),
+                onSuccess: () =>
+                  dispatch(
+                    getLectures({
+                      onError: () => navigate("/404", { replace: true }),
+                      payload: {
+                        query: {
+                          courseId: id,
+                        },
+                      },
+                    })
+                  ),
+                payload: {
+                  query: {
+                    courseId: id,
+                    status: true,
+                  },
+                },
+              })
+            );
+          }}
+        >
+          Unhide
+        </button>
       </ModalTop>
     </MUICard>
   );

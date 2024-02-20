@@ -1,22 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import styled from "@emotion/styled";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { ModalTop, MyInput } from "@/components/common";
+import { Loader, ModalTop, MyInput } from "@/components/common";
 import { useFormik } from "formik";
-import { AddEventSchema, dayToDayIniteraySchema } from "@/schema";
-import { motion } from 'framer-motion';
-import * as XLSX from 'xlsx'; // Import xlsx library
-import { useDispatch } from "react-redux";
-import { addEvent } from "@/store/actions/eventActions";
+import { AddEventSchema } from "@/schema";
+import { motion } from "framer-motion";
+import * as XLSX from "xlsx"; // Import xlsx library
+import { useDispatch, useSelector } from "react-redux";
+import { addEvent, getEvents } from "@/store/actions/eventActions";
+import { getCourses } from "@/store/actions/coursesActions";
 
 const ManageEvents = () => {
   const [isAddEvent, setIsAddEvent] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
   const dispatch = useDispatch();
+
+  const { getEventsData } = useSelector((s) => s.eventReducer);
+
+  useEffect(() => {
+    dispatch(
+      getEvents({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            teacherEmail: localStorage.getItem("email"),
+          },
+        },
+      })
+    );
+  }, []);
 
   const addCalanderEvent = () => {
     setIsAddEvent(!isAddEvent);
@@ -27,13 +43,19 @@ const ManageEvents = () => {
   };
 
   const exportToExcel = () => {
-    const header = ['Title', 'Date', 'Type', 'Description', 'Location', 'Duration'];
-    const data = events.map(event => [event.title, event.date, event.type, event.description, event.location, event.duration]);
+    const header = ["Title", "Date", "Type", "Description", "Duration"];
+    const data = events.map((event) => [
+      event.title,
+      event.date,
+      event.type,
+      event.description,
+      event.duration,
+    ]);
 
     const ws = XLSX.utils.aoa_to_sheet([header, ...data]);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Events');
-    XLSX.writeFile(wb, 'events.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, "Events");
+    XLSX.writeFile(wb, "events.xlsx");
   };
 
   const StyleWrapper = styled.div`
@@ -42,7 +64,9 @@ const ManageEvents = () => {
     }
   `;
 
-  return (
+  return getEventsData?.loading ? (
+    <Loader type="screen" />
+  ) : (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -50,6 +74,7 @@ const ManageEvents = () => {
       transition={{ duration: 0.5 }}
       className="grid grid-rows-[auto_auto_auto] gap-8 p-12"
     >
+      {getEventsData?.loading && <Loader type="screen" />}
       <h1 className="text-[4rem] font-bold -mt-24">Manage Events</h1>
       <div className="flex justify-end">
         <motion.button
@@ -65,7 +90,12 @@ const ManageEvents = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
-            events={events}
+            events={getEventsData?.data?.eventList?.map((item) => {
+              return {
+                title: item.title,
+                date: item.eventDate,
+              };
+            })}
             dateClick={addCalanderEvent}
             eventContent={renderEventContent}
           />
@@ -99,11 +129,11 @@ const ManageEvents = () => {
             dispatch(
               addEvent({
                 payload: {
-                  body:{
-                    newEvent
+                  body: {
+                    ...newEvent,
                   },
                 },
-                onSuccess: () => console.log("Hello"), 
+                onSuccess: () => console.log("Hello"),
                 onError: () => navigate("/404", { replace: true }),
               })
             );
@@ -131,6 +161,17 @@ function renderEventContent(eventInfo) {
 }
 
 const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
+  const dispatch = useDispatch();
+  const { coursesData } = useSelector((s) => s.courseReducer);
+
+  useEffect(() => {
+    dispatch(
+      getCourses({
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  }, []);
+
   const {
     values,
     setFieldValue,
@@ -149,14 +190,18 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
             eventDate: "",
             type: "",
             description: "",
-            location: "",
             time: "",
+            courseId: "",
+            teacherId: "1",
           },
     validationSchema: AddEventSchema,
-    onSubmit: (v) =>  {onAdd(values)},
+    onSubmit: (v) => {
+      onAdd(values);
+    },
   });
   return (
     <div className="grid gap-[3.6rem]">
+      {coursesData.loading && <Loader type="screen" />}
       <h2 className="text-[2.5rem] font-semibold text-black leading-[160%] flex justify-center items-center border-4 border-dashed border-custom-golden">
         Add New Event
       </h2>
@@ -236,23 +281,6 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
           </div>
           <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
             <div>
-              <h1 className="body-medium h5">Location</h1>
-            </div>
-            <div>
-              <MyInput
-                type="text"
-                placeholder="Enter Location"
-                className="col-span-1 sm:col-span-6"
-                value={values.location}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.location && errors.location}
-                name="location"
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
-            <div>
               <h1 className="body-medium h5">Time</h1>
             </div>
             <div>
@@ -266,6 +294,28 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
                 error={touched.time && errors.time}
                 name="time"
               />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
+            <div>
+              <h1 className="body-medium h5">Select Course</h1>
+            </div>
+            <div>
+              <MyInput
+                type="select"
+                placeholder="Select a Course"
+                className="col-span-1 sm:col-span-6"
+                value={values.courseId}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.courseId && errors.courseId}
+                name="courseId"
+              >
+                <option value="">Select a Course</option>
+                {coursesData.data?.courseList?.map((course, index) => (
+                  <option value={course?.courseId}>{course?.courseName}</option>
+                ))}
+              </MyInput>
             </div>
           </div>
         </div>

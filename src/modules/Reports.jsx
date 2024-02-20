@@ -1,8 +1,8 @@
 import QuizIcon from "@/assets/Icons/QuizIcon";
-import { MyPagination } from "@/components/common";
+import { Loader, MyPagination } from "@/components/common";
 import SearchForm from "@/components/common/SearchForm";
 import { useQueryParams } from "@/hooks";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -16,13 +16,33 @@ import {
 } from "recharts";
 import { CSVLink } from "react-csv";
 import html2canvas from "html2canvas";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getLectureReportTable } from "@/store/actions/lecturesActions";
 
 const Reports = () => {
   const { page, query } = useQueryParams({ page: 1, query: "" });
+  const { lid } = useParams();
   const [option, setOption] = useState("basic");
+  const dispatch = useDispatch();
+  const { lectureReportTableData } = useSelector((s) => s.lectureReducer);
+
+  useEffect(() => {
+    dispatch(
+      getLectureReportTable({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            lectureId: lid,
+          },
+        },
+      })
+    );
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
+      {lectureReportTableData.loading && <Loader type="screen" />}
       <div className="flex flex-row justify-between items-center mb-8">
         <SearchForm />
         <select
@@ -32,7 +52,7 @@ const Reports = () => {
           <option value={"basic"}>Basic Report</option>
           <option value={"graph"}>Graph Report</option>
         </select>
-        <MyPagination page={page} totalPages={10 || 0} />
+        {/* <MyPagination page={page} totalPages={10 || 0} /> */}
       </div>
 
       <div className="grid grid-cols-1 w-full">
@@ -44,6 +64,7 @@ const Reports = () => {
 
 const Table = () => {
   const { page, query } = useQueryParams({ page: 1, query: "" });
+  const { lectureReportTableData } = useSelector((s) => s.lectureReducer);
 
   const data = [
     {
@@ -101,13 +122,13 @@ const Table = () => {
   ];
 
   const headers = [
-    { label: 'Full Name', key: 'fullName' },
-    { label: 'Roll No', key: 'rollNo' },
-    { label: 'Attempt', key: 'attempt' },
-    { label: 'Started On', key: 'start' },
-    { label: 'Last accessed on', key: 'lastAccess' },
+    { label: "Full Name", key: "fullName" },
+    { label: "Roll No", key: "rollNo" },
+    { label: "Attempt", key: "attempt" },
+    { label: "Started On", key: "start" },
+    { label: "Last accessed on", key: "lastAccess" },
   ];
-  
+
   const csvData = data.map(
     ({ fullName, rollNo, attempt, start, lastAccess }) => ({
       fullName,
@@ -128,27 +149,27 @@ const Table = () => {
           <th className="p-9 th">Started On</th>
           <th className="p-9 th">Last accessed on</th>
         </tr>
-        {data?.map((b, i) => (
-          <tr className="tr">
-            <td className="p-9 td text-center">{b?.fullName || "--"}</td>
-            <td className="p-9 td text-center">{b?.rollNo || "--"}</td>
-            <td className="p-9 td text-center">{b?.attempt || "--"}</td>
-            <td className="p-9 td text-center">
-              <div className="flex flex-col justify-center items-center">
-                <span>{b?.start.date || "--"}</span>
-                <span className="text-green-700">{b?.start.time || "--"}</span>
-              </div>
-            </td>
-            <td className="p-9 td">
-              <div className="flex flex-col justify-center items-center">
-                <span>{b?.lastAccess.date || "--"}</span>
-                <span className="text-green-700">
-                  {b?.lastAccess.time || "--"}
-                </span>
-              </div>
-            </td>
-          </tr>
-        ))}
+        {lectureReportTableData?.data?.lectureReportResponseList?.map(
+          (b, i) => (
+            <tr className="tr">
+              <td className="p-9 td text-center">{b?.studentName || "--"}</td>
+              <td className="p-9 td text-center">
+                {b?.studentRollNumber || "--"}
+              </td>
+              <td className="p-9 td text-center">{b?.attempts || "--"}</td>
+              <td className="p-9 td text-center">
+                <div className="flex flex-col justify-center items-center">
+                  <span>{b?.startDate || "--"}</span>
+                </div>
+              </td>
+              <td className="p-9 td">
+                <div className="flex flex-col justify-center items-center">
+                  <span>{b?.lastAccessedDate || "--"}</span>
+                </div>
+              </td>
+            </tr>
+          )
+        )}
       </table>
 
       <div className="flex flex-row justify-end mt-8">
@@ -158,8 +179,7 @@ const Table = () => {
           filename={`reports_${Date.now()}.csv`}
           className="p-[1.3rem_6.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
         >
-
-            Download
+          Download
         </CSVLink>
       </div>
     </div>
@@ -167,7 +187,6 @@ const Table = () => {
 };
 
 const Graph = () => {
-
   const chartContainerRef = useRef(null);
 
   const [chartImage, setChartImage] = useState(null);
@@ -231,7 +250,7 @@ const Graph = () => {
   ];
 
   return (
-      <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <div style={{ display: chartImage === "loading" ? "none" : "block" }}>
         <BarChart
           width={1000}

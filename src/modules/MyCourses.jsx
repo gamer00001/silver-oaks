@@ -1,43 +1,34 @@
 import CourseCard from "@/components/common/CourseCard";
-import React from "react";
-import Grade1 from "@/assets/common/grade1.png";
-import Grade2 from "@/assets/common/grade2.png";
-import Grade3 from "@/assets/common/grade3.png";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourses } from "@/store/actions/coursesActions";
+import { Loader } from "@/components/common";
 
 const MyCourses = () => {
-  const courses = [
-    {
-      id: "43657457",
-      title: "Grade 1(Alliums)",
-      img: Grade1,
-      location: "Campus 1_Faraz(Rawalpindi)",
-    },
-    {
-      id: "43635654",
-      title: "Grade 2(Alliums)",
-      img: Grade2,
-      location: "Campus 1_Faraz(Rawalpindi)",
-    },
-    {
-      id: "43645776",
-      title: "Grade 3(Alliums)",
-      img: Grade3,
-      location: "Campus 1_Faraz(Rawalpindi)",
-    },
-  ];
+  const dispatch = useDispatch();
+  const { coursesData } = useSelector((s) => s.courseReducer);
+
+  useEffect(() => {
+    dispatch(
+      getCourses({
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  }, []);
 
   return (
     <div>
+      {coursesData.loading && <Loader type="screen" />}
       <div className="grid gap-[1.6rem] px-[1.7rem]">
         <h1 className="h5-bold text-custom-dark-gren">Courses</h1>
       </div>
       <div className="flex flex-row flex-wrap">
-        {courses.map((course, index) => (
+        {coursesData.data?.courseList?.map((course, index) => (
           <CourseCard
-            id={course.id}
-            title={course.title}
-            img={course.img}
-            location={course.location}
+            id={course.courseId}
+            title={course.courseName}
+            grade={course.grade}
+            location={"Campus 1_Faraz(Rawalpindi)"}
           />
         ))}
       </div>

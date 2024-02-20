@@ -3,7 +3,11 @@ import {
   authReducer,
   courseReducer,
   dashboardReducer,
-  eventReducer
+  eventReducer,
+  lectureReducer,
+  quizReducer,
+  assignmentReducer,
+  assesmentReducer,
 } from "./slices";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -18,7 +22,11 @@ const store = configureStore({
     authReducer: persistReducer(authPersistConfig, authReducer),
     courseReducer,
     dashboardReducer,
-    eventReducer
+    eventReducer,
+    lectureReducer,
+    quizReducer,
+    assignmentReducer,
+    assesmentReducer,
   },
 });
 

@@ -2,40 +2,68 @@ import React, { useEffect, useState } from "react";
 import gradeImg from "@/assets/common/grade1.png";
 import { CardContent } from "@mui/material";
 import MUICard from "@mui/material/Card";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
 import LectureIcon from "@/assets/Icons/LectureIcon";
 import PlayIcon from "@/assets/Icons/PlayIcon";
 import MenuIcon from "@/assets/Icons/MenuIcon";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
+import { getAssesments } from "@/store/actions/assesmentActions";
+import { Loader } from "@/components/common";
 
 const Exam = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  const { assesmentsData } = useSelector((s) => s.assesmentReducer);
+
+  useEffect(() => {
+    dispatch(
+      getAssesments({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: id,
+          },
+        },
+      })
+    );
+  }, []);
+
   const Exam = [
     {
       title: "Term Assesment 1",
       attempts: "23",
-      total: "26"
+      total: "26",
     },
     {
       title: "Term Assesment 2",
       attempts: "23",
-      total: "26"
+      total: "26",
     },
     {
       title: "Term Assesment 3",
       attempts: "23",
-      total: "26"
+      total: "26",
     },
   ];
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
+      {assesmentsData.loading && <Loader type="screen" />}
       <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
-      {Exam.map((item, k) => (
+      {assesmentsData?.data?.examList?.map((item, k) => (
         <div className="w-5/6">
-          <ExamCard examNo={item.examNo} title={item.title} attempts={item.attempts} total={item.total} />
+          <ExamCard
+            examNo={k + 1}
+            id={item?.assignmentId}
+            title={item?.assignmentTitle}
+            attempts={23}
+            total={26}
+            file={item?.file}
+          />
         </div>
       ))}
     </div>
@@ -44,8 +72,7 @@ const Exam = () => {
 
 export default Exam;
 
-
-const ExamCard = ({ examNo, title, attempts, total }) => {
+const ExamCard = ({ examNo, title, attempts, total, file }) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
 
@@ -71,7 +98,7 @@ const ExamCard = ({ examNo, title, attempts, total }) => {
             </div>
             <div className={`flex flex-row ${expanded ? "block" : "hidden"}`}>
               <h1 className="font-bold text-[1.5rem] text-custom-red">
-                {attempts+' '} of {' '+total+' '} attempted
+                {attempts + " "} of {" " + total + " "} attempted
               </h1>
             </div>
           </div>
@@ -80,6 +107,12 @@ const ExamCard = ({ examNo, title, attempts, total }) => {
               <MenuIcon />
             </div>
             {menu && <VisibilityMenu />}
+            <button
+              className="text-custom-red font-bold text-[1.5rem]"
+              onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
+            >
+              View Assesment
+            </button>
           </div>
         </div>
       </CardContent>

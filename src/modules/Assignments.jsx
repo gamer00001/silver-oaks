@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import gradeImg from "@/assets/common/grade1.png";
 import { CardContent } from "@mui/material";
 import MUICard from "@mui/material/Card";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
 import LectureIcon from "@/assets/Icons/LectureIcon";
 import PlayIcon from "@/assets/Icons/PlayIcon";
@@ -10,95 +10,60 @@ import MenuIcon from "@/assets/Icons/MenuIcon";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
+import { getAssignments } from "@/store/actions/assignmentsActions";
+import { Loader } from "@/components/common";
 
 const Assignments = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
-  const {id} = useParams()
-  
-  const Assignments = [
-    {
-      id: '345634',
-      assignmentNo: "01",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
-      grading: '2'
-    },
-    {
-      id: '3254663',
-      assignmentNo: "02",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
-      grading: '2'
-    },
-    {
-      id: '7567343',
-      assignmentNo: "03",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
-      grading: '2'
-    },
-  ];
+  const { assignmentsData } = useSelector((s) => s.assignmentReducer);
 
-  const AssignmentsDemo = [
-    {
-      id: '268534685',
-      assignmentNo: "01",
-      title: "Scratch",
-      attempts: "13",
-      total: "15",
-      grading: '2'
-    },
-    {
-      id: '345634',
-      assignmentNo: "02",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
-      grading: '2'
-    },
-    {
-      id: '3254663',
-      assignmentNo: "03",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
-      grading: '2'
-    },
-    {
-      id: '7567343',
-      assignmentNo: "04",
-      title: "ICT and Emerging Technologies",
-      attempts: "23",
-      total: "26",
-      grading: '2'
-    },
-  ];
+  useEffect(() => {
+    dispatch(
+      getAssignments({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: id,
+          },
+        },
+      })
+    );
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
+      {assignmentsData.loading && <Loader type="screen" />}
       <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
-      {id==43657457?AssignmentsDemo.map((item, k) => (
+      {assignmentsData.data?.assignmentList?.map((item, k) => (
         <div className="w-5/6">
-          <QuizCard aid={item.id} assignmentNo={item.assignmentNo} title={item.title} attempts={item.attempts} total={item.total} grading={item.grading}/>
+          <QuizCard
+            aid={item?.assignmentId}
+            assignmentNo={k + 1}
+            title={item?.assignmentTitle}
+            attempts={23}
+            total={26}
+            grading={0}
+            file={item?.file}
+          />
         </div>
-      )):
-      Assignments.map((item, k) => (
-        <div className="w-5/6">
-          <QuizCard aid={item.id} assignmentNo={item.assignmentNo} title={item.title} attempts={item.attempts} total={item.total} grading={item.grading}/>
-        </div>
-      ))
-      }
+      ))}
     </div>
   );
 };
 
 export default Assignments;
 
-
-const QuizCard = ({ aid, assignmentNo, title, attempts, total, grading }) => {
+const QuizCard = ({
+  aid,
+  assignmentNo,
+  title,
+  attempts,
+  total,
+  grading,
+  file,
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
   const { id } = useParams();
@@ -124,22 +89,38 @@ const QuizCard = ({ aid, assignmentNo, title, attempts, total, grading }) => {
               </h1>
               <h1 className="body-medium">{title}</h1>
             </div>
-              <h1 className="font-bold text-[1.5rem] text-custom-red">
-                {attempts+' '} of {' '+total+' '} attempted
-              </h1>
-            <div className={`flex flex-row ${expanded ? "block" : "hidden"} justify-center items-center`}>
+            <h1 className="font-bold text-[1.5rem] text-custom-red">
+              {attempts + " "} of {" " + total + " "} attempted
+            </h1>
+            <div
+              className={`flex flex-row ${
+                expanded ? "block" : "hidden"
+              } justify-center items-center`}
+            >
               <table>
                 <tr>
-                  <td><span className="body-medium">Participants</span></td>
-                  <td className="pl-8"><span className="body-regular">{total}</span></td>
+                  <td>
+                    <span className="body-medium">Participants</span>
+                  </td>
+                  <td className="pl-8">
+                    <span className="body-regular">{total}</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td><span className="body-medium">Submitted</span></td>
-                  <td className="pl-8"><span className="body-regular">{attempts}</span></td>
+                  <td>
+                    <span className="body-medium">Submitted</span>
+                  </td>
+                  <td className="pl-8">
+                    <span className="body-regular">{attempts}</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td><span className="body-medium">Need Grading</span></td>
-                  <td className="pl-8"><span className="body-regular">{grading}</span></td>
+                  <td>
+                    <span className="body-medium">Need Grading</span>
+                  </td>
+                  <td className="pl-8">
+                    <span className="body-regular">{grading}</span>
+                  </td>
                 </tr>
               </table>
             </div>
@@ -149,8 +130,18 @@ const QuizCard = ({ aid, assignmentNo, title, attempts, total, grading }) => {
               <MenuIcon />
             </div>
             {menu && <VisibilityMenu />}
-            <button className="text-custom-red font-bold text-[1.5rem]" onClick={()=>navigate(`/course/${id}/assignment/${aid}`)}>View Assignment</button>
-            <button className="text-custom-red font-bold text-[1.5rem]" onClick={()=>navigate(`/course/${id}/assignmentSummary/${aid}`)}>View all submissions</button>
+            <button
+              className="text-custom-red font-bold text-[1.5rem]"
+              onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
+            >
+              View Assignment
+            </button>
+            <button
+              className="text-custom-red font-bold text-[1.5rem]"
+              onClick={() => navigate(`/course/${id}/assignmentSummary/${aid}`)}
+            >
+              View all submissions
+            </button>
           </div>
         </div>
       </CardContent>

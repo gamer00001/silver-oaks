@@ -1,23 +1,29 @@
 import { Calendar } from "react-date-range";
 import teaching from "../../assets/RightBar/Teaching.png";
 import UserProfile from "../Header/UserProfile";
-import { ModalTop, MyInput } from ".";
-import { useState } from "react";
+import { Loader, ModalTop, MyInput } from ".";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { AddEventSchema } from "@/schema";
 import { useNavigate } from "react-router-dom";
 import Tick from "@/assets/Icons/Tick";
 import Flag from "@/assets/Icons/Flag";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourses } from "@/store/actions/coursesActions";
 
-export const allowedPathsForRightSidebar = ["/", "/my-courses", "/course", "/notifications"];
+export const allowedPathsForRightSidebar = [
+  "/",
+  "/my-courses",
+  "/course",
+  "/notifications",
+];
 
 const RightSideBar = () => {
-
   const [isAddEvent, setIsAddEvent] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
   const [date, setDate] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const addEvent = () => {
     setIsAddEvent(!isAddEvent);
@@ -33,10 +39,10 @@ const RightSideBar = () => {
         <UserProfile />
         <Calendar
           date={new Date()}
-          onChange={(date)=>{
+          onChange={(date) => {
             const formattedDate = new Date(date);
-            console.log(formattedDate.toISOString().split('T')[0])
-            setDate(formattedDate.toISOString().split('T')[0]);
+            console.log(formattedDate.toISOString().split("T")[0]);
+            setDate(formattedDate.toISOString().split("T")[0]);
             setIsAddEvent(true);
           }}
           color="#7A1315"
@@ -44,10 +50,23 @@ const RightSideBar = () => {
       </div>
       <div className="flex flex-row justify-between items-center gap-[1.6rem] px-[1.7rem] py-[1.7rem] ">
         <h1 className="h5-bold text-custom-dark-gren">Notifications</h1>
-        <h1 className="text-[1.5rem] text-red-800 cursor-pointer" onClick={()=>navigate('/notifications')}>see all</h1>
+        <h1
+          className="text-[1.5rem] text-red-800 cursor-pointer"
+          onClick={() => navigate("/notifications")}
+        >
+          see all
+        </h1>
       </div>
-      <NotificationCard Title="New Features in the Gradebook" Time="Yesterday" Logo={<Tick/>}/>
-      <NotificationCard Title="Parent-Teacher Conference Schedule" Time="23 June 2021" Logo={<Flag/>}/>
+      <NotificationCard
+        Title="New Features in the Gradebook"
+        Time="Yesterday"
+        Logo={<Tick />}
+      />
+      <NotificationCard
+        Title="Parent-Teacher Conference Schedule"
+        Time="23 June 2021"
+        Logo={<Flag />}
+      />
       <img src={teaching} />
 
       <ModalTop
@@ -81,18 +100,30 @@ function renderEventContent(eventInfo) {
   );
 }
 
-const NotificationCard = ({Title, Time, Logo}) =>{
-  return(
-  <div className="p-4 flex flex-row">
-    {Logo}
-    <div className="flex flex-col ml-4">
-    <h1 className="text-[1.7rem] font-semibold">{Title}</h1>
-    <h1>{Time}</h1>
+const NotificationCard = ({ Title, Time, Logo }) => {
+  return (
+    <div className="p-4 flex flex-row">
+      {Logo}
+      <div className="flex flex-col ml-4">
+        <h1 className="text-[1.7rem] font-semibold">{Title}</h1>
+        <h1>{Time}</h1>
+      </div>
     </div>
-  </div>);
-}
+  );
+};
 
-const AddNewEventModal = ({ value, onAdd, onClose, editIndex, date }) => {
+const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
+  const dispatch = useDispatch();
+  const { coursesData } = useSelector((s) => s.courseReducer);
+
+  useEffect(() => {
+    dispatch(
+      getCourses({
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  }, []);
+
   const {
     values,
     setFieldValue,
@@ -108,11 +139,12 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex, date }) => {
         ? value[editIndex]
         : {
             title: "",
-            date: date,
+            eventDate: "",
             type: "",
             description: "",
-            location: "",
-            duration: "",
+            time: "",
+            courseId: "",
+            teacherId: "1",
           },
     validationSchema: AddEventSchema,
     onSubmit: (v) => {
@@ -121,6 +153,7 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex, date }) => {
   });
   return (
     <div className="grid gap-[3.6rem]">
+      {coursesData.loading && <Loader type="screen" />}
       <h2 className="text-[2.5rem] font-semibold text-black leading-[160%] flex justify-center items-center border-4 border-dashed border-custom-golden">
         Add New Event
       </h2>
@@ -152,11 +185,11 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex, date }) => {
                 type="date"
                 placeholder="Enter date"
                 className="col-span-1 sm:col-span-6"
-                value={values.date}
+                value={values.eventDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.date && errors.date}
-                name="date"
+                error={touched.eventDate && errors.eventDate}
+                name="eventDate"
               />
             </div>
           </div>
@@ -200,36 +233,41 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex, date }) => {
           </div>
           <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
             <div>
-              <h1 className="body-medium h5">Location</h1>
+              <h1 className="body-medium h5">Time</h1>
             </div>
             <div>
               <MyInput
-                type="text"
-                placeholder="Enter Location"
+                type="number"
+                placeholder="Enter time in days"
                 className="col-span-1 sm:col-span-6"
-                value={values.location}
+                value={values.time}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.location && errors.location}
-                name="location"
+                error={touched.time && errors.time}
+                name="time"
               />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
             <div>
-              <h1 className="body-medium h5">Duration</h1>
+              <h1 className="body-medium h5">Select Course</h1>
             </div>
             <div>
               <MyInput
-                type="number"
-                placeholder="Enter Duration in days"
+                type="select"
+                placeholder="Select a Course"
                 className="col-span-1 sm:col-span-6"
-                value={values.duration}
+                value={values.courseId}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={touched.duration && errors.duration}
-                name="duration"
-              />
+                error={touched.courseId && errors.courseId}
+                name="courseId"
+              >
+                <option value="">Select a Course</option>
+                {coursesData.data?.courseList?.map((course, index) => (
+                  <option value={course?.courseId}>{course?.courseName}</option>
+                ))}
+              </MyInput>
             </div>
           </div>
         </div>
