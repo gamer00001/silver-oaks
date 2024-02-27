@@ -5,7 +5,7 @@ import { Loader, PageHeading } from "@/components/common";
 import { getCourses } from "@/store/actions/coursesActions";
 import MUICard from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -15,6 +15,8 @@ import "react-circular-progressbar/dist/styles.css";
 import StatsIcon from "@/assets/Icons/StatsIcon";
 import { PieChart, Pie, Legend, ResponsiveContainer } from "recharts";
 import { getDashboardData } from "@/store/actions/dashboardActions";
+import StudentDashboard from "./StudentDashboard";
+import { currentLoggedInUserType } from "@/utils/helper";
 
 const demoActivityData = [
   {
@@ -42,10 +44,15 @@ const data = [
   { courseName: "Group D", percentage: 30, grade: 1 },
 ];
 
-const Dashboard = () => {
+const Dashboard = ({ forStudent = false }) => {
+  const [state, setState] = useState({
+    userType: currentLoggedInUserType(),
+  });
+
   const { dashboardData } = useSelector((s) => s.dashboardReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const renderColorfulLegendText = (value, entry) => {
     return (
       <span style={{ color: "#596579", fontWeight: 500, padding: "10px" }}>
@@ -55,17 +62,24 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    dispatch(
-      getDashboardData({
-        payload: {
-          query: {
-            email: localStorage.getItem("email"),
+    const userType = currentLoggedInUserType();
+
+    if (userType === "teacher")
+      dispatch(
+        getDashboardData({
+          payload: {
+            query: {
+              email: localStorage.getItem("email"),
+            },
           },
-        },
-        // onError: () => navigate("/404", { replace: true }),
-      })
-    );
+          // onError: () => navigate("/404", { replace: true }),
+        })
+      );
   }, [dispatch, navigate]);
+
+  if (state.userType === "student") {
+    return <StudentDashboard />;
+  }
 
   return (
     <motion.div

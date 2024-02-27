@@ -7,7 +7,7 @@ export const SearchSchema = Yup.object().shape({
 });
 
 export const LoginSchema = Yup.object().shape({
-  email: Yup.string().email("Email must a valid").required("Email is required"),
+  email: Yup.string().required("Email is required"),
   password: Yup.string()
     .min(6, "Password atleast consists of 6 characters")
     .required("Password is required"),

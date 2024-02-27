@@ -7,7 +7,7 @@ import { CONSTANTS } from "@/constants";
 import LectureIcon from "@/assets/Icons/LectureIcon";
 import PlayIcon from "@/assets/Icons/PlayIcon";
 import MenuIcon from "@/assets/Icons/MenuIcon";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams, useLocation } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 import { Avatar } from "@/assets/common";
@@ -17,9 +17,13 @@ import {
   changeLectureStatus,
   getLectures,
 } from "@/store/actions/lecturesActions";
+import CourseBlock from "@/components/common/CourseBlock";
+import { fetchSelectedCourseInfo } from "@/utils/helper";
 
-const Lectures = () => {
+const Lectures = ({ forStudent = false, courseInfo }) => {
   const { id } = useParams();
+  const { state } = useLocation();
+
   const dispatch = useDispatch();
   const { lecturesData, lectureStatusData } = useSelector(
     (s) => s.lectureReducer
@@ -33,6 +37,7 @@ const Lectures = () => {
           query: {
             courseId: id,
           },
+          dispatch,
         },
       })
     );
@@ -43,18 +48,36 @@ const Lectures = () => {
       {(lecturesData.loading || lectureStatusData.loading) && (
         <Loader type="screen" />
       )}
-      <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
-      <div className="w-5/6">
-        <Post />
-      </div>
+      {forStudent ? (
+        <CourseBlock
+          bookIcon="w-72"
+          width="w-5/6"
+          height="h-96"
+          titleFontSize="text-9xl"
+          headingFontSize="text-4xl"
+          textColor={fetchSelectedCourseInfo()?.textColor}
+          bgColor={fetchSelectedCourseInfo()?.backgroundColor}
+        />
+      ) : (
+        <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
+      )}
+
+      {!forStudent && (
+        <div className="w-5/6">
+          <Post />
+        </div>
+      )}
+
       {lecturesData?.data?.lectureList?.map((item, k) => (
         <div className="w-5/6">
           <LectureCard
+            key={k + "_lecture"}
             lid={item?.lectureId}
             lectureNo={k + 1}
             title={item?.lectureTitle}
             link={item?.videoURL}
             status={!item?.visible}
+            forStudent={forStudent}
           />
         </div>
       ))}
@@ -121,7 +144,7 @@ const Post = () => {
   );
 };
 
-const LectureCard = ({ lid, lectureNo, title, link, status }) => {
+const LectureCard = ({ lid, lectureNo, title, link, status, forStudent }) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
   const navigate = useNavigate();
@@ -138,12 +161,12 @@ const LectureCard = ({ lid, lectureNo, title, link, status }) => {
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
               <NavLink>
-                {/* <span
+                <span
                   className="ml-auto"
                   onClick={() => setExpanded(!expanded)}
                 >
                   {expanded ? "▼" : "▲"}
-                </span> */}
+                </span>
               </NavLink>
               <h1 className="font-extrabold text-[1.5rem]">
                 Lecture {lectureNo}:{" "}
@@ -155,25 +178,37 @@ const LectureCard = ({ lid, lectureNo, title, link, status }) => {
               onClick={() => window.open(link)}
             >
               <PlayIcon />
-              <h1 className="font-bold text-[1.5rem] text-custom-red">
-                {title}
-              </h1>
+              {expanded && (
+                <h1 className="font-bold text-[1.5rem] text-custom-red">
+                  {title}
+                </h1>
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-2 justify-end items-end">
             {/* <div onClick={() => setIsMenu(!menu)}>
               <MenuIcon />
             </div> */}
-            <Switch
-              color="error"
-              checked={checked}
-              onChange={() => setWarning(true)}
-            />
+            {!forStudent && (
+              <Switch
+                color="error"
+                checked={checked}
+                onChange={() => setWarning(true)}
+              />
+            )}
             <button
               className="text-[2rem] font-semibold text-custom-red"
-              onClick={() => navigate(`/course/${id}/lecture/${lid}`)}
+              onClick={() =>
+                forStudent
+                  ? window.open(link)
+                  : navigate(
+                      `/${
+                        forStudent ? "enrolled-courses" : "course"
+                      }/${id}/lectures/${lid}`
+                    )
+              }
             >
-              Reports
+              {forStudent ? "View" : "Reports"}
             </button>
           </div>
         </div>

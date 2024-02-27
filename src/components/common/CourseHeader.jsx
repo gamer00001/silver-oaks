@@ -1,44 +1,17 @@
 import { GreenDot } from "@/assets/Icons";
+import { TeacherCoursesTabs } from "@/constants/common";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 
-const CourseHeader = () => {
-  const tabs = [
-    {
-      title: "Lectures",
-      to: "./lectures",
-    },
-    {
-      title: "Quizzes",
-      to: "./quizzes",
-    },
-    {
-      title: "Assignments",
-      to: "./assignments",
-    },
-    {
-      title: "Participants",
-      to: "./participants",
-    },
-    {
-      title: "Academic Record",
-      to: "./academic-record",
-    },
-    {
-      title: "Attendance",
-      to: "./attendance",
-    },
-    {
-      title: "Assesment",
-      to: "./exam",
-    },
-  ];
-
+const CourseHeader = ({ courseTabs }) => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const { coursesData } = useSelector((s) => s.courseReducer);
   const [course, setCourse] = useState(null);
+  const [state, setState] = useState({
+    courseTabs: TeacherCoursesTabs ?? [],
+  });
 
   const findCourseById = () => {
     const foundCourse = coursesData?.data?.courseList?.find(
@@ -49,6 +22,10 @@ const CourseHeader = () => {
 
   useEffect(() => {
     findCourseById();
+    setState((prev) => ({
+      ...prev,
+      courseTabs: courseTabs ?? prev.courseTabs,
+    }));
   }, []);
 
   return (
@@ -60,8 +37,8 @@ const CourseHeader = () => {
         <span className="body-regular">{course?.courseName}</span>
       </div>
       <div className="w-full flex flex-row flex-wrap body-regular md:body-medium md:pr-[36rem] gap-8 mb-4">
-        {tabs.map((item, k) => (
-          <Link to={`/course/${item.to}/${id}`}>
+        {state.courseTabs?.map((item, k) => (
+          <Link to={`/${item.baseRoute ?? "course"}/${item.to}/${id}`} key={k}>
             <h1
               key={k}
               className={`${

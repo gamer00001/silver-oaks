@@ -12,8 +12,10 @@ import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 import { getAssesments } from "@/store/actions/assesmentActions";
 import { Loader } from "@/components/common";
+import CourseBlock from "@/components/common/CourseBlock";
+import { fetchSelectedCourseInfo } from "@/utils/helper";
 
-const Exam = () => {
+const Exam = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -53,7 +55,19 @@ const Exam = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
       {assesmentsData.loading && <Loader type="screen" />}
-      <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
+      {forStudent ? (
+        <CourseBlock
+          bookIcon="w-72"
+          width="w-5/6"
+          height="h-96"
+          titleFontSize="text-9xl"
+          headingFontSize="text-4xl"
+          textColor={fetchSelectedCourseInfo()?.textColor}
+          bgColor={fetchSelectedCourseInfo()?.backgroundColor}
+        />
+      ) : (
+        <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
+      )}
       {assesmentsData?.data?.examList?.map((item, k) => (
         <div className="w-5/6">
           <ExamCard
@@ -63,6 +77,7 @@ const Exam = () => {
             attempts={23}
             total={26}
             file={item?.file}
+            forStudent={forStudent}
           />
         </div>
       ))}
@@ -72,7 +87,7 @@ const Exam = () => {
 
 export default Exam;
 
-const ExamCard = ({ examNo, title, attempts, total, file }) => {
+const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
 
@@ -83,14 +98,16 @@ const ExamCard = ({ examNo, title, attempts, total, file }) => {
           <div className="grid grid-col-2 gap-4 px-[1.9rem]">
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
-              <NavLink>
-                <span
-                  className="ml-auto"
-                  onClick={() => setExpanded(!expanded)}
-                >
-                  {expanded ? "▼" : "▲"}
-                </span>
-              </NavLink>
+              {forStudent && (
+                <NavLink>
+                  <span
+                    className="ml-auto"
+                    onClick={() => setExpanded(!expanded)}
+                  >
+                    {expanded ? "▼" : "▲"}
+                  </span>
+                </NavLink>
+              )}
               <h1 className="font-extrabold text-[1.5rem]">
                 Assesment {examNo}:{" "}
               </h1>

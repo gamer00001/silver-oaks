@@ -10,13 +10,20 @@ import Tick from "@/assets/Icons/Tick";
 import Flag from "@/assets/Icons/Flag";
 import { useDispatch, useSelector } from "react-redux";
 import { getCourses } from "@/store/actions/coursesActions";
+import { isCurrentUserStudent } from "@/utils/helper";
 
-export const allowedPathsForRightSidebar = [
-  "/",
-  "/my-courses",
-  "/course",
-  "/notifications",
-];
+export const allowedPathsForRightSidebar = () => {
+  if (isCurrentUserStudent()) {
+    return [
+      "/enrolled-courses",
+      "/notifications",
+      "/enrolled-courses",
+      "/enrolled-courses/lectures",
+    ];
+  } else {
+    return ["/", "/course", "/my-courses", "/notifications"];
+  }
+};
 
 const RightSideBar = () => {
   const [isAddEvent, setIsAddEvent] = useState(false);
