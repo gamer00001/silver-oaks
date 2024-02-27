@@ -9,8 +9,10 @@ const Logout = () => {
 
   useEffect(() => {
     dispatch(resetAuthReducer());
+    localStorage.clear();
     toast.success("Logged out successfully!");
   }, [dispatch]);
+
   return <Navigate to="/login" replace />;
 };
 

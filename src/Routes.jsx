@@ -34,6 +34,9 @@ import MarkAssignment from "./modules/MarkAssignment";
 import Participants from "./modules/Participants";
 import Attendance from "./modules/Attendance";
 import Reports from "./modules/Reports";
+import StudentDashboard from "./modules/StudentDashboard";
+import EnrolledCourses from "./modules/EnrolledCourses";
+import { StudentCoursesTabs } from "./constants/common";
 
 const Routes = () => {
   return (
@@ -59,6 +62,12 @@ const authRoutes = [
         element={<MyReactHelmet title="Login" element={<Login />} />}
       />
       <Route
+        path="/student-login"
+        element={
+          <MyReactHelmet title="Login" element={<Login forStudent={true} />} />
+        }
+      />
+      <Route
         path="/forget-password"
         element={
           <MyReactHelmet title="Forget Password" element={<ForgetPassword />} />
@@ -71,6 +80,150 @@ const authRoutes = [
         }
       />
     </Route>
+  </Route>,
+];
+
+const studentLayoutRoutes = [
+  <Route key="headerLayoutRoutes" element={<HeaderLayout />}>
+    <Route
+      path="/notifications"
+      element={
+        <MyReactHelmet title="Notifications" element={<Notifications />} />
+      }
+    />
+    <Route
+      path="/enrolled-courses"
+      element={
+        <MyReactHelmet title="Enrolled Courses" element={<EnrolledCourses />} />
+      }
+    />
+    <Route
+      path="/enrolled-courses"
+      element={<CourseLayout tabs={StudentCoursesTabs} />}
+    >
+      <Route
+        path="/enrolled-courses/:id"
+        element={<MyReactHelmet title="Course" element={<ViewCourse />} />}
+      />
+      <Route
+        path="/enrolled-courses/lectures/:id"
+        element={
+          <MyReactHelmet
+            title="Lectures"
+            element={<Lectures forStudent={true} />}
+          />
+        }
+      />
+      <Route
+        path="/enrolled-courses/quizzes/:id"
+        element={
+          <MyReactHelmet
+            title="Quizzes"
+            element={<Quizzes forStudent={true} />}
+          />
+        }
+      />
+      <Route
+        path="/enrolled-courses/on-going-assignment/:id"
+        element={
+          <MyReactHelmet
+            title="Quizzes"
+            element={<Assignments forStudent={true} />}
+          />
+        }
+      />
+      <Route
+        path="/enrolled-courses/assignments/:id"
+        element={
+          <MyReactHelmet
+            title="Assignments"
+            element={<Assignments forStudent={true} />}
+          />
+        }
+      />
+      <Route
+        path="/enrolled-courses/graded/:id"
+        element={
+          <MyReactHelmet
+            title="Quizzes"
+            element={<Assignments forStudent={true} />}
+          />
+        }
+      />
+      <Route
+        path="/enrolled-courses/exam/:id"
+        element={
+          <MyReactHelmet title="Exam" element={<Exam forStudent={true} />} />
+        }
+      />
+
+      <Route
+        path="/enrolled-courses/:id/quiz/:qid"
+        element={
+          <MyReactHelmet
+            title="Quiz Summary"
+            element={<Quiz forStudent={true} />}
+          />
+        }
+      />
+
+      <Route
+        path="/enrolled-courses/:id/quizSummary/:qid"
+        element={
+          <MyReactHelmet
+            title="Quiz Summary"
+            element={<QuizSummary forStudent={true} />}
+          />
+        }
+      />
+
+      <Route
+        path="/enrolled-courses/:id/assignment/:aid"
+        element={
+          <MyReactHelmet
+            title="Assignment"
+            element={<Assignment forStudent={true} />}
+          />
+        }
+      />
+
+      <Route
+        path="/enrolled-courses/:id/assignmentSummary/:aid"
+        element={
+          <MyReactHelmet
+            title="Assignment"
+            element={<AssignmentSummary forStudent={true} />}
+          />
+        }
+      />
+
+      <Route
+        path="/enrolled-courses/:id/assignment/:aid/student/:sid"
+        element={
+          <MyReactHelmet
+            title="Assignment"
+            element={<MarkAssignment forStudent={true} />}
+          />
+        }
+      />
+
+      <Route
+        path="/enrolled-courses/:id/lectures/:lid"
+        element={
+          <MyReactHelmet
+            title="Lecture Report"
+            element={<Reports forStudent={true} />}
+          />
+        }
+      />
+    </Route>
+
+    <Route
+      path="/manage-events"
+      element={
+        <MyReactHelmet title="Manage Events" element={<ManageEvents />} />
+      }
+    />
   </Route>,
 ];
 
@@ -162,10 +315,8 @@ const headerLayoutRoutes = [
       />
 
       <Route
-        path="/course/:id/lecture/:lid"
-        element={
-          <MyReactHelmet title="Lecture Report" element={<Reports />} />
-        }
+        path="/course/:id/lectures/:lid"
+        element={<MyReactHelmet title="Lecture Report" element={<Reports />} />}
       />
     </Route>
 
@@ -175,7 +326,6 @@ const headerLayoutRoutes = [
         <MyReactHelmet title="Manage Events" element={<ManageEvents />} />
       }
     />
-
   </Route>,
 ];
 
@@ -183,6 +333,7 @@ const headerSidebarLayoutRoutes = [
   <Route key="headerSidebarLayoutRoutes" element={<ProtectedRoute />}>
     <Route element={<HeaderSidebar />}>
       {headerLayoutRoutes}
+      {studentLayoutRoutes}
 
       <Route path="/my-profile">
         <Route
@@ -205,7 +356,6 @@ const headerSidebarLayoutRoutes = [
           }
         />
       </Route>
-
     </Route>
   </Route>,
 ];

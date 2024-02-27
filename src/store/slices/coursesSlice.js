@@ -14,7 +14,7 @@ const courseSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     //get course
-    builder.addCase(getCourses.pending, (state) => {
+    builder.addCase(getCourses?.pending, (state) => {
       state.coursesData = {
         ...initialState.coursesData,
         loading: true,

@@ -1,17 +1,24 @@
 import { Header, SideBar } from "@/components/common";
-import RightSideBar, { allowedPathsForRightSidebar } from "@/components/common/RightSideBar";
+import RightSideBar, {
+  allowedPathsForRightSidebar,
+} from "@/components/common/RightSideBar";
 import { useGlobalContext } from "@/hooks";
 import { Drawer } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 
 const HeaderSidebar = () => {
   const { pathname } = useLocation();
+
   return (
     <div className="min-h-screen">
       <WithResponsiveSidebar>
         <SideBar />
       </WithResponsiveSidebar>
-      <div className={`lg:pl-[28.5rem] ${allowedPathsForRightSidebar.includes(pathname)&& 'lg:pr-[35.5rem]'} min-h-screen bg-[#edf0f3] scrollbar`}>
+      <div
+        className={`lg:pl-[28.5rem] ${
+          allowedPathsForRightSidebar()?.includes(pathname) && "lg:pr-[35.5rem]"
+        } min-h-screen bg-[#edf0f3] scrollbar`}
+      >
         <div className="mx-auto grid grid-cols-1 gap-[1.5rem]">
           <div className="sticky lg:hidden top-0 py-[2.3rem] px-[1.6rem] bg-[#edf0f3] z-40">
             <Header />
@@ -21,11 +28,13 @@ const HeaderSidebar = () => {
           </div>
         </div>
       </div>
-      {(allowedPathsForRightSidebar.includes(pathname) || pathname.includes('/course')) &&
-      <WithResponsiveRightSidebar>
-        <RightSideBar />
-      </WithResponsiveRightSidebar>
-      }
+      {(allowedPathsForRightSidebar()?.includes(pathname) ||
+        pathname.includes("/course") ||
+        pathname.includes("/enrolled-courses")) && (
+        <WithResponsiveRightSidebar>
+          <RightSideBar />
+        </WithResponsiveRightSidebar>
+      )}
     </div>
   );
 };
@@ -49,7 +58,7 @@ const WithResponsiveSidebar = ({ children }) => {
         sx: {
           backgroundColor: "#7A1315",
           color: "#7A1315",
-        }
+        },
       }}
     >
       <div className="overflow-x-hidden overflow-y-auto w-[28.5rem] border-r border-r-black/5">
@@ -58,7 +67,6 @@ const WithResponsiveSidebar = ({ children }) => {
     </Drawer>
   );
 };
-
 
 const WithResponsiveRightSidebar = ({ children }) => {
   const { isNotLargeScreen, isRightSidebarOpen, setIsRightSidebarOpen } =
@@ -77,7 +85,7 @@ const WithResponsiveRightSidebar = ({ children }) => {
         sx: {
           backgroundColor: "#FFFFFF",
           color: "#7A1315",
-        }
+        },
       }}
     >
       <div className="overflow-x-hidden overflow-y-auto w-[28.5rem] border-r border-r-black/5">
