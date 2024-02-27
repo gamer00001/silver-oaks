@@ -9,44 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
 import { useLocation } from "react-router-dom";
 import { getCourses } from "@/store/actions/coursesActions";
-
-const routes = [
-  {
-    to: "/",
-    name: "Dashboard",
-    icon: <Desktop />,
-  },
-  {
-    to: "/my-courses",
-    name: "My Courses",
-    icon: <CoursesIcon />,
-    courses: [
-      {
-        id: "43657457",
-        name: "Grade 1(Alliums)",
-      },
-      {
-        id: "43635654",
-        name: "Grade 2(Alliums)",
-      },
-      {
-        id: "43645776",
-        name: "Grade 3(Alliums)",
-      },
-    ],
-  },
-  {
-    to: "/manage-events",
-    name: "Manage Events",
-    icon: <Events />,
-  },
-];
+import { panelSideBar } from "@/constants/sidebarMenus";
+import { currentLoggedInUserType } from "@/utils/helper";
 
 const SideBar = () => {
   const {
     loginUserData: { user },
   } = useSelector((s) => s.authReducer);
-  const { pathname } = useLocation();
+
+  // const { pathname } = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,6 +27,8 @@ const SideBar = () => {
       })
     );
   }, []);
+
+  const sidebarMenus = panelSideBar()[currentLoggedInUserType()];
 
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
@@ -77,15 +50,15 @@ const SideBar = () => {
         />
         <span
           onClick={(e) => setAnchorEl(e.currentTarget)}
-          className="body-medium !font-semibold text-black capitalize max-w-[20rem] overflow-hidden text-ellipsis whitespace-nowrap text-white py-[1rem]"
+          className="body-medium !font-semiboldcapitalize max-w-[20rem] capitalize overflow-hidden text-ellipsis whitespace-nowrap text-white py-[1rem]"
         >
-          {user?.name?.split(" ")[0] ?? "Teacher"}
+          {user?.name?.split(" ")[0] ?? currentLoggedInUserType()}
         </span>
       </div>
       <div className="gap-16 border-b-2 border-gray-100 ml-12 mr-12" />
       <nav>
         <ul className="grid gap-[.5rem] grid-cols-1 items-start px-[1.9rem] md:px-0">
-          {routes.map((route, index) => (
+          {sidebarMenus.map((route, index) => (
             <SideBarItem key={index} route={route} />
           ))}
         </ul>
@@ -101,7 +74,6 @@ const SideBarItem = ({ route }) => {
   const [expanded, setExpanded] = useState(false);
   const { coursesData } = useSelector((s) => s.courseReducer);
   const { pathname } = useLocation();
-  console.log(pathname);
   const handleItemClick = () => {
     setIsSidebarOpen(false);
     if (route.name === "My Courses") {
@@ -111,7 +83,7 @@ const SideBarItem = ({ route }) => {
 
   return (
     <li className="grid grid-cols-1">
-      {route.name === "My Courses" ? (
+      {route.courses ? (
         <div>
           <div
             className={`py-[1.5rem] px-[3rem] grid grid-cols-[auto_auto_auto] gap-[1.6rem] items-center justify-start text-white hover:text-custom-golden cursor-pointer transition duration-300 ${
@@ -137,13 +109,13 @@ const SideBarItem = ({ route }) => {
           </div>
           <ul
             className={`ml-[2rem] ${
-              expanded || pathname.includes(`/course`)
+              expanded || route?.courses
                 ? "block max-h-[10rem] overflow-hidden transition-all duration-300"
                 : "hidden max-h-0"
             }`}
           >
             {coursesData?.data?.courseList?.map((course, index) => (
-              <li className="px-[2.9rem] md:px-0 ">
+              <li className="px-[2.9rem] md:px-0 " key={index}>
                 <NavLink to={`/course/lectures/${course.courseId}`}>
                   <span
                     className={`md:pl-24  body-medium hover:text-custom-golden ${

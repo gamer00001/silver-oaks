@@ -19,11 +19,11 @@ import SearchForm from "./SearchForm";
 const allowedPathsForSearch = [
   "/downloads",
   "/notifications",
-  '/my-courses',
+  "/my-courses",
   "/blogs",
   "/tours",
   "/subscribers",
-  '/destinations',
+  "/destinations",
   "/payment-gateway",
   "/applications/tailor-made-tours",
   "/applications/group-tours",
@@ -34,7 +34,8 @@ const allowedPathsForSearch = [
 ];
 
 const Header = () => {
-  const { setIsSidebarOpen, setIsRightSidebarOpen, isNotLargeScreen } = useGlobalContext();
+  const { setIsSidebarOpen, setIsRightSidebarOpen, isNotLargeScreen } =
+    useGlobalContext();
   const { pathname } = useLocation();
   return (
     <header className="h-full grid grid-cols-[1fr_auto] items-center justify-between">
@@ -56,13 +57,17 @@ const Header = () => {
         {allowedPathsForSearch.includes(pathname) && !isNotLargeScreen && (
           <SearchForm />
         )}
-       {!allowedPathsForRightSidebar.includes(pathname)&& <UserProfile />}
-       <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]"></div>
-       <button
+        {!allowedPathsForRightSidebar()?.includes(pathname) && <UserProfile />}
+        <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]"></div>
+        <button
           onClick={() => setIsRightSidebarOpen(true)}
           className="grid-center text-[3rem] hover:opacity-70 duration-300 transition-opacity"
         >
-          <HiOutlineMenuAlt2 className={`${!allowedPathsForRightSidebar.includes(pathname)&&'hidden'} lg:hidden`} />
+          <HiOutlineMenuAlt2
+            className={`${
+              !allowedPathsForRightSidebar()?.includes(pathname) && "hidden"
+            } lg:hidden`}
+          />
         </button>
       </div>
     </header>

@@ -14,3 +14,5 @@ export * from "./quizSlice";
 export * from "./assignmentSlice";
 
 export * from "./assesmentSlice";
+
+export * from "./studentSlice";

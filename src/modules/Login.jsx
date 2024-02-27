@@ -1,14 +1,17 @@
 import { Link, Loader, MyInput } from "@/components/common";
 import { LoginSchema } from "@/schema";
 import { useFormik } from "formik";
-import { toast } from "@/utils";
-import { useNavigate } from "react-router-dom";
+import { scrollToTop, toast } from "@/utils";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "@/store";
-import { SOIESLogo} from "@/assets/common";
+import { SOIESLogo } from "@/assets/common";
+import { useEffect } from "react";
 
-const Login = () => {
+const Login = ({ forStudent = false }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const dispatch = useDispatch();
   const { loginUserData } = useSelector((s) => s.authReducer);
 
@@ -28,14 +31,16 @@ const Login = () => {
     },
     validationSchema: LoginSchema,
     onSubmit: (body) => {
-      localStorage.setItem('email', body.email);
+      localStorage.setItem("email", body.email);
+      localStorage.setItem("userType", forStudent ? "student" : "teacher");
+
       dispatch(
         loginUser({
           payload: {
-            body:{
+            body: {
               usernameOrEmail: body.email,
-              password: body.password
-            }
+              password: body.password,
+            },
           },
           onSuccess: () => {
             navigate("/", { replace: true });
@@ -45,17 +50,22 @@ const Login = () => {
       );
     },
   });
+
+  useEffect(() => {
+    scrollToTop();
+  }, [pathname]);
+
   return (
     <div className="w-3/4 min-h-screen grid items-center grid-cols-1 p-[5rem] md:p-[5rem_5rem_5rem_0rem]">
       <div className="grid gap-[4.3rem] max-w-[73rem] p-16">
-      <img className="w-[8rem]" src={SOIESLogo} alt="Silver Oaks Icon" />
+        <img className="w-[8rem]" src={SOIESLogo} alt="Silver Oaks Icon" />
         <div className="grid gap-[1.2rem]">
           <h1 className="text-custom-red text-[3.8rem] font-bold leading-[140%]">
             Welcome
           </h1>
 
           <p className="text-[#363848] text-[2rem] leading-[185%]">
-          Please fill your detail to access your account.
+            Please fill your detail to access your account.
           </p>
         </div>
 
@@ -63,12 +73,12 @@ const Login = () => {
           <div className="grid gap-[3.7rem]">
             <MyInput
               type="text"
-              label="Email"
+              label="Username/Email"
               placeholder="Enter your email"
               name="email"
               onChange={handleChange}
               onBlur={handleBlur}
-              error={touched.email && errors.email}
+              // error={touched.email && errors.email}
               value={values.email}
             />
             <MyInput
@@ -85,9 +95,9 @@ const Login = () => {
 
           <div className="grid gap-[4.5rem]">
             <div className="grid grid-cols-2">
-            <MyInput type="checkbox" label="Remember me"/>
-            <div className="grid justify-end opacity">
-              {/* <Link
+              <MyInput type="checkbox" label="Remember me" />
+              <div className="grid justify-end opacity">
+                {/* <Link
                 className="text-custom-red text-[1.8rem] underline"
                 to="/forget-password"
               >
@@ -114,6 +124,17 @@ const Login = () => {
             </div>
           </div>
         </form>
+        <span className="text-center text-2xl font-bold">OR</span>
+
+        <div>
+          <button
+            onClick={() => navigate(forStudent ? "/login" : "/student-login")}
+            className="relative overflow-hidden w-full bg-white border border-custom-red text-custom-red text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            // disabled={!isValid || !dirty || loginUserData?.loading}
+          >
+            {`Login as ${forStudent ? "Teacher" : "Student"}`}
+          </button>
+        </div>
       </div>
     </div>
   );

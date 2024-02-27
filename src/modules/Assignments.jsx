@@ -12,8 +12,10 @@ import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 import { getAssignments } from "@/store/actions/assignmentsActions";
 import { Loader } from "@/components/common";
+import CourseBlock from "@/components/common/CourseBlock";
+import { fetchSelectedCourseInfo } from "@/utils/helper";
 
-const Assignments = () => {
+const Assignments = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -27,6 +29,7 @@ const Assignments = () => {
           query: {
             courseId: id,
           },
+          dispatch,
         },
       })
     );
@@ -35,10 +38,23 @@ const Assignments = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
       {assignmentsData.loading && <Loader type="screen" />}
-      <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
+      {forStudent ? (
+        <CourseBlock
+          bookIcon="w-72"
+          width="w-5/6"
+          height="h-96"
+          titleFontSize="text-9xl"
+          headingFontSize="text-4xl"
+          textColor={fetchSelectedCourseInfo()?.textColor}
+          bgColor={fetchSelectedCourseInfo()?.backgroundColor}
+        />
+      ) : (
+        <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
+      )}
       {assignmentsData.data?.assignmentList?.map((item, k) => (
         <div className="w-5/6">
           <QuizCard
+            key={k + "_id"}
             aid={item?.assignmentId}
             assignmentNo={k + 1}
             title={item?.assignmentTitle}
@@ -46,6 +62,7 @@ const Assignments = () => {
             total={26}
             grading={0}
             file={item?.file}
+            forStudent={forStudent}
           />
         </div>
       ))}
@@ -63,6 +80,7 @@ const QuizCard = ({
   total,
   grading,
   file,
+  forStudent,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
@@ -76,22 +94,26 @@ const QuizCard = ({
           <div className="grid grid-col-2 gap-4 px-[1.9rem]">
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
-              <NavLink>
-                <span
-                  className="ml-auto"
-                  onClick={() => setExpanded(!expanded)}
-                >
-                  {expanded ? "▼" : "▲"}
-                </span>
-              </NavLink>
+              {!forStudent && (
+                <NavLink>
+                  <span
+                    className="ml-auto"
+                    onClick={() => setExpanded(!expanded)}
+                  >
+                    {expanded ? "▼" : "▲"}
+                  </span>
+                </NavLink>
+              )}
               <h1 className="font-extrabold text-[1.5rem]">
                 Assignment {assignmentNo}:{" "}
               </h1>
               <h1 className="body-medium">{title}</h1>
             </div>
-            <h1 className="font-bold text-[1.5rem] text-custom-red">
-              {attempts + " "} of {" " + total + " "} attempted
-            </h1>
+            {!forStudent && (
+              <h1 className="font-bold text-[1.5rem] text-custom-red">
+                {attempts + " "} of {" " + total + " "} attempted
+              </h1>
+            )}
             <div
               className={`flex flex-row ${
                 expanded ? "block" : "hidden"
@@ -125,24 +147,37 @@ const QuizCard = ({
               </table>
             </div>
           </div>
-          <div className="flex flex-col gap-2 justify-end items-end">
-            <div onClick={() => setIsMenu(!menu)}>
-              <MenuIcon />
+          {forStudent ? (
+            <div className="flex flex-col gap-2 justify-end items-end">
+              <button
+                className="text-custom-red font-bold text-[1.5rem]"
+                onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
+              >
+                View Assignment
+              </button>
             </div>
-            {menu && <VisibilityMenu />}
-            <button
-              className="text-custom-red font-bold text-[1.5rem]"
-              onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
-            >
-              View Assignment
-            </button>
-            <button
-              className="text-custom-red font-bold text-[1.5rem]"
-              onClick={() => navigate(`/course/${id}/assignmentSummary/${aid}`)}
-            >
-              View all submissions
-            </button>
-          </div>
+          ) : (
+            <div className="flex flex-col gap-2 justify-end items-end">
+              <div onClick={() => setIsMenu(!menu)}>
+                <MenuIcon />
+              </div>
+              {menu && <VisibilityMenu />}
+              <button
+                className="text-custom-red font-bold text-[1.5rem]"
+                onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
+              >
+                View Assignment
+              </button>
+              <button
+                className="text-custom-red font-bold text-[1.5rem]"
+                onClick={() =>
+                  navigate(`/course/${id}/assignmentSummary/${aid}`)
+                }
+              >
+                View all submissions
+              </button>
+            </div>
+          )}
         </div>
       </CardContent>
     </MUICard>
