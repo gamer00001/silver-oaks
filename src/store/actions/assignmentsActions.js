@@ -16,3 +16,17 @@ export const getAssignments = asyncCatch(
         handleError(error, dispatch);
       })
 );
+
+export const getAssignmentById = asyncCatch(
+  "assignmentSlice/getAssignmentById",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/get/${query.assignmentId}`,
+        config
+      )
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);

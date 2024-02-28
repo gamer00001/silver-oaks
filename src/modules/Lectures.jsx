@@ -69,7 +69,7 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
       )}
 
       {lecturesData?.data?.lectureList?.map((item, k) => (
-        <div className="w-5/6">
+        <div className="w-5/6" key={k}>
           <LectureCard
             key={k + "_lecture"}
             lid={item?.lectureId}
