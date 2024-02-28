@@ -66,7 +66,7 @@ const EnrolledCourses = () => {
   }, []);
 
   if (loading) {
-    return <Loader />;
+    return <Loader type="screen" />;
   }
 
   return (

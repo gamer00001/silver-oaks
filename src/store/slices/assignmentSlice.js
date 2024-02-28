@@ -1,8 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAssignments } from "../actions/assignmentsActions";
+import {
+  getAssignmentById,
+  getAssignments,
+} from "../actions/assignmentsActions";
 
 const initialState = {
   assignmentsData: {
+    loading: false,
+    data: null,
+  },
+  singleAssignmentData: {
     loading: false,
     data: null,
   },
@@ -29,6 +36,26 @@ const assignmentSlice = createSlice({
     builder.addCase(getAssignments.rejected, (state) => {
       state.assignmentsData = {
         ...initialState.assignmentsData,
+        loading: false,
+      };
+    });
+
+    //get asssignment By ID
+    builder.addCase(getAssignmentById.pending, (state) => {
+      state.singleAssignmentData = {
+        ...initialState.singleAssignmentData,
+        loading: true,
+      };
+    });
+    builder.addCase(getAssignmentById.fulfilled, (state, action) => {
+      state.singleAssignmentData = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getAssignmentById.rejected, (state) => {
+      state.singleAssignmentData = {
+        ...initialState.singleAssignmentData,
         loading: false,
       };
     });

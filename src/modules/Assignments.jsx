@@ -38,6 +38,7 @@ const Assignments = ({ forStudent = false }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
       {assignmentsData.loading && <Loader type="screen" />}
+
       {forStudent ? (
         <CourseBlock
           bookIcon="w-72"
@@ -54,7 +55,7 @@ const Assignments = ({ forStudent = false }) => {
       {assignmentsData.data?.assignmentList?.map((item, k) => (
         <div className="w-5/6">
           <QuizCard
-            key={k + "_id"}
+            key={k + "_id_"}
             aid={item?.assignmentId}
             assignmentNo={k + 1}
             title={item?.assignmentTitle}
@@ -151,7 +152,9 @@ const QuizCard = ({
             <div className="flex flex-col gap-2 justify-end items-end">
               <button
                 className="text-custom-red font-bold text-[1.5rem]"
-                onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
+                onClick={() =>
+                  navigate(`/enrolled-courses/${id}/assignments/${aid}`)
+                } //navigate(`/course/${id}/assignment/${aid}`)}
               >
                 View Assignment
               </button>

@@ -40,7 +40,7 @@ const StudentDashboard = () => {
   }, []);
 
   if (studentDashboardData.loading) {
-    return <Loader />;
+    return <Loader type="screen" />;
   }
 
   return (

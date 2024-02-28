@@ -178,7 +178,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/assignment/:aid"
+        path="/enrolled-courses/:id/assignments/:aid"
         element={
           <MyReactHelmet
             title="Assignment"

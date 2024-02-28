@@ -17,6 +17,7 @@ import { PieChart, Pie, Legend, ResponsiveContainer } from "recharts";
 import { getDashboardData } from "@/store/actions/dashboardActions";
 import StudentDashboard from "./StudentDashboard";
 import { currentLoggedInUserType } from "@/utils/helper";
+import { scrollToTop } from "@/utils";
 
 const demoActivityData = [
   {
@@ -63,6 +64,7 @@ const Dashboard = ({ forStudent = false }) => {
 
   useEffect(() => {
     const userType = currentLoggedInUserType();
+    scrollToTop();
 
     if (userType === "teacher")
       dispatch(

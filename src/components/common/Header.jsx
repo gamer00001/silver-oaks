@@ -15,6 +15,7 @@ import NotificationsBing from "@/assets/Icons/NotificationsBing";
 import UserProfile from "../Header/UserProfile";
 import { allowedPathsForRightSidebar } from "./RightSideBar";
 import SearchForm from "./SearchForm";
+import { isCurrentUserStudent } from "@/utils/helper";
 
 const allowedPathsForSearch = [
   "/downloads",
@@ -41,7 +42,13 @@ const Header = () => {
     <header className="h-full grid grid-cols-[1fr_auto] items-center justify-between">
       <div className="hidden lg:block">
         {allowedPathsForSearch.includes(pathname) && <SearchForm />}
+        {isCurrentUserStudent() && pathname === "/" && (
+          <span className="text-5xl text-black font-semibold">
+            Welcome Back to your Student Portal
+          </span>
+        )}
       </div>
+
       <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]">
         <button
           onClick={() => setIsSidebarOpen(true)}
