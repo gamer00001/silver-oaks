@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import MUICard from "@mui/material/Card";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Quiz = () => {
+const Quiz = ({ forStudent = false }) => {
   const [checked, setChecked] = useState();
   const [count, setCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -25,11 +25,7 @@ const Quiz = () => {
     },
     {
       question: "Which planet is known as the Red Planet?",
-      options: [
-        { option: "Mars" },
-        { option: "Venus" },
-        { option: "Jupiter" },
-      ],
+      options: [{ option: "Mars" }, { option: "Venus" }, { option: "Jupiter" }],
     },
     {
       question: "Who wrote 'Romeo and Juliet'?",
@@ -57,11 +53,7 @@ const Quiz = () => {
     },
     {
       question: "In which year did World War II end?",
-      options: [
-        { option: "1945" },
-        { option: "1918" },
-        { option: "1939" },
-      ],
+      options: [{ option: "1945" }, { option: "1918" }, { option: "1939" }],
     },
     {
       question: "What is the largest mammal on Earth?",
@@ -72,12 +64,9 @@ const Quiz = () => {
       ],
     },
     {
-      question: "Which planet is known as the 'Morning Star' or 'Evening Star'?",
-      options: [
-        { option: "Venus" },
-        { option: "Mars" },
-        { option: "Mercury" },
-      ],
+      question:
+        "Which planet is known as the 'Morning Star' or 'Evening Star'?",
+      options: [{ option: "Venus" }, { option: "Mars" }, { option: "Mercury" }],
     },
     {
       question: "Who developed the theory of relativity?",
@@ -90,12 +79,12 @@ const Quiz = () => {
   ];
 
   const nextQuest = () => {
-    if (count < quiz.length-1) setCount(count + 1)
+    if (count < quiz.length - 1) setCount(count + 1);
     else setIsCompleted(true);
   };
 
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
 
   return (
     <div>
@@ -131,10 +120,21 @@ const Quiz = () => {
       ))}
       <div className="flex justify-end items-center py-[2rem]">
         <button
-          className=" bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity"
-          onClick={isCompleted?()=>navigate(`/course/quizzes/${id}`):nextQuest}
+          className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
+          onClick={
+            isCompleted
+              ? () =>
+                  navigate(
+                    `/${
+                      forStudent ? "enrolled-courses" : "course"
+                    }/quizzes/${id}`
+                  )
+              : nextQuest
+          }
         >
-          {isCompleted?'Finish':'Next'}
+          {isCompleted ? "Finish" : "Next"}
+
+          <img src="/next-icon.svg" alt="icon" />
         </button>
       </div>
     </div>
@@ -143,9 +143,9 @@ const Quiz = () => {
 
 const QuizOptions = ({ checked, setChecked, data }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 px-[6rem]">
       {data?.map((data, i) => (
-        <MUICard className="flex justify-start items-center">
+        <MUICard className="flex justify-start items-center" key={i}>
           <CardContent>
             <label
               className="flex items-center space-x-2 cursor-pointer"

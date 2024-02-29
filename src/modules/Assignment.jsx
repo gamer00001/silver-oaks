@@ -88,6 +88,7 @@ const Assignment = ({ forStudent = false }) => {
         <SingleAssignmentView
           state={state}
           file={data?.file}
+          navigate={navigate}
           uploadFile={uploadFile}
           handleModal={handleModal}
           isModalOpen={state.isOpen}
@@ -142,7 +143,10 @@ const SingleAssignmentView = ({
   inputFileRef,
   isModalOpen,
   handleModal,
+  navigate,
 }) => {
+  const { id, aid } = useParams();
+
   return (
     <div className="h-full">
       <div className="pt-10 h-20">

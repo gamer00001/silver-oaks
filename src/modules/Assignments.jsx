@@ -91,7 +91,7 @@ const QuizCard = ({
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
       <CardContent>
-        <div class="flex justify-between items-start ">
+        <div class="flex justify-between items-center ">
           <div className="grid grid-col-2 gap-4 px-[1.9rem]">
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
