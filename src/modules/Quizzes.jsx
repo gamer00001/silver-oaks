@@ -19,19 +19,19 @@ const Quizzes = ({ forStudent = false }) => {
 
   const { quizzesData } = useSelector((s) => s.quizReducer);
 
-  useEffect(() => {
-    dispatch(
-      getQuizzes({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            courseId: id,
-          },
-          dispatch,
-        },
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   dispatch(
+  //     getQuizzes({
+  //       onError: () => navigate("/404", { replace: true }),
+  //       payload: {
+  //         query: {
+  //           courseId: id,
+  //         },
+  //         dispatch,
+  //       },
+  //     })
+  //   );
+  // }, []);
 
   const Quizzes = [
     {
@@ -73,15 +73,16 @@ const Quizzes = ({ forStudent = false }) => {
       ) : (
         <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
       )}
-      {!quizzesData.data && (
+      {/* {!quizzesData.data && (
         <span className="font-extrabold text-[1.5rem]">No Quizzes Found</span>
-      )}
-      {quizzesData?.data?.quizList?.map((item, k) => (
+      )} */}
+      {/* {quizzesData?.data?.quizList ?? */}
+      {Quizzes.map((item, k) => (
         <div className="w-5/6" key={k}>
           <QuizCard
             qid={item?.assignmentId}
             quizNo={k + 1}
-            title={item?.assignmentTitle}
+            title={item?.assignmentTitle ?? item?.title}
             attempts={23}
             total={26}
             file={item?.file}
@@ -113,7 +114,7 @@ const QuizCard = ({
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
       <CardContent>
-        <div class="flex justify-between items-start ">
+        <div class="flex justify-between items-center ">
           <div className="grid grid-col-2 gap-4 px-[1.9rem]">
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
@@ -128,7 +129,7 @@ const QuizCard = ({
                 </NavLink>
               )}
               <h1 className="font-extrabold text-[1.5rem]">Quiz {quizNo}: </h1>
-              <h1 className="body-medium">{title}</h1>
+              <h1 className="body-medium text-[#161736A3]">{title}</h1>
             </div>
             <div className={`flex flex-row ${expanded ? "block" : "hidden"}`}>
               <h1 className="font-bold text-[1.5rem] text-custom-red">
@@ -139,7 +140,10 @@ const QuizCard = ({
           {forStudent ? (
             <button
               className="text-custom-red font-bold text-[1.5rem]"
-              onClick={() => navigate(`/course/${id}/quizSummary/${qid}`)}
+              // onClick={() => navigate(`/course/${id}/quizSummary/${qid}`)}
+              onClick={() =>
+                navigate(`/enrolled-courses/${id}/quizzes/${qid ?? 1}`)
+              }
             >
               Attempt
             </button>

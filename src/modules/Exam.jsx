@@ -68,19 +68,20 @@ const Exam = ({ forStudent = false }) => {
       ) : (
         <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
       )}
-      {assesmentsData?.data?.examList?.map((item, k) => (
-        <div className="w-5/6">
-          <ExamCard
-            examNo={k + 1}
-            id={item?.assignmentId}
-            title={item?.assignmentTitle}
-            attempts={23}
-            total={26}
-            file={item?.file}
-            forStudent={forStudent}
-          />
-        </div>
-      ))}
+      {assesmentsData?.data?.examList ??
+        Exam.map((item, k) => (
+          <div className="w-5/6" key={k}>
+            <ExamCard
+              examNo={k + 1}
+              id={item?.assignmentId}
+              title={item?.assignmentTitle ?? item?.title}
+              attempts={23}
+              total={26}
+              file={item?.file}
+              forStudent={forStudent}
+            />
+          </div>
+        ))}
     </div>
   );
 };
@@ -98,7 +99,7 @@ const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
           <div className="grid grid-col-2 gap-4 px-[1.9rem]">
             <div className="flex flex-row justify-center items-center gap-4">
               <LectureIcon />
-              {forStudent && (
+              {!forStudent && (
                 <NavLink>
                   <span
                     className="ml-auto"
@@ -120,9 +121,11 @@ const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
             </div>
           </div>
           <div className="flex flex-col gap-2 justify-end items-end">
-            <div onClick={() => setIsMenu(!menu)}>
-              <MenuIcon />
-            </div>
+            {!forStudent && (
+              <div onClick={() => setIsMenu(!menu)}>
+                <MenuIcon />
+              </div>
+            )}
             {menu && <VisibilityMenu />}
             <button
               className="text-custom-red font-bold text-[1.5rem]"

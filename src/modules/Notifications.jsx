@@ -27,9 +27,8 @@ const Notifications = () => {
         <h1 className="h5-bold text-custom-dark-gren">Notifications</h1>
       </div>
       {demoActivityData.map((activity, index) => (
-        <div class="p-4 justify-between">
+        <div class="p-4 justify-between" key={index}>
           <Activity
-            key={index}
             date={activity.date}
             heading={activity.heading}
             link={activity.link}
