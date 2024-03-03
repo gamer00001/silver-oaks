@@ -71,6 +71,15 @@ export const AddEventSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
 });
 
+export const AddAssignmentSchema = Yup.object().shape({
+  assignmentTitle: Yup.string().required("Title is required"),
+  dueDate: Yup.mixed().required("Due Date is required"),
+  file: Yup.string().required("Assignment is required"),
+  courseId: Yup.string().required("Course is required"),
+  description: Yup.string().required("Description is required"),
+  totalMarks: Yup.mixed().required("Total Marks are required"),
+});
+
 export const MarkAssignment = Yup.object().shape({
   name: Yup.string().required("Student Name is required"),
   marks: Yup.string().required("Marks are required"),

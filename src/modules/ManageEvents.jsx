@@ -12,6 +12,7 @@ import * as XLSX from "xlsx"; // Import xlsx library
 import { useDispatch, useSelector } from "react-redux";
 import { addEvent, getEvents } from "@/store/actions/eventActions";
 import { getCourses } from "@/store/actions/coursesActions";
+import { useNavigate } from "react-router-dom";
 
 const ManageEvents = () => {
   const [isAddEvent, setIsAddEvent] = useState(false);
@@ -162,6 +163,7 @@ function renderEventContent(eventInfo) {
 
 const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { coursesData } = useSelector((s) => s.courseReducer);
 
   useEffect(() => {
