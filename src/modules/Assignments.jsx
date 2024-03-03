@@ -22,7 +22,7 @@ const Assignments = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addAssignmentModal, setAddAssignmentModal] = useState(false);
-
+  
   const { assignmentsData } = useSelector((s) => s.assignmentReducer);
 
   useEffect(() => {
@@ -72,7 +72,9 @@ const Assignments = ({ forStudent = false }) => {
         </div>
       ))}
      <div className="flex flex-row gap-4">
-     <button
+      {localStorage.getItem("userType")=="teacher" && 
+ <>
+ <button
         type="button"
         className="inline-block rounded-full bg-custom-red px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
         onClick={()=>setAddAssignmentModal(true)}
@@ -86,7 +88,9 @@ const Assignments = ({ forStudent = false }) => {
       >
         Add On Going Assignment
       </button>
-      </div>
+</>
+}
+</div>
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[95.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
         open={Boolean(addAssignmentModal)}
