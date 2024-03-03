@@ -3,6 +3,17 @@ import axios from "axios";
 import { CONSTANTS } from "@/constants";
 import { handleError } from "@/utils/errorHandling";
 
+export const createAssignment = asyncCatch(
+  "assignmentSlice/createAssignments",
+  async ({ config, body, dispatch }) =>
+    axios
+      .post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/create`, body)
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const getAssignments = asyncCatch(
   "assignmentSlice/getAssignments",
   async ({ config, query, dispatch }) =>
