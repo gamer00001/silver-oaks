@@ -11,6 +11,7 @@ import Flag from "@/assets/Icons/Flag";
 import { useDispatch, useSelector } from "react-redux";
 import { getCourses } from "@/store/actions/coursesActions";
 import { isCurrentUserStudent } from "@/utils/helper";
+import { getEventsByStudent } from "@/store/actions/eventActions";
 
 export const allowedPathsForRightSidebar = () => {
   if (isCurrentUserStudent()) {
@@ -32,6 +33,12 @@ const RightSideBar = () => {
   const [date, setDate] = useState();
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+  const {
+    studentEvents: { data, loading },
+  } = useSelector((s) => s.eventReducer);
+
   const addEvent = () => {
     setIsAddEvent(!isAddEvent);
   };
@@ -39,6 +46,22 @@ const RightSideBar = () => {
   const handleCloseAddEventModal = () => {
     setIsAddEvent(!isAddEvent);
   };
+
+  useEffect(() => {
+    const courses = localStorage.getItem("coursesList");
+
+    dispatch(
+      getEventsByStudent({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: courses,
+          },
+          dispatch,
+        },
+      })
+    );
+  }, []);
 
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
@@ -64,7 +87,15 @@ const RightSideBar = () => {
           see all
         </h1>
       </div>
-      <NotificationCard
+      {data?.eventList?.map((event) => (
+        <NotificationCard
+          key={event.id}
+          Title={event.title}
+          Time={event.time}
+          Logo={<Tick />}
+        />
+      ))}
+      {/* <NotificationCard
         Title="New Features in the Gradebook"
         Time="Yesterday"
         Logo={<Tick />}
@@ -73,7 +104,7 @@ const RightSideBar = () => {
         Title="Parent-Teacher Conference Schedule"
         Time="23 June 2021"
         Logo={<Flag />}
-      />
+      /> */}
       <img src={teaching} />
 
       <ModalTop
