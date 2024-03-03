@@ -159,7 +159,7 @@ const EnrolledCourses = ({ coursesList = [], navigate }) => {
       </div>
 
       <div className="flex gap-12 pt-12">
-        {coursesList?.map((item, index) => (
+        {coursesList?.slice(0, 3).map((item, index) => (
           <CourseBlock
             key={index}
             data={CoursesColors[index]}

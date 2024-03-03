@@ -19,19 +19,19 @@ const Quizzes = ({ forStudent = false }) => {
 
   const { quizzesData } = useSelector((s) => s.quizReducer);
 
-  // useEffect(() => {
-  //   dispatch(
-  //     getQuizzes({
-  //       onError: () => navigate("/404", { replace: true }),
-  //       payload: {
-  //         query: {
-  //           courseId: id,
-  //         },
-  //         dispatch,
-  //       },
-  //     })
-  //   );
-  // }, []);
+  useEffect(() => {
+    dispatch(
+      getQuizzes({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: id,
+          },
+          dispatch,
+        },
+      })
+    );
+  }, []);
 
   const Quizzes = [
     {
@@ -77,12 +77,12 @@ const Quizzes = ({ forStudent = false }) => {
         <span className="font-extrabold text-[1.5rem]">No Quizzes Found</span>
       )} */}
       {/* {quizzesData?.data?.quizList ?? */}
-      {Quizzes.map((item, k) => (
+      {quizzesData?.data?.quizList?.map((item, k) => (
         <div className="w-5/6" key={k}>
           <QuizCard
             qid={item?.assignmentId}
             quizNo={k + 1}
-            title={item?.assignmentTitle ?? item?.title}
+            title={item?.quizTitle ?? item?.title}
             attempts={23}
             total={26}
             file={item?.file}

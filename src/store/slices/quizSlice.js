@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getQuizzes } from "../actions/quizzesActions";
+import { getQuizById, getQuizzes } from "../actions/quizzesActions";
 
 const initialState = {
   quizzesData: {
+    loading: false,
+    data: null,
+  },
+  singleQuizData: {
     loading: false,
     data: null,
   },
@@ -29,6 +33,25 @@ const quizSlice = createSlice({
     builder.addCase(getQuizzes.rejected, (state) => {
       state.quizzesData = {
         ...initialState.quizzesData,
+        loading: false,
+      };
+    });
+
+    builder.addCase(getQuizById.pending, (state) => {
+      state.singleQuizData = {
+        ...initialState.singleQuizData,
+        loading: true,
+      };
+    });
+    builder.addCase(getQuizById.fulfilled, (state, action) => {
+      state.singleQuizData = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getQuizById.rejected, (state) => {
+      state.singleQuizData = {
+        ...initialState.singleQuizData,
         loading: false,
       };
     });

@@ -16,3 +16,12 @@ export const getEvents = asyncCatch(
       config
     )
 );
+
+export const getEventsByStudent = asyncCatch(
+  "eventSlice/getEventsByStudent",
+  async ({ config, query }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/events/course/${query.courseId}`,
+      config
+    )
+);

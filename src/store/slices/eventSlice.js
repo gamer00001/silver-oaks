@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addEvent, getEvents } from "../actions/eventActions";
+import {
+  addEvent,
+  getEvents,
+  getEventsByStudent,
+} from "../actions/eventActions";
 
 const initialState = {
   addEventData: {
@@ -7,6 +11,10 @@ const initialState = {
     data: null,
   },
   getEventsData: {
+    loading: false,
+    data: null,
+  },
+  studentEvents: {
     loading: false,
     data: null,
   },
@@ -52,6 +60,25 @@ const eventSlice = createSlice({
     builder.addCase(getEvents.rejected, (state) => {
       state.getEventsData = {
         ...initialState.getEventsData,
+        loading: false,
+      };
+    });
+
+    builder.addCase(getEventsByStudent.pending, (state) => {
+      state.studentEvents = {
+        ...initialState.studentEvents,
+        loading: true,
+      };
+    });
+    builder.addCase(getEventsByStudent.fulfilled, (state, action) => {
+      state.studentEvents = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getEventsByStudent.rejected, (state) => {
+      state.studentEvents = {
+        ...initialState.studentEvents,
         loading: false,
       };
     });
