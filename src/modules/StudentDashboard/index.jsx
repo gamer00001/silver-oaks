@@ -9,6 +9,7 @@ import { Loader } from "@/components/common";
 import { fetchStudentDashboardInfo } from "@/store/actions/studentActions";
 import { getCourses } from "@/store/actions/coursesActions";
 import { CoursesColors } from "@/utils/helper";
+import { getEventsByStudent } from "@/store/actions/eventActions";
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -20,10 +21,26 @@ const StudentDashboard = () => {
 
   const { studentDashboardData } = useSelector((s) => s.studentReducer);
 
+  const { studentEvents } = useSelector((s) => s.eventReducer);
+
   useEffect(() => {
+    const courses = localStorage.getItem("coursesList");
+
     dispatch(
       getCourses({
         onError: () => navigate("/404", { replace: true }),
+      })
+    );
+
+    dispatch(
+      getEventsByStudent({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: courses,
+          },
+          dispatch,
+        },
       })
     );
 
@@ -67,13 +84,19 @@ const StudentDashboard = () => {
 
           <div className="flex justify-between pt-12">
             <span className="text-black font-bold text-4xl">Notification</span>
-            <span className="text-[#7A1315] font-bold text-4xl cursor-pointer">
+            <span
+              className="text-[#7A1315] font-bold text-4xl cursor-pointer"
+              onClick={() => navigate("/notifications")}
+            >
               See All
             </span>
           </div>
 
-          <NotificationBlock />
-          <NotificationBlock />
+          {studentEvents?.data?.eventList?.slice(0, 2).map((item) => (
+            <NotificationBlock title={item.title} subtitle={item.description} />
+          ))}
+
+          {/* <NotificationBlock /> */}
         </div>
       </div>
     </div>
@@ -145,7 +168,6 @@ const ActivityBlock = ({ activityData }) => {
 };
 
 const EnrolledCourses = ({ coursesList = [], navigate }) => {
-  console.log({ coursesList });
   return (
     <div className="pt-12">
       <div className="flex justify-between">
@@ -174,14 +196,12 @@ const EnrolledCourses = ({ coursesList = [], navigate }) => {
   );
 };
 
-const NotificationBlock = () => {
+const NotificationBlock = ({ title, subtitle }) => {
   return (
     <div className="bg-white p-12 flex flex-col rounded-3xl mt-8 shadow-lg">
-      <span className="text-black font-bold text-3xl">Prelim payment due</span>
+      <span className="text-black font-bold text-3xl">{title}</span>
 
-      <span className="text-[#00000080] text-2xl pt-2">
-        Sorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </span>
+      <span className="text-[#00000080] text-2xl pt-2">{subtitle}</span>
     </div>
   );
 };

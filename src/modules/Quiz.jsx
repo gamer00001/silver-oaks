@@ -155,7 +155,7 @@ const Quiz = ({ forStudent = false }) => {
       quizId: quizInfo?.quizId,
       quizQuestionList: quizInfo.quizQuestions,
       studentRollNumber: +localStorage.getItem("email"),
-      // totalMarks: 0,
+      totalMarks: quizInfo.totalMarks,
     };
 
     dispatch(
