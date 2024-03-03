@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CardContent } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
