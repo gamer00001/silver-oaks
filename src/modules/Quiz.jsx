@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CardContent } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
@@ -155,7 +155,7 @@ const Quiz = ({ forStudent = false }) => {
       quizId: quizInfo?.quizId,
       quizQuestionList: quizInfo.quizQuestions,
       studentRollNumber: +localStorage.getItem("email"),
-      // totalMarks: 0,
+      totalMarks: quizInfo.totalMarks
     };
 
     dispatch(
