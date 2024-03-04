@@ -26,6 +26,7 @@ const CourseCard = ({ grade, title, location, id }) => {
           <img
             className="w-full h-[26.5rem] object-cover object-center"
             src={
+              (grade === "Grade 1" && Grade1) ||
               (grade === "1" && Grade1) ||
               (grade === "2" && Grade2) ||
               (grade === "3" && Grade3) ||

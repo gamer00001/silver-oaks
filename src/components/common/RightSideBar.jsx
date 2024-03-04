@@ -49,7 +49,6 @@ const RightSideBar = () => {
 
   useEffect(() => {
     const courses = localStorage.getItem("coursesList");
-
     courses &&
       dispatch(
         getEventsByStudent({

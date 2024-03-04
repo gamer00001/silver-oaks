@@ -1,12 +1,29 @@
 import EditIcon from "@/assets/Icons/EditIcon";
-import { MyPagination } from "@/components/common";
+import { Loader, MyPagination } from "@/components/common";
 import SearchForm from "@/components/common/SearchForm";
 import { useQueryParams } from "@/hooks";
-import React from "react";
+import { getAssignmentSubmissions } from "@/store/actions/assignmentsActions";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AssignmentSummary = () => {
   const { page } = useQueryParams({ page: 1, query: "" });
+  const dispatch = useDispatch();
+  const { aid } = useParams();
+
+  useEffect(() => {
+    dispatch(
+      getAssignmentSubmissions({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            assigmentId: aid,
+          },
+        },
+      })
+    );
+  }, []);
 
   return (
     <div>
@@ -18,7 +35,7 @@ const AssignmentSummary = () => {
       </div>
       <div className="flex flex-row justify-between items-center mb-8">
         <SearchForm />
-        <MyPagination page={page} totalPages={10 || 0} />
+        {/* <MyPagination page={page} totalPages={10 || 0} /> */}
       </div>
 
       <div className="grid grid-cols-1 w-full">
@@ -29,63 +46,36 @@ const AssignmentSummary = () => {
 };
 
 const Table = () => {
-  const { page, query } = useQueryParams({ page: 1, query: "" });
-
-  const data = [
-    {
-        id: '276354723',
-      fullName: "John Roe",
-      rollNo: "453",
-      status: 'No submission',
-      marks: "Marked",
-      grade: "A",
-      Feedback: '14',
-      finalMarks: "13",
-    },
-    {
-        id: '35456436',
-        fullName: "John Roe",
-        rollNo: "453",
-        status: 'No submission',
-        marks: "Unmarked",
-        grade: "A",
-        Feedback: '14',
-        finalMarks: "13",
-    },
-    {
-        id: '5475345243',
-        fullName: "John Roe",
-        rollNo: "453",
-        status: 'No submission',
-        marks: "Unmarked",
-        grade: "A",
-        Feedback: '14',
-        finalMarks: "13",
-    },
-    {
-        id: '54364254',
-        fullName: "John Roe",
-        rollNo: "453",
-        status: 'No submission',
-        marks: "Marked",
-        grade: "A",
-        Feedback: '14',
-        finalMarks: "13",
-    },
-  ];
-
+const { assignmentSubmissionsData } = useSelector((s) => s.assignmentReducer);
   const navigate = useNavigate();
   const { id, aid } = useParams();
+  const { query } = useQueryParams({ page: 1, query: "" });
+
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    if (query) {
+      const filtered = assignmentSubmissionsData?.data?.assignmentSubmissionResponseList?.filter(item =>
+        item?.studentName?.toLowerCase().includes(query.toLowerCase()) ||  
+        item?.studentId === query.toLowerCase() || 
+        item?.submissionDate?.toLowerCase().includes(query.toLowerCase()) 
+      );
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(assignmentSubmissionsData?.data?.assignmentSubmissionResponseList);
+    }
+  }, [assignmentSubmissionsData, query]);
 
   return (
     <>
+    {assignmentSubmissionsData.loading && <Loader type="screen" />}
    <div className="overflow-x-auto">
   <table className="w-full table text-[2rem]">
     <thead>
       <tr className="tr">
         <th className="p-9 th">Full Name</th>
         <th className="p-9 th">Roll No</th>
-        <th className="p-9 th">Status</th>
+        <th className="p-9 th">Submission Date</th>
         <th className="p-9 th">Marking Status</th>
         <th className="p-9 th">Grade</th>
         <th className="p-9 th">Feedback</th>
@@ -93,15 +83,15 @@ const Table = () => {
       </tr>
     </thead>
     <tbody>
-      {data?.map((b, i) => (
+    {filteredData?.map((b, i) => (
         <tr key={i} className="tr">
-          <td className="p-9 td">{b?.fullName || "--"}</td>
-          <td className="p-9 td">{b?.rollNo || "--"}</td>
-          <td className="p-9 td">{b?.status || "--"}</td>
-          <td className={`flex flex-row items-center gap-4 p-9 td underline ${b?.marks==="Marked"? 'text-green-700': 'text-red-800'} hover:text-gray-700 cursor-pointer`} onClick={()=>navigate(`/course/${id}/assignment/${aid}/student/${b?.id}`)}>{b?.marks || "--"} <EditIcon/></td>
-          <td className="p-9 td">{b?.grade || "--"}</td>
-          <td className="p-9 td">{b?.Feedback || "--"}</td>
-          <td className="p-9 td">{b?.finalMarks || "--"}</td>
+          <td className="p-9 td">{b?.studentName || "--"}</td>
+          <td className="p-9 td">{b?.studentId || "--"}</td>
+          <td className="p-9 td">{b?.submissionDate || "--"}</td>
+          <td className={`flex flex-row items-center gap-4 p-9 td underline ${b?.obtainedMarks!==-1? 'text-green-700': 'text-red-800'} hover:text-gray-700 cursor-pointer`} onClick={()=>navigate(`/course/${b?.studentId}/assignment/${aid}/student/${b?.assignmentId}`)}>{b?.obtainedMarks===-1?"Unmarked": "Marked" || "--"} <EditIcon/></td>
+          <td className="p-9 td">{b?.obtainedGrade || "--"}</td>
+          <td className="p-9 td">{b?.comments || "--"}</td>
+          <td className="p-9 td">{b?.obtainedMarks || "--"}</td>
         </tr>
       ))}
     </tbody>
