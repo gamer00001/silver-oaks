@@ -35,7 +35,8 @@ const ManageEvents = () => {
     );
   }, []);
 
-  const addCalanderEvent = () => {
+  const addCalanderEvent = (e) => {
+    console.log(e)
     setIsAddEvent(!isAddEvent);
   };
 
@@ -134,7 +135,18 @@ const ManageEvents = () => {
                     ...newEvent,
                   },
                 },
-                onSuccess: () => console.log("Hello"),
+                onSuccess: () => {
+                  dispatch(
+                    getEvents({
+                      onError: () => navigate("/404", { replace: true }),
+                      payload: {
+                        query: {
+                          teacherEmail: localStorage.getItem("email"),
+                        },
+                      },
+                    })
+                  );
+                },
                 onError: () => navigate("/404", { replace: true }),
               })
             );

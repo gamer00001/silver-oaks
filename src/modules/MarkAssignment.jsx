@@ -1,9 +1,12 @@
-import { MyInput } from "@/components/common";
+import { Loader, MyInput } from "@/components/common";
 import { toast } from "@/utils";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { MarkAssignment as MarkingSchema } from "@/schema";
 import ResetIcon from "@/assets/Icons/ResetIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { getAssignmentById, getAssignmentSubmission, markAssignment } from "@/store/actions/assignmentsActions";
+import { useParams } from "react-router-dom";
 
 const MarkAssignment = () => {
   return (
@@ -20,11 +23,27 @@ const MarkAssignment = () => {
 };
 
 const MarkingComponent = () => {
-  const value = {
-    name: "Izzah Fatima",
-    marks: "10",
-    feedBack: "",
-  };
+  const dispatch = useDispatch();
+  const { id,sid, aid } = useParams();
+  const {
+    submissionData: { data, loading },
+  } = useSelector((s) => s.assignmentReducer);
+
+    useEffect(() => {
+    dispatch(
+      getAssignmentSubmission({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            assignmentId: aid,
+            studentId: sid
+          },
+          dispatch,
+        },
+      })
+    );
+  }, []);
+
   const {
     values,
     setFieldValue,
@@ -35,15 +54,30 @@ const MarkingComponent = () => {
     touched,
     dirty,
   } = useFormik({
-    initialValues: value,
+    initialValues: {
+      name: "data?.studentName",
+      feedback: data?.comments,
+      marks: data?.obtainedMarks,
+      submissionId: data?.submissionId
+    },
     validationSchema: MarkingSchema,
     onSubmit: (v) => {
-      toast.success("Update successfully!");
+      dispatch(
+      markAssignment({
+         onError: () => toast.error("Some error occured"),
+         onSuccess: () => toast.success("Update successfully!"),
+        payload: {
+          body: v,
+          dispatch,
+        },
+      }));
+      
     },
   });
 
   return (
     <>
+     {loading && <Loader type="screen" />}
       <div className="grid gap-[3.6rem]">
         <form onSubmit={handleSubmit} className="grid gap-[7.7rem]">
           <div className="flex flex-col gap-x-[2.1rem] gap-y-[1.6rem]">
@@ -91,11 +125,11 @@ const MarkingComponent = () => {
                   type="textarea"
                   placeholder="Add feedback"
                   className="col-span-12"
-                  value={values.feedBack}
+                  value={values.feedback}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.feedBack && errors.feedBack}
-                  name="feedBack"
+                  error={touched.feedback && errors.feedback}
+                  name="feedback"
                 />
               </div>
             </div>
@@ -105,7 +139,7 @@ const MarkingComponent = () => {
             <div
               className="hover:opacity-70 cursor-pointer"
               onClick={() => {
-                setFieldValue("feedBack", "");
+                setFieldValue("feedback", "");
                 setFieldValue("marks", "");
               }}
             >
@@ -113,17 +147,17 @@ const MarkingComponent = () => {
             </div>
             <button
               className="p-[1.3rem_6.3rem] text-custom-red button opacity-button border bg-white rounded-[2.8rem] border-custom-red disabled:opacity-50"
-              type="submit"
+              onClick={()=>window.open(data?.submittedFileURL)}
               disabled={!dirty}
             >
-              Save
+              View Assignment
             </button>
             <button
               className="p-[1.3rem_6.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
               type="submit"
               disabled={!dirty}
             >
-              Save and show next
+              Save
             </button>
           </div>
         </form>

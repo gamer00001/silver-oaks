@@ -165,7 +165,7 @@ const LectureCard = ({ lid, lectureNo, title, link, status, forStudent }) => {
                   className="ml-auto"
                   onClick={() => setExpanded(!expanded)}
                 >
-                  {expanded ? "▼" : "▲"}
+                  {/* {expanded ? "▼" : "▲"} */}
                 </span>
               </NavLink>
               <h1 className="font-extrabold text-[1.5rem]">
@@ -178,11 +178,11 @@ const LectureCard = ({ lid, lectureNo, title, link, status, forStudent }) => {
               onClick={() => window.open(link)}
             >
               <PlayIcon />
-              {expanded && (
+              {/* {expanded && ( */}
                 <h1 className="font-bold text-[1.5rem] text-custom-red">
                   {title}
                 </h1>
-              )}
+              {/* )} */}
             </div>
           </div>
           <div className="flex flex-col gap-2 justify-end items-end">
