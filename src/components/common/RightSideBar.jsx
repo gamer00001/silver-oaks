@@ -74,7 +74,7 @@ const RightSideBar = () => {
             const formattedDate = new Date(date);
             console.log(formattedDate.toISOString().split("T")[0]);
             setDate(formattedDate.toISOString().split("T")[0]);
-            setIsAddEvent(true);
+            setIsAddEvent(!isCurrentUserStudent());
           }}
           color="#7A1315"
         />
