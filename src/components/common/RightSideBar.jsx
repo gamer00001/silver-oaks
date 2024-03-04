@@ -48,9 +48,9 @@ const RightSideBar = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      const courses = localStorage.getItem("coursesList");
+    const courses = localStorage.getItem("coursesList");
 
+    courses &&
       dispatch(
         getEventsByStudent({
           onError: () => navigate("/404", { replace: true }),
@@ -62,8 +62,7 @@ const RightSideBar = () => {
           },
         })
       );
-    }, 1000);
-  }, []);
+  }, [localStorage.getItem("coursesList")]);
 
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">

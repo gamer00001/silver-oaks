@@ -40,10 +40,12 @@ const StudentDashboard = () => {
         },
       })
     );
+  }, []);
 
-    setTimeout(() => {
-      const courses = localStorage.getItem("coursesList");
+  useEffect(() => {
+    const courses = localStorage.getItem("coursesList");
 
+    courses &&
       dispatch(
         getEventsByStudent({
           onError: () => navigate("/404", { replace: true }),
@@ -55,8 +57,7 @@ const StudentDashboard = () => {
           },
         })
       );
-    }, 1000);
-  }, []);
+  }, [localStorage.getItem("coursesList")]);
 
   if (studentDashboardData.loading) {
     return <Loader type="screen" />;
