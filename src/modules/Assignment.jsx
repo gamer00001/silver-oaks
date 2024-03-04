@@ -3,7 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
-import { getAssignmentById } from "@/store/actions/assignmentsActions";
+import {
+  getAssignmentById,
+  submitAssignmentByStudent,
+} from "@/store/actions/assignmentsActions";
 import { Loader, ModalTop } from "@/components/common";
 
 const Assignment = ({ forStudent = false }) => {
@@ -58,6 +61,30 @@ const Assignment = ({ forStudent = false }) => {
     }));
   };
 
+  const handleUploadAssignment = () => {
+    const formData = new FormData();
+    formData.append("submittedFileURL", state?.uploadedFile);
+
+    const queryParams = `?assignmentId=${
+      data.assignmentId
+    }&comments=&studentId=${"2"}&submissionDate=${moment().format(
+      "MM-DD-YYYY"
+    )}`;
+
+    dispatch(
+      submitAssignmentByStudent({
+        // onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            queryParams,
+          },
+          body: formData,
+          dispatch,
+        },
+      })
+    );
+  };
+
   if (loading) {
     return <Loader type="screen" />;
   }
@@ -93,6 +120,7 @@ const Assignment = ({ forStudent = false }) => {
           handleModal={handleModal}
           isModalOpen={state.isOpen}
           inputFileRef={inputFileRef}
+          handleUploadAssignment={handleUploadAssignment}
         />
       ) : (
         <div className="flex flex-col w-full p-12 border border-solid border-black rounded-xl mt-4">
@@ -144,6 +172,7 @@ const SingleAssignmentView = ({
   isModalOpen,
   handleModal,
   navigate,
+  handleUploadAssignment,
 }) => {
   const { id, aid } = useParams();
 
@@ -185,6 +214,7 @@ const SingleAssignmentView = ({
           state={state}
           uploadFile={uploadFile}
           inputFileRef={inputFileRef}
+          handleUploadAssignment={handleUploadAssignment}
           onClose={() => {
             handleModal();
           }}
@@ -194,7 +224,13 @@ const SingleAssignmentView = ({
   );
 };
 
-const UploadAssignmnet = ({ state, inputFileRef, uploadFile, onClose }) => {
+const UploadAssignmnet = ({
+  state,
+  inputFileRef,
+  uploadFile,
+  onClose,
+  handleUploadAssignment,
+}) => {
   return (
     <div className="p-52">
       <div className="border-2 border-dashed border-black border-opacity-58 rounded-2xl flex items-center p-10 flex-col">
@@ -231,7 +267,7 @@ const UploadAssignmnet = ({ state, inputFileRef, uploadFile, onClose }) => {
           hidden
           ref={inputFileRef}
           type="file"
-          accept=".pdf,.docx"
+          accept=".pdf,.docx,.png,.jpg"
           onChange={uploadFile}
         />
       </div>
@@ -247,7 +283,7 @@ const UploadAssignmnet = ({ state, inputFileRef, uploadFile, onClose }) => {
           className={`mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-[#0F91D2] text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-[#0F91D2B2] border-opacity-58 ${
             !state?.uploadedFile && "border-[#00000029] text-[#00000029]"
           }`}
-          onClick={onClose}
+          onClick={handleUploadAssignment}
           disabled={state?.uploadedFile ? false : true}
         >
           Upload
