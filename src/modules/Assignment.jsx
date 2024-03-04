@@ -51,7 +51,7 @@ const Assignment = ({ forStudent = false }) => {
         onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
-            assignmentId: id,
+            assignmentId: aid,
           },
           dispatch,
         },
@@ -220,12 +220,12 @@ const SingleAssignmentView = ({
           Upload Assignment
         </div>
 
-        <button
+        {/* <button
           className="mt-10 bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white text-[2rem] enabled:hover:opacity-70 transition-opacity"
           onClick={() => navigate(`/course/${id}/assignmentSummary/${aid}`)}
         >
           Submit
-        </button>
+        </button> */}
       </div>
 
       <ModalTop
