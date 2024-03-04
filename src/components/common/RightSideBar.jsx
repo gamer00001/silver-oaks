@@ -48,19 +48,21 @@ const RightSideBar = () => {
   };
 
   useEffect(() => {
-    const courses = localStorage.getItem("coursesList");
+    setTimeout(() => {
+      const courses = localStorage.getItem("coursesList");
 
-    dispatch(
-      getEventsByStudent({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            courseId: courses,
+      dispatch(
+        getEventsByStudent({
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              courseId: courses,
+            },
+            dispatch,
           },
-          dispatch,
-        },
-      })
-    );
+        })
+      );
+    }, 1000);
   }, []);
 
   return (
