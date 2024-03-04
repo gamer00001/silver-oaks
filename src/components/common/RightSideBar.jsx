@@ -50,7 +50,7 @@ const RightSideBar = () => {
   useEffect(() => {
     const courses = localStorage.getItem("coursesList");
 
-    dispatch(
+    localStorage.getItem("userType")==="student"&&dispatch(
       getEventsByStudent({
         onError: () => navigate("/404", { replace: true }),
         payload: {
