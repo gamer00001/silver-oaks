@@ -76,6 +76,8 @@ ${query.assignmentId}/${query.studentId}`,
       })
 );
 
+
+
 export const markAssignment = asyncCatch(
   "assignmentSlice/markAssignment",
   async ({ config, body, dispatch }) =>
@@ -90,3 +92,21 @@ export const markAssignment = asyncCatch(
         handleError(error, dispatch);
       })
 );
+
+
+export const submitAssignmentByStudent = asyncCatch(
+  "assignmentSlice/submitAssignmentByStudent",
+  async ({ config, body, query, dispatch }) =>
+    axios
+      .post(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/submit${query.queryParams}`,
+        body,
+        config
+      )
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      }),
+  "multipart/form-data"
+);
+

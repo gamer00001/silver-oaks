@@ -49,19 +49,19 @@ const RightSideBar = () => {
 
   useEffect(() => {
     const courses = localStorage.getItem("coursesList");
-
-    localStorage.getItem("userType")==="student"&&dispatch(
-      getEventsByStudent({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            courseId: courses,
+    courses &&
+      dispatch(
+        getEventsByStudent({
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              courseId: courses,
+            },
+            dispatch,
           },
-          dispatch,
-        },
-      })
-    );
-  }, []);
+        })
+      );
+  }, [localStorage.getItem("coursesList")]);
 
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
@@ -73,7 +73,7 @@ const RightSideBar = () => {
             const formattedDate = new Date(date);
             console.log(formattedDate.toISOString().split("T")[0]);
             setDate(formattedDate.toISOString().split("T")[0]);
-            setIsAddEvent(true);
+            setIsAddEvent(!isCurrentUserStudent());
           }}
           color="#7A1315"
         />

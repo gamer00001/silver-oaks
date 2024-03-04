@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addEvent, getEvents } from "@/store/actions/eventActions";
 import { getCourses } from "@/store/actions/coursesActions";
 import { useNavigate } from "react-router-dom";
+import { isCurrentUserStudent } from "@/utils/helper";
+
 
 const ManageEvents = () => {
   const [isAddEvent, setIsAddEvent] = useState(false);
@@ -78,7 +80,7 @@ const ManageEvents = () => {
     >
       {getEventsData?.loading && <Loader type="screen" />}
       <h1 className="text-[4rem] font-bold -mt-24">Manage Events</h1>
-      <div className="flex justify-end">
+      {!isCurrentUserStudent() && <div className="flex justify-end">
         <motion.button
           onClick={addCalanderEvent}
           className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-4 transition-opacity "
@@ -86,7 +88,7 @@ const ManageEvents = () => {
         >
           Add New Event
         </motion.button>
-      </div>
+      </div>}
       <div className="flex flex-row justify-center items-center ">
         <StyleWrapper className="w-5/6">
           <FullCalendar
@@ -98,7 +100,7 @@ const ManageEvents = () => {
                 date: item.eventDate,
               };
             })}
-            dateClick={addCalanderEvent}
+            dateClick={isCurrentUserStudent() ? "" : addCalanderEvent}
             eventContent={renderEventContent}
           />
         </StyleWrapper>
