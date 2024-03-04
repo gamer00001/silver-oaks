@@ -24,23 +24,9 @@ const StudentDashboard = () => {
   const { studentEvents } = useSelector((s) => s.eventReducer);
 
   useEffect(() => {
-    const courses = localStorage.getItem("coursesList");
-
     dispatch(
       getCourses({
         onError: () => navigate("/404", { replace: true }),
-      })
-    );
-
-    dispatch(
-      getEventsByStudent({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            courseId: courses,
-          },
-          dispatch,
-        },
       })
     );
 
@@ -54,6 +40,22 @@ const StudentDashboard = () => {
         },
       })
     );
+
+    setTimeout(() => {
+      const courses = localStorage.getItem("coursesList");
+
+      dispatch(
+        getEventsByStudent({
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              courseId: courses,
+            },
+            dispatch,
+          },
+        })
+      );
+    }, 1000);
   }, []);
 
   if (studentDashboardData.loading) {
