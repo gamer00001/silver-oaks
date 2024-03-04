@@ -12,10 +12,18 @@ import { Loader, ModalTop } from "@/components/common";
 const Assignment = ({ forStudent = false }) => {
   const [state, setState] = useState({
     isOpen: false,
+    isLoading: false,
     uploadedFile: null,
   });
 
   const inputFileRef = useRef(null);
+
+  const handleLoader = () => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: !prev.isLoading,
+    }));
+  };
 
   const handleModal = () => {
     setState((prev) => ({
@@ -33,13 +41,11 @@ const Assignment = ({ forStudent = false }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(aid);
-
   const {
     singleAssignmentData: { data, loading },
   } = useSelector((s) => s.assignmentReducer);
 
-  useEffect(() => {
+  const fetchAssignment = () => {
     dispatch(
       getAssignmentById({
         onError: () => navigate("/404", { replace: true }),
@@ -51,6 +57,10 @@ const Assignment = ({ forStudent = false }) => {
         },
       })
     );
+  };
+
+  useEffect(() => {
+    fetchAssignment();
   }, []);
 
   const uploadFile = (e) => {
@@ -62,21 +72,34 @@ const Assignment = ({ forStudent = false }) => {
   };
 
   const handleUploadAssignment = () => {
-    const formData = new FormData();
-    formData.append("submittedFileURL", state?.uploadedFile);
+    handleLoader();
 
-    const queryParams = `?assignmentId=${
-      data.assignmentId
-    }&comments=&studentId=${"2"}&submissionDate=${moment().format(
-      "MM-DD-YYYY"
-    )}`;
+    const formData = new FormData();
+
+    const obj = {
+      assignmentId: data.assignmentId,
+      comments: "Pending",
+      studentId: 2,
+      description: "dummy",
+      submissionDate: moment().format("MM-DD-YYYY"),
+      submittedFile: state.uploadedFile,
+    };
+
+    Object.entries(obj).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     dispatch(
       submitAssignmentByStudent({
+        onSuccess: () => {
+          handleLoader();
+          handleModal();
+          fetchAssignment();
+        },
         // onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
-            queryParams,
+            queryParams: "",
           },
           body: formData,
           dispatch,
@@ -85,7 +108,7 @@ const Assignment = ({ forStudent = false }) => {
     );
   };
 
-  if (loading) {
+  if (loading || state.isLoading) {
     return <Loader type="screen" />;
   }
 
