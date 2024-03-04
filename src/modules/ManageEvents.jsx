@@ -17,7 +17,7 @@ import { isCurrentUserStudent } from "@/utils/helper";
 
 
 const ManageEvents = () => {
-  const [isAddEvent, setIsAddEvent] = useState(isCurrentUserStudent());
+  const [isAddEvent, setIsAddEvent] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const ManageEvents = () => {
     >
       {getEventsData?.loading && <Loader type="screen" />}
       <h1 className="text-[4rem] font-bold -mt-24">Manage Events</h1>
-      {isCurrentUserStudent() && <div className="flex justify-end">
+      {!isCurrentUserStudent() && <div className="flex justify-end">
         <motion.button
           onClick={addCalanderEvent}
           className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-4 transition-opacity "
@@ -99,7 +99,7 @@ const ManageEvents = () => {
                 date: item.eventDate,
               };
             })}
-            dateClick={addCalanderEvent}
+            dateClick={isCurrentUserStudent() ? "" : addCalanderEvent}
             eventContent={renderEventContent}
           />
         </StyleWrapper>
