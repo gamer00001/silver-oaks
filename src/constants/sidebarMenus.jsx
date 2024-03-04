@@ -36,11 +36,11 @@ export const panelSideBar = () => ({
       name: "Enrolled Courses",
       icon: <CoursesIcon />,
     },
-    {
-      to: "/to-do",
-      name: "To do",
-      icon: <Events />,
-    },
+    // {
+    //   to: "/to-do",
+    //   name: "To do",
+    //   icon: <Events />,
+    // },
     {
       to: "/manage-events",
       name: "Calender",
