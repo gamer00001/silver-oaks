@@ -83,7 +83,7 @@ export const AddAssignmentSchema = Yup.object().shape({
 export const MarkAssignment = Yup.object().shape({
   name: Yup.string().required("Student Name is required"),
   marks: Yup.string().required("Marks are required"),
-  feedBack: Yup.string().required("feedback is required"),
+  feedback: Yup.string().required("feedback is required"),
 });
 
 export const searchSchema = Yup.object().shape({
