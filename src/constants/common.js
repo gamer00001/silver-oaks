@@ -42,7 +42,7 @@ export const StudentCoursesTabs = [
   },
   {
     title: "OGA",
-    to: "./on-going-assignment",
+    to: "./on-going-assesments",
     baseRoute: "enrolled-courses",
   },
   {
@@ -56,7 +56,7 @@ export const StudentCoursesTabs = [
     baseRoute: "enrolled-courses",
   },
   {
-    title: "Assesment",
+    title: "Exams",
     to: "./exam",
     baseRoute: "enrolled-courses",
   },

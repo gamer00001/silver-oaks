@@ -16,3 +16,5 @@ export * from "./assignmentSlice";
 export * from "./assesmentSlice";
 
 export * from "./studentSlice";
+
+export * from "./ogaSlice";

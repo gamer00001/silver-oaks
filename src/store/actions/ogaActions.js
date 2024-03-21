@@ -3,28 +3,12 @@ import axios from "axios";
 import { CONSTANTS } from "@/constants";
 import { handleError } from "@/utils/errorHandling";
 
-export const createAssignment = asyncCatch(
-  "assignmentSlice/createAssignments",
-  async ({ config, body, dispatch }) =>
-    axios
-      .post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/create`, body, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: config.headers.Authorization,
-        },
-      })
-      .then((resp) => resp)
-      .catch((error) => {
-        handleError(error, dispatch);
-      })
-);
-
-export const getAssignments = asyncCatch(
-  "assignmentSlice/getAssignments",
+export const getOnGoingAssignmentsListing = asyncCatch(
+  "ogaSlice/getOnGoingAssignmentsListing",
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/getByCourse/${query.courseId}/${query.section}/${query.rollNumber}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/get-by-course/${query.courseId}`,
         config
       )
       .then((resp) => resp)
@@ -33,12 +17,12 @@ export const getAssignments = asyncCatch(
       })
 );
 
-export const getAssignmentById = asyncCatch(
-  "assignmentSlice/getAssignmentById",
+export const getOnGoingAssigmentById = asyncCatch(
+  "ogaSlice/getOnGoingAssigmentById",
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/get/${query.assignmentId}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/get/${query.ogaId}`,
         config
       )
       .then((resp) => resp)

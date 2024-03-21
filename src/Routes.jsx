@@ -37,6 +37,7 @@ import Reports from "./modules/Reports";
 import StudentDashboard from "./modules/StudentDashboard";
 import EnrolledCourses from "./modules/EnrolledCourses";
 import { StudentCoursesTabs } from "./constants/common";
+import OnGoingAssignments from "./modules/OnGoingAssignments";
 
 const Routes = () => {
   return (
@@ -124,14 +125,25 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/on-going-assignment/:id"
+        path="/enrolled-courses/on-going-assesments/:id"
         element={
           <MyReactHelmet
             title="Quizzes"
-            element={<Assignments forStudent={true} />}
+            element={<OnGoingAssignments forStudent={true} />}
           />
         }
       />
+
+      <Route
+        path="/enrolled-courses/:id/on-going-assesments/:aid"
+        element={
+          <MyReactHelmet
+            title="Quiz Summary"
+            element={<Quiz forStudent={true} forAssesment={true} />}
+          />
+        }
+      />
+
       <Route
         path="/enrolled-courses/assignments/:id"
         element={

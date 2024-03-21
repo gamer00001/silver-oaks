@@ -34,23 +34,25 @@ const Exam = ({ forStudent = false }) => {
     );
   }, []);
 
-  const Exam = [
-    {
-      title: "Term Assesment 1",
-      attempts: "23",
-      total: "26",
-    },
-    {
-      title: "Term Assesment 2",
-      attempts: "23",
-      total: "26",
-    },
-    {
-      title: "Term Assesment 3",
-      attempts: "23",
-      total: "26",
-    },
-  ];
+  console.log({ assesmentsData });
+
+  // const Exam = [
+  //   {
+  //     title: "Term Assesment 1",
+  //     attempts: "23",
+  //     total: "26",
+  //   },
+  //   {
+  //     title: "Term Assesment 2",
+  //     attempts: "23",
+  //     total: "26",
+  //   },
+  //   {
+  //     title: "Term Assesment 3",
+  //     attempts: "23",
+  //     total: "26",
+  //   },
+  // ];
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
@@ -68,20 +70,19 @@ const Exam = ({ forStudent = false }) => {
       ) : (
         <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
       )}
-      {assesmentsData?.data?.examList ??
-        Exam.map((item, k) => (
-          <div className="w-5/6" key={k}>
-            <ExamCard
-              examNo={k + 1}
-              id={item?.assignmentId}
-              title={item?.assignmentTitle ?? item?.title}
-              attempts={23}
-              total={26}
-              file={item?.file}
-              forStudent={forStudent}
-            />
-          </div>
-        ))}
+      {assesmentsData?.data?.examList?.map((item, k) => (
+        <div className="w-5/6" key={k}>
+          <ExamCard
+            examNo={k + 1}
+            id={item?.examId}
+            title={item?.examTitle ?? item?.title}
+            attempts={23}
+            total={26}
+            // file={item?.file}
+            forStudent={forStudent}
+          />
+        </div>
+      ))}
     </div>
   );
 };
@@ -127,12 +128,14 @@ const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
               </div>
             )}
             {menu && <VisibilityMenu />}
-            <button
-              className="text-custom-red font-bold text-[1.5rem]"
-              onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
-            >
-              View Assesment
-            </button>
+            {!forStudent && (
+              <button
+                className="text-custom-red font-bold text-[1.5rem]"
+                onClick={() => window.open(file)} //navigate(`/course/${id}/assignment/${aid}`)}
+              >
+                View Assesment
+              </button>
+            )}
           </div>
         </div>
       </CardContent>

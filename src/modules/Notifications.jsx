@@ -30,11 +30,12 @@ const Notifications = () => {
   const navigate = useNavigate();
 
   const {
-    studentEvents: { data, loading },
+    studentEvents: { data = [], loading },
   } = useSelector((s) => s.eventReducer);
 
   useEffect(() => {
     const courses = localStorage.getItem("coursesList");
+    const studentInfo = JSON.parse(localStorage.getItem("userInfo") ?? {});
 
     dispatch(
       getEventsByStudent({
@@ -42,6 +43,7 @@ const Notifications = () => {
         payload: {
           query: {
             courseId: courses,
+            section: studentInfo?.sectionName,
           },
           dispatch,
         },

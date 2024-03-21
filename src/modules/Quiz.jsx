@@ -10,45 +10,66 @@ import {
   submitQuizByStudent,
 } from "@/store/actions/quizzesActions";
 import { Loader } from "@/components/common";
+import { getOnGoingAssigmentById } from "@/store/actions/ogaActions";
 
-const Quiz = ({ forStudent = false }) => {
+const Quiz = ({ forStudent = false, forAssesment = false }) => {
   const [checked, setChecked] = useState(null);
   const [state, setState] = useState({
     quizInfo: {},
+    ogaInfo: {},
   });
 
   const [count, setCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
   const dispatch = useDispatch();
-  const { id, qid } = useParams();
+  const { id, qid, aid } = useParams();
   const navigate = useNavigate();
 
   const {
     singleQuizData: { data, loading },
   } = useSelector((s) => s.quizReducer);
 
-  useEffect(() => {
-    dispatch(
-      getQuizById({
-        onSuccess: (res) => {
-          setState((prev) => ({
-            ...prev,
-            quizInfo: res,
-          }));
-        },
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            quizId: qid,
-          },
-          dispatch,
-        },
-      })
-    );
-  }, []);
+  const { assesmentData } = useSelector((s) => s.ogaReducer);
 
-  console.log({ data, checked, state });
+  useEffect(() => {
+    if (forAssesment) {
+      dispatch(
+        getOnGoingAssigmentById({
+          onSuccess: (res) => {
+            setState((prev) => ({
+              ...prev,
+              ogaInfo: res,
+            }));
+          },
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              ogaId: aid,
+            },
+            dispatch,
+          },
+        })
+      );
+    } else
+      dispatch(
+        getQuizById({
+          onSuccess: (res) => {
+            setState((prev) => ({
+              ...prev,
+              quizInfo: res,
+            }));
+          },
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              quizId: qid,
+            },
+            dispatch,
+          },
+        })
+      );
+  }, []);
 
   // const quiz = [
   //   {
@@ -118,13 +139,20 @@ const Quiz = ({ forStudent = false }) => {
   //     ],
   //   },
   // ];
+  const backQuestion = () => {
+    count > 0 && setCount(count - 1);
+  };
 
   const nextQuest = () => {
     if (!checked) {
       return;
     }
 
-    let updatedList = state?.quizInfo?.quizQuestions?.map((item, index) =>
+    const list = forAssesment
+      ? state.ogaInfo?.ogaQuestions
+      : state?.quizInfo?.quizQuestions;
+
+    let updatedList = list?.map((item, index) =>
       index === count
         ? {
             ...item,
@@ -137,11 +165,15 @@ const Quiz = ({ forStudent = false }) => {
       ...prev,
       quizInfo: {
         ...prev.quizInfo,
-        quizQuestions: updatedList,
+        quizQuestions: forAssesment ? [] : updatedList,
+      },
+      ogaInfo: {
+        ...prev?.ogaInfo,
+        ogaQuestions: forAssesment ? updatedList : [],
       },
     }));
 
-    if (count < data?.quizQuestions.length - 1) {
+    if (count < list.length - 1) {
       setCount(count + 1);
       setChecked(null);
     } else setIsCompleted(true);
@@ -176,14 +208,27 @@ const Quiz = ({ forStudent = false }) => {
     return <Loader type="screen" />;
   }
 
+  const selectedData = forAssesment ? state.ogaInfo : state.quizInfo;
+
+  const questionsList = forAssesment
+    ? assesmentData?.data?.ogaQuestions
+    : data?.quizQuestions;
+
   return (
     <div>
       <div className="flex flex-row gap-2">
+        {(loading || assesmentData?.loading) && <Loader type="screen" />}
+
         <QuizIcon />
         <div className={`flex flex-col justify-center`}>
           <div className="flex flex-row gap-2 justify-center items-center">
-            <h1 className="font-extrabold text-[1.5rem]">{`Quiz ${data?.quizId}:`}</h1>
-            <h1 className="body-medium">{data?.quizTitle ?? "N/A"}</h1>
+            <h1 className="font-extrabold text-[1.5rem]">{`${
+              forAssesment ? "Assesment" : "Quiz"
+            } ${(selectedData?.ogaId || selectedData?.quizId) ?? "N/A"}:`}</h1>
+
+            <h1 className="body-medium">
+              {(selectedData?.ogaTitle || selectedData?.quizTitle) ?? "N/A"}
+            </h1>
           </div>
           {/* <h1 className="font-bold text-[1.5rem] text-custom-red">
             23 of 26 attempted
@@ -191,9 +236,9 @@ const Quiz = ({ forStudent = false }) => {
         </div>
       </div>
       <h1 className="px-[6rem] py-[2rem] text-custom-red font-bold text-[2rem]">
-        {count + 1}/{data?.quizQuestions?.length}
+        {count + 1}/{questionsList?.length}
       </h1>
-      {data?.quizQuestions?.map((item, i) => (
+      {questionsList?.map((item, i) => (
         <div
           key={i}
           className={`flex flex-col gap-4 ${count === i ? "block" : "hidden"}`}
@@ -210,25 +255,31 @@ const Quiz = ({ forStudent = false }) => {
           />
         </div>
       ))}
-      <div className="flex justify-end items-center py-[2rem]">
-        <button
-          className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
-          onClick={
-            isCompleted
-              ? () => handleSubmitQuiz()
-              : // navigate(
-                //   `/${
-                //     forStudent ? "enrolled-courses" : "course"
-                //   }/quizzes/${id}`
-                // )
-                nextQuest
-          }
-        >
-          {isCompleted ? "Finish" : "Next"}
+      {questionsList?.length > 0 && (
+        <div className="flex justify-end items-center py-[2rem]">
+          {count > 0 && (
+            <button
+              className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
+              onClick={backQuestion}
+            >
+              Previous
+              <img src="/next-icon.svg" alt="icon" />
+            </button>
+          )}
+          <button
+            className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
+            onClick={
+              isCompleted
+                ? () => !forAssesment && handleSubmitQuiz()
+                : nextQuest
+            }
+          >
+            {isCompleted ? "Finish" : "Next"}
 
-          <img src="/next-icon.svg" alt="icon" />
-        </button>
-      </div>
+            <img src="/next-icon.svg" alt="icon" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
