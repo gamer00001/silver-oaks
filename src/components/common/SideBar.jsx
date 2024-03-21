@@ -25,8 +25,9 @@ const SideBar = () => {
       getCourses({
         onError: () => navigate("/404", { replace: true }),
         onSuccess: (res) => {
-          const coursesList = res?.courseList.map((item) => item.courseId);
-          localStorage.setItem("coursesList", coursesList);
+          const coursesList =
+            res?.courseList?.map((item) => item?.courseId) ?? [];
+          localStorage.setItem("coursesList", coursesList ?? []);
         },
       })
     );

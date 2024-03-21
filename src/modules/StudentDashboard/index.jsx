@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 import StatsBlock from "@/components/common/StatsBlock";
 import CourseBlock from "@/components/common/CourseBlock";
 import { Loader } from "@/components/common";
-import { fetchStudentDashboardInfo } from "@/store/actions/studentActions";
+import {
+  fetchStudentDashboardInfo,
+  fetchStudentInfo,
+} from "@/store/actions/studentActions";
 import { getCourses } from "@/store/actions/coursesActions";
 import { CoursesColors } from "@/utils/helper";
 import { getEventsByStudent } from "@/store/actions/eventActions";
@@ -19,7 +22,11 @@ const StudentDashboard = () => {
     coursesData: { data },
   } = useSelector((s) => s.courseReducer);
 
-  const { studentDashboardData } = useSelector((s) => s.studentReducer);
+  const { studentDashboardData, studentData } = useSelector(
+    (s) => s.studentReducer
+  );
+
+  console.log({ studentData });
 
   const { studentEvents } = useSelector((s) => s.eventReducer);
 
@@ -43,6 +50,23 @@ const StudentDashboard = () => {
   }, []);
 
   useEffect(() => {
+    dispatch(
+      fetchStudentInfo({
+        onError: () => navigate("/404", { replace: true }),
+        onSuccess: (res) => {
+          localStorage.setItem("userInfo", JSON.stringify(res));
+        },
+        payload: {
+          query: {
+            rollNumber: localStorage.getItem("email"),
+          },
+          dispatch,
+        },
+      })
+    );
+  }, [localStorage.getItem("coursesList")]);
+
+  useEffect(() => {
     const courses = localStorage.getItem("coursesList");
 
     courses &&
@@ -52,12 +76,13 @@ const StudentDashboard = () => {
           payload: {
             query: {
               courseId: courses,
+              section: studentData.sectionName,
             },
             dispatch,
           },
         })
       );
-  }, [localStorage.getItem("coursesList")]);
+  }, [studentData]);
 
   if (studentDashboardData.loading) {
     return <Loader type="screen" />;

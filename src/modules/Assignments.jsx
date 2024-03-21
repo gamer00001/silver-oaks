@@ -10,7 +10,10 @@ import MenuIcon from "@/assets/Icons/MenuIcon";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
-import { createAssignment, getAssignments } from "@/store/actions/assignmentsActions";
+import {
+  createAssignment,
+  getAssignments,
+} from "@/store/actions/assignmentsActions";
 import { Loader, ModalTop, MyInput } from "@/components/common";
 import CourseBlock from "@/components/common/CourseBlock";
 import { fetchSelectedCourseInfo } from "@/utils/helper";
@@ -22,16 +25,20 @@ const Assignments = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addAssignmentModal, setAddAssignmentModal] = useState(false);
-  
+
   const { assignmentsData } = useSelector((s) => s.assignmentReducer);
 
   useEffect(() => {
+    const studentInfo = JSON.parse(localStorage.getItem("userInfo")) ?? {};
+
     dispatch(
       getAssignments({
         onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
             courseId: id,
+            section: studentInfo?.sectionName,
+            rollNumber: studentInfo?.rollNumber,
           },
           dispatch,
         },
@@ -41,7 +48,6 @@ const Assignments = ({ forStudent = false }) => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
-
       {assignmentsData.loading && <Loader type="screen" />}
 
       {forStudent ? (
@@ -57,24 +63,24 @@ const Assignments = ({ forStudent = false }) => {
       ) : (
         <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
       )}
-                  {localStorage.getItem("userType")=="teacher" && 
- <div className="flex flex-row gap-4">
- <button
-        type="button"
-        className="inline-block rounded-full bg-custom-red px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
-        onClick={()=>setAddAssignmentModal(true)}
-      >
-        Add Assignment
-      </button>
-      <button
-        type="button"
-        className="inline-block rounded-full bg-custom-red px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
-        onClick={()=>setAddAssignmentModal(true)}
-      >
-        Add On Going Assignment
-      </button>
-</div>
-}
+      {localStorage.getItem("userType") == "teacher" && (
+        <div className="flex flex-row gap-4">
+          <button
+            type="button"
+            className="inline-block rounded-full bg-custom-red px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
+            onClick={() => setAddAssignmentModal(true)}
+          >
+            Add Assignment
+          </button>
+          <button
+            type="button"
+            className="inline-block rounded-full bg-custom-red px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
+            onClick={() => setAddAssignmentModal(true)}
+          >
+            Add On Going Assignment
+          </button>
+        </div>
+      )}
       {assignmentsData.data?.assignmentList?.map((item, k) => (
         <div className="w-5/6">
           <QuizCard
@@ -93,19 +99,19 @@ const Assignments = ({ forStudent = false }) => {
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[95.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
         open={Boolean(addAssignmentModal)}
-        onClose={()=>setAddAssignmentModal(false)}
+        onClose={() => setAddAssignmentModal(false)}
       >
-        <AddAssignment onClose={()=>setAddAssignmentModal(false)} 
-        onAdd={(newAssignment) => {
-          dispatch(
-            createAssignment({
-              payload: {
-                body: 
-                  newAssignment,
-              },
-              onError: () => navigate("/404", { replace: true }),
-              onSuccess: () => {
-                dispatch(
+        <AddAssignment
+          onClose={() => setAddAssignmentModal(false)}
+          onAdd={(newAssignment) => {
+            dispatch(
+              createAssignment({
+                payload: {
+                  body: newAssignment,
+                },
+                onError: () => navigate("/404", { replace: true }),
+                onSuccess: () => {
+                  dispatch(
                     getAssignments({
                       onError: () => navigate("/404", { replace: true }),
                       payload: {
@@ -115,12 +121,13 @@ const Assignments = ({ forStudent = false }) => {
                         dispatch,
                       },
                     })
-                );
-              }
-            })
-          );
-            setAddAssignmentModal(false)
-          }}/>
+                  );
+                },
+              })
+            );
+            setAddAssignmentModal(false);
+          }}
+        />
       </ModalTop>
     </div>
   );
@@ -272,7 +279,7 @@ const VisibilityMenu = () => {
   );
 };
 
-const AddAssignment = ({onClose, onAdd}) => {
+const AddAssignment = ({ onClose, onAdd }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { coursesData } = useSelector((s) => s.courseReducer);
@@ -284,6 +291,7 @@ const AddAssignment = ({onClose, onAdd}) => {
       })
     );
   }, []);
+
   const {
     values,
     setFieldValue,
@@ -294,24 +302,23 @@ const AddAssignment = ({onClose, onAdd}) => {
     touched,
     dirty,
   } = useFormik({
-    initialValues:
-     {
-            assignmentTitle: "",
-            dueDate: "",
-            description: "",
-            file: null,
-            courseId: "",
-            totalMarks: "",
-            visibility: true,
-            teacherId: "1",
-          },
+    initialValues: {
+      assignmentTitle: "",
+      dueDate: "",
+      description: "",
+      file: null,
+      courseId: "",
+      totalMarks: "",
+      visibility: true,
+      teacherId: "1",
+    },
     validationSchema: AddAssignmentSchema,
     onSubmit: (v) => {
       const formData = new FormData();
       Object.entries(v).forEach(([key, value]) => {
         formData.append(key, value);
       });
-      console.log(formData)
+      console.log(formData);
       onAdd(formData);
     },
   });
@@ -363,11 +370,13 @@ const AddAssignment = ({onClose, onAdd}) => {
             </div>
             <div>
               <input
-              type="file"
-              onChange={(event) => setFieldValue("file", event.currentTarget.files[0])}
-              onBlur={handleBlur}
-              name="file"
-            />
+                type="file"
+                onChange={(event) =>
+                  setFieldValue("file", event.currentTarget.files[0])
+                }
+                onBlur={handleBlur}
+                name="file"
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
@@ -447,4 +456,4 @@ const AddAssignment = ({onClose, onAdd}) => {
       </form>
     </div>
   );
-}
+};

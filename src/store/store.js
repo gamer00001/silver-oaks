@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
+  ogaReducer,
   quizReducer,
   authReducer,
   courseReducer,
@@ -26,6 +27,7 @@ const store = configureStore({
     eventReducer,
     lectureReducer,
     quizReducer,
+    ogaReducer,
     assignmentReducer,
     assesmentReducer,
     studentReducer,

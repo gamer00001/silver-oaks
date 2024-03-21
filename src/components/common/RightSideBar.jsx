@@ -47,21 +47,21 @@ const RightSideBar = () => {
     setIsAddEvent(!isAddEvent);
   };
 
-  useEffect(() => {
-    const courses = localStorage.getItem("coursesList");
-    courses &&
-      dispatch(
-        getEventsByStudent({
-          onError: () => navigate("/404", { replace: true }),
-          payload: {
-            query: {
-              courseId: courses,
-            },
-            dispatch,
-          },
-        })
-      );
-  }, [localStorage.getItem("coursesList")]);
+  // useEffect(() => {
+  //   const courses = localStorage.getItem("coursesList");
+  //   courses &&
+  //     dispatch(
+  //       getEventsByStudent({
+  //         onError: () => navigate("/404", { replace: true }),
+  //         payload: {
+  //           query: {
+  //             courseId: courses,
+  //           },
+  //           dispatch,
+  //         },
+  //       })
+  //     );
+  // }, [localStorage.getItem("coursesList")]);
 
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
