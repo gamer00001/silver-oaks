@@ -45,7 +45,7 @@ const StudentGrades = () => {
       </div>
 
       <div className="grid grid-cols-1 w-full">
-        <Table columns={[]} rows={[]} />
+        <Table columns={["Assignments", "Attempt", "Marks", "Comment"]} rows={[]} />
       </div>
     </div>
   );
