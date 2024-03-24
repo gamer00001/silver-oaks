@@ -7,7 +7,7 @@ import { CONSTANTS } from "@/constants";
 import LectureIcon from "@/assets/Icons/LectureIcon";
 import PlayIcon from "@/assets/Icons/PlayIcon";
 import MenuIcon from "@/assets/Icons/MenuIcon";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import Invisible from "@/assets/Icons/Invisible";
 import Visible from "@/assets/Icons/Visible";
 import { getAssesments } from "@/store/actions/assesmentActions";
@@ -28,31 +28,12 @@ const Exam = ({ forStudent = false }) => {
         payload: {
           query: {
             courseId: id,
+            studentRollNumber: localStorage.getItem("email"),
           },
         },
       })
     );
   }, []);
-
-  console.log({ assesmentsData });
-
-  // const Exam = [
-  //   {
-  //     title: "Term Assesment 1",
-  //     attempts: "23",
-  //     total: "26",
-  //   },
-  //   {
-  //     title: "Term Assesment 2",
-  //     attempts: "23",
-  //     total: "26",
-  //   },
-  //   {
-  //     title: "Term Assesment 3",
-  //     attempts: "23",
-  //     total: "26",
-  //   },
-  // ];
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
@@ -74,7 +55,7 @@ const Exam = ({ forStudent = false }) => {
         <div className="w-5/6" key={k}>
           <ExamCard
             examNo={k + 1}
-            id={item?.examId}
+            e_id={item?.examId}
             title={item?.examTitle ?? item?.title}
             attempts={23}
             total={26}
@@ -89,9 +70,20 @@ const Exam = ({ forStudent = false }) => {
 
 export default Exam;
 
-const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
+const ExamCard = ({
+  e_id,
+  examNo,
+  title,
+  attempts,
+  total,
+  file,
+  forStudent,
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const { id } = useParams();
 
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
@@ -110,9 +102,7 @@ const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
                   </span>
                 </NavLink>
               )}
-              <h1 className="font-extrabold text-[1.5rem]">
-                Assesment {examNo}:{" "}
-              </h1>
+              <h1 className="font-extrabold text-[1.5rem]">Exam {examNo}: </h1>
               <h1 className="body-medium">{title}</h1>
             </div>
             <div className={`flex flex-row ${expanded ? "block" : "hidden"}`}>
@@ -137,6 +127,18 @@ const ExamCard = ({ examNo, title, attempts, total, file, forStudent }) => {
               </button>
             )}
           </div>
+
+          {forStudent && (
+            <button
+              className="text-custom-red font-bold text-[1.5rem]"
+              // onClick={() => navigate(`/course/${id}/quizSummary/${qid}`)}
+              onClick={() =>
+                navigate(`/enrolled-courses/${id}/exam/${e_id ?? 1}`)
+              }
+            >
+              Attempt
+            </button>
+          )}
         </div>
       </CardContent>
     </MUICard>
