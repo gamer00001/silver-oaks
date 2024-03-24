@@ -31,62 +31,8 @@ export const getOnGoingAssigmentById = asyncCatch(
       })
 );
 
-export const getAssignmentSubmissions = asyncCatch(
-  "assignmentSlice/getAssignmentSubmissions",
-  async ({ config, query, dispatch }) =>
-    axios
-      .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/get-all-assignment-submissions/${query.assigmentId}`,
-        config
-      )
-      .then((resp) => resp)
-      .catch((error) => {
-        handleError(error, dispatch);
-      })
-);
-
-export const getAssignmentSubmission = asyncCatch(
-  "assignmentSlice/getAssignmentSubmission",
-  async ({ config, query, dispatch }) =>
-    axios
-      .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/get-assignment-submission/
-${query.assignmentId}/${query.studentId}`,
-        config
-      )
-      .then((resp) => resp)
-      .catch((error) => {
-        handleError(error, dispatch);
-      })
-);
-
-export const markAssignment = asyncCatch(
-  "assignmentSlice/markAssignment",
-  async ({ config, body, dispatch }) =>
-    axios
-      .put(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/mark-assignment`,
-        body,
-        config
-      )
-      .then((resp) => resp)
-      .catch((error) => {
-        handleError(error, dispatch);
-      })
-);
-
-export const submitAssignmentByStudent = asyncCatch(
-  "assignmentSlice/submitAssignmentByStudent",
-  async ({ config, body, query, dispatch }) =>
-    axios
-      .post(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/submit${query.queryParams}`,
-        body,
-        config
-      )
-      .then((resp) => resp)
-      .catch((error) => {
-        handleError(error, dispatch);
-      }),
-  "multipart/form-data"
+export const submitOgaByStudent = asyncCatch(
+  "quizSlice/submitOgaByStudent",
+  async ({ config, body }) =>
+    axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/submit`, body, config)
 );

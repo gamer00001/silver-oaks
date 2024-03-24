@@ -10,27 +10,42 @@ import {
   submitQuizByStudent,
 } from "@/store/actions/quizzesActions";
 import { Loader } from "@/components/common";
-import { getOnGoingAssigmentById } from "@/store/actions/ogaActions";
+import {
+  getOnGoingAssigmentById,
+  submitOgaByStudent,
+} from "@/store/actions/ogaActions";
+import {
+  getExamById,
+  submitExamByStudent,
+} from "@/store/actions/assesmentActions";
 
-const Quiz = ({ forStudent = false, forAssesment = false }) => {
-  const [checked, setChecked] = useState(null);
+const Quiz = ({
+  forStudent = false,
+  forAssesment = false,
+  forExam = false,
+}) => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
   const [state, setState] = useState({
     quizInfo: {},
     ogaInfo: {},
+    examInfo: {},
   });
 
   const [count, setCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
   const dispatch = useDispatch();
-  const { id, qid, aid } = useParams();
   const navigate = useNavigate();
+  const { id, qid, aid, eid } = useParams();
 
   const {
     singleQuizData: { data, loading },
   } = useSelector((s) => s.quizReducer);
 
   const { assesmentData } = useSelector((s) => s.ogaReducer);
+
+  const { singleExamData } = useSelector((s) => s.assesmentReducer);
 
   useEffect(() => {
     if (forAssesment) {
@@ -46,6 +61,24 @@ const Quiz = ({ forStudent = false, forAssesment = false }) => {
           payload: {
             query: {
               ogaId: aid,
+            },
+            dispatch,
+          },
+        })
+      );
+    } else if (forExam) {
+      dispatch(
+        getExamById({
+          onSuccess: (res) => {
+            setState((prev) => ({
+              ...prev,
+              examInfo: res,
+            }));
+          },
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              examId: eid,
             },
             dispatch,
           },
@@ -71,92 +104,27 @@ const Quiz = ({ forStudent = false, forAssesment = false }) => {
       );
   }, []);
 
-  // const quiz = [
-  //   {
-  //     question:
-  //       "Computers are much faster to perform mathematical calculations than",
-  //     options: [{ option: "Human" }, { option: "Both" }, { option: "Animals" }],
-  //   },
-  //   {
-  //     question: "What is the capital city of France?",
-  //     options: [
-  //       { option: "Paris" },
-  //       { option: "Berlin" },
-  //       { option: "London" },
-  //     ],
-  //   },
-  //   {
-  //     question: "Which planet is known as the Red Planet?",
-  //     options: [{ option: "Mars" }, { option: "Venus" }, { option: "Jupiter" }],
-  //   },
-  //   {
-  //     question: "Who wrote 'Romeo and Juliet'?",
-  //     options: [
-  //       { option: "William Shakespeare" },
-  //       { option: "Charles Dickens" },
-  //       { option: "Jane Austen" },
-  //     ],
-  //   },
-  //   {
-  //     question: "What is the capital city of Japan?",
-  //     options: [
-  //       { option: "Tokyo" },
-  //       { option: "Beijing" },
-  //       { option: "Seoul" },
-  //     ],
-  //   },
-  //   {
-  //     question: "Who painted the Mona Lisa?",
-  //     options: [
-  //       { option: "Leonardo da Vinci" },
-  //       { option: "Vincent van Gogh" },
-  //       { option: "Pablo Picasso" },
-  //     ],
-  //   },
-  //   {
-  //     question: "In which year did World War II end?",
-  //     options: [{ option: "1945" }, { option: "1918" }, { option: "1939" }],
-  //   },
-  //   {
-  //     question: "What is the largest mammal on Earth?",
-  //     options: [
-  //       { option: "Blue Whale" },
-  //       { option: "Elephant" },
-  //       { option: "Giraffe" },
-  //     ],
-  //   },
-  //   {
-  //     question:
-  //       "Which planet is known as the 'Morning Star' or 'Evening Star'?",
-  //     options: [{ option: "Venus" }, { option: "Mars" }, { option: "Mercury" }],
-  //   },
-  //   {
-  //     question: "Who developed the theory of relativity?",
-  //     options: [
-  //       { option: "Albert Einstein" },
-  //       { option: "Isaac Newton" },
-  //       { option: "Galileo Galilei" },
-  //     ],
-  //   },
-  // ];
   const backQuestion = () => {
     count > 0 && setCount(count - 1);
+    setIsCompleted(false);
   };
 
-  const nextQuest = () => {
-    if (!checked) {
-      return;
-    }
+  const nextQuest = (option) => {
+    let list;
 
-    const list = forAssesment
-      ? state.ogaInfo?.ogaQuestions
-      : state?.quizInfo?.quizQuestions;
+    if (forAssesment) {
+      list = state.ogaInfo?.ogaQuestions;
+    } else if (forExam) {
+      list = state.examInfo?.examQuestions;
+    } else {
+      list = state?.quizInfo?.quizQuestions;
+    }
 
     let updatedList = list?.map((item, index) =>
       index === count
         ? {
             ...item,
-            answer: checked,
+            answer: option,
           }
         : { ...item }
     );
@@ -171,15 +139,78 @@ const Quiz = ({ forStudent = false, forAssesment = false }) => {
         ...prev?.ogaInfo,
         ogaQuestions: forAssesment ? updatedList : [],
       },
+      examInfo: {
+        ...prev?.examInfo,
+        examQuestions: forExam ? updatedList : [],
+      },
     }));
 
     if (count < list.length - 1) {
       setCount(count + 1);
-      setChecked(null);
     } else setIsCompleted(true);
   };
 
   const handleSubmitQuiz = () => {
+    if (forAssesment) {
+      submitOga();
+    } else if (forExam) {
+      submitExam();
+    } else {
+      submitQuiz();
+    }
+  };
+
+  const submitExam = () => {
+    const { examInfo } = state;
+
+    const payload = {
+      courseId: examInfo?.course?.courseId,
+      examId: examInfo?.examId,
+      examQuestionList: examInfo.examQuestions,
+      studentRollNumber: +localStorage.getItem("email"),
+      totalMarks: examInfo.totalMarks,
+    };
+
+    dispatch(
+      submitExamByStudent({
+        payload: {
+          body: payload,
+        },
+        onSuccess: () =>
+          navigate(`/${forStudent ? "enrolled-courses" : "course"}/exam/${id}`),
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  };
+
+  const submitOga = () => {
+    const { ogaInfo } = state;
+
+    const payload = {
+      courseId: ogaInfo?.course?.courseId,
+      ogaId: ogaInfo?.ogaId,
+      ogaQuestionList: ogaInfo.ogaQuestions,
+      studentRollNumber: +localStorage.getItem("email"),
+      totalMarks: ogaInfo.totalMarks,
+    };
+
+    dispatch(
+      submitOgaByStudent({
+        payload: {
+          body: payload,
+        },
+        onSuccess: () =>
+          navigate(
+            `/${
+              forStudent ? "enrolled-courses" : "course"
+            }/on-going-assesments/${id}`
+          ),
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  };
+
+  const submitQuiz = () => {
     const { quizInfo } = state;
 
     const payload = {
@@ -208,26 +239,42 @@ const Quiz = ({ forStudent = false, forAssesment = false }) => {
     return <Loader type="screen" />;
   }
 
-  const selectedData = forAssesment ? state.ogaInfo : state.quizInfo;
+  const selectedData = forAssesment
+    ? state.ogaInfo
+    : forExam
+    ? state.examInfo
+    : state.quizInfo;
 
   const questionsList = forAssesment
     ? assesmentData?.data?.ogaQuestions
+    : forExam
+    ? singleExamData.data?.examQuestions
     : data?.quizQuestions;
 
   return (
     <div>
       <div className="flex flex-row gap-2">
-        {(loading || assesmentData?.loading) && <Loader type="screen" />}
+        {(loading || assesmentData?.loading || singleExamData?.loading) && (
+          <Loader type="screen" />
+        )}
 
         <QuizIcon />
         <div className={`flex flex-col justify-center`}>
           <div className="flex flex-row gap-2 justify-center items-center">
             <h1 className="font-extrabold text-[1.5rem]">{`${
               forAssesment ? "Assesment" : "Quiz"
-            } ${(selectedData?.ogaId || selectedData?.quizId) ?? "N/A"}:`}</h1>
+            } ${
+              (selectedData?.ogaId ||
+                selectedData?.quizId ||
+                selectedData?.examId) ??
+              "N/A"
+            }:`}</h1>
 
             <h1 className="body-medium">
-              {(selectedData?.ogaTitle || selectedData?.quizTitle) ?? "N/A"}
+              {(selectedData?.ogaTitle ||
+                selectedData?.quizTitle ||
+                selectedData?.examTitle) ??
+                "N/A"}
             </h1>
           </div>
           {/* <h1 className="font-bold text-[1.5rem] text-custom-red">
@@ -249,37 +296,44 @@ const Quiz = ({ forStudent = false, forAssesment = false }) => {
 
           <QuizOptions
             options={item}
-            checked={checked}
             data={item.options}
-            setChecked={setChecked}
+            checked={selectedOptions[i]}
+            setChecked={(option) => {
+              if (option) {
+                let updatedList = [...selectedOptions];
+                updatedList[i] = option;
+                setSelectedOptions(updatedList);
+              }
+            }}
           />
+
+          {questionsList?.length > 0 && (
+            <div className="flex justify-end items-center py-[2rem]">
+              {count > 0 && (
+                <button
+                  className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
+                  onClick={backQuestion}
+                >
+                  Previous
+                  <img src="/next-icon.svg" alt="icon" />
+                </button>
+              )}
+              <button
+                className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
+                onClick={
+                  isCompleted
+                    ? () => handleSubmitQuiz()
+                    : () => selectedOptions[i] && nextQuest(selectedOptions[i])
+                }
+              >
+                {isCompleted ? "Finish" : "Next"}
+
+                <img src="/next-icon.svg" alt="icon" />
+              </button>
+            </div>
+          )}
         </div>
       ))}
-      {questionsList?.length > 0 && (
-        <div className="flex justify-end items-center py-[2rem]">
-          {count > 0 && (
-            <button
-              className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
-              onClick={backQuestion}
-            >
-              Previous
-              <img src="/next-icon.svg" alt="icon" />
-            </button>
-          )}
-          <button
-            className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
-            onClick={
-              isCompleted
-                ? () => !forAssesment && handleSubmitQuiz()
-                : nextQuest
-            }
-          >
-            {isCompleted ? "Finish" : "Next"}
-
-            <img src="/next-icon.svg" alt="icon" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
@@ -317,12 +371,12 @@ export default Quiz;
 
 const QuizOption = ({ setChecked, option, checked }) => {
   return (
-    <MUICard className="flex justify-start items-center">
+    <MUICard
+      className="flex justify-start items-center cursor-pointer"
+      onClick={() => setChecked(option)}
+    >
       <CardContent>
-        <label
-          className="flex items-center space-x-2 cursor-pointer"
-          onClick={() => setChecked(option)}
-        >
+        <label className="flex items-center space-x-2 cursor-pointer">
           <div
             className={`w-6 h-6 border-2 border-solid border-orange-500 rounded-full flex items-center justify-center transition duration-300 ${
               checked === option ? "bg-orange-500" : "bg-white"

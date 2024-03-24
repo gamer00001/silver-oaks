@@ -169,6 +169,15 @@ const studentLayoutRoutes = [
           <MyReactHelmet title="Exam" element={<Exam forStudent={true} />} />
         }
       />
+      <Route
+        path="/enrolled-courses/:id/exam/:eid"
+        element={
+          <MyReactHelmet
+            title="Exam"
+            element={<Quiz forStudent={true} forExam={true} />}
+          />
+        }
+      />
 
       <Route
         path="/enrolled-courses/:id/quizzes/:qid"
