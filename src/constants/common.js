@@ -56,7 +56,7 @@ export const StudentCoursesTabs = [
   },
   {
     title: "Grades",
-    to: "./graded",
+    to: "./grades",
     baseRoute: "enrolled-courses",
   },
   {

@@ -6,7 +6,7 @@ export const getQuizzes = asyncCatch(
   "quizSlice/getQuizzes",
   async ({ config, query }) =>
     axios.get(
-      `${CONSTANTS.VITE_BACKEND_API_URL}/api/quizzes/getByCourse/${query.courseId}`,
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/quizzes/getByCourse/${query.courseId}/${query.studentRollNumber}`,
       config
     )
 );

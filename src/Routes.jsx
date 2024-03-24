@@ -39,6 +39,7 @@ import EnrolledCourses from "./modules/EnrolledCourses";
 import { StudentCoursesTabs } from "./constants/common";
 import OnGoingAssignments from "./modules/OnGoingAssignments";
 import OGA from "./modules/OGA";
+import StudentGrades from "./modules/StudentGrades";
 
 const Routes = () => {
   return (
@@ -155,11 +156,11 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/graded/:id"
+        path="/enrolled-courses/grades"
         element={
           <MyReactHelmet
-            title="Quizzes"
-            element={<Assignments forStudent={true} />}
+            title="Student Grades"
+            element={<StudentGrades forStudent={true} />}
           />
         }
       />
@@ -167,6 +168,15 @@ const studentLayoutRoutes = [
         path="/enrolled-courses/exam/:id"
         element={
           <MyReactHelmet title="Exam" element={<Exam forStudent={true} />} />
+        }
+      />
+      <Route
+        path="/enrolled-courses/:id/exam/:eid"
+        element={
+          <MyReactHelmet
+            title="Exam"
+            element={<Quiz forStudent={true} forExam={true} />}
+          />
         }
       />
 
