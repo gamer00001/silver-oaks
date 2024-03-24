@@ -28,6 +28,7 @@ const Exam = ({ forStudent = false }) => {
         payload: {
           query: {
             courseId: id,
+            studentRollNumber: localStorage.getItem("email")
           },
         },
       })

@@ -8,7 +8,7 @@ export const getOnGoingAssignmentsListing = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/get-by-course/${query.courseId}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/get-by-course/${query.courseId}/${query.studentRollNumber}`,
         config
       )
       .then((resp) => resp)
