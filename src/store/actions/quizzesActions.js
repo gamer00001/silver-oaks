@@ -29,3 +29,12 @@ export const submitQuizByStudent = asyncCatch(
       config
     )
 );
+
+export const getQuizSubmissions = asyncCatch(
+  "quizSlice/submitQuizByStudent",
+  async ({ config, query }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/quizzes/get/submissions/${query.quizId}`,
+      config
+    )
+);

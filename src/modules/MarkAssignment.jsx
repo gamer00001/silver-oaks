@@ -5,10 +5,36 @@ import React, { useEffect } from "react";
 import { MarkAssignment as MarkingSchema } from "@/schema";
 import ResetIcon from "@/assets/Icons/ResetIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { getAssignmentById, getAssignmentSubmission, markAssignment } from "@/store/actions/assignmentsActions";
+import {
+  getAssignmentById,
+  getAssignmentSubmission,
+  markAssignment,
+} from "@/store/actions/assignmentsActions";
 import { useParams } from "react-router-dom";
 
 const MarkAssignment = () => {
+  const {
+    submissionData: { data, loading },
+  } = useSelector((s) => s.assignmentReducer);
+
+  const { id, sid, aid } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getAssignmentSubmission({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            assignmentId: aid,
+            studentId: sid,
+          },
+          dispatch,
+        },
+      })
+    );
+  }, []);
+
   return (
     <div className="flex flex-col gap-16">
       <div className="flex flex-row gap-2 justify-start items-center">
@@ -17,32 +43,16 @@ const MarkAssignment = () => {
           ICT and Emerging Technologies
         </h1>
       </div>
-      <MarkingComponent />
+      {loading ? <Loader type={"screen"} /> : <MarkingComponent />}
     </div>
   );
 };
 
 const MarkingComponent = () => {
   const dispatch = useDispatch();
-  const { id,sid, aid } = useParams();
   const {
     submissionData: { data, loading },
   } = useSelector((s) => s.assignmentReducer);
-
-    useEffect(() => {
-    dispatch(
-      getAssignmentSubmission({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            assignmentId: aid,
-            studentId: sid
-          },
-          dispatch,
-        },
-      })
-    );
-  }, []);
 
   const {
     values,
@@ -55,29 +65,29 @@ const MarkingComponent = () => {
     dirty,
   } = useFormik({
     initialValues: {
-      name: "data?.studentName",
-      feedback: data?.comments,
-      marks: data?.obtainedMarks,
-      submissionId: data?.submissionId
+      name: data?.studentName,
+      feedback: data?.comments === "pending" ? "" : data?.comments,
+      marks: data?.obtainedMarks === -1 ? "" : data?.obtainedMarks,
+      submissionId: data?.submissionId,
     },
     validationSchema: MarkingSchema,
     onSubmit: (v) => {
       dispatch(
-      markAssignment({
-         onError: () => toast.error("Some error occured"),
-         onSuccess: () => toast.success("Update successfully!"),
-        payload: {
-          body: v,
-          dispatch,
-        },
-      }));
-      
+        markAssignment({
+          onError: () => toast.error("Some error occured"),
+          onSuccess: () => toast.success("Update successfully!"),
+          payload: {
+            body: v,
+            dispatch,
+          },
+        })
+      );
     },
   });
 
   return (
     <>
-     {loading && <Loader type="screen" />}
+      {loading && <Loader type="screen" />}
       <div className="grid gap-[3.6rem]">
         <form onSubmit={handleSubmit} className="grid gap-[7.7rem]">
           <div className="flex flex-col gap-x-[2.1rem] gap-y-[1.6rem]">
@@ -147,7 +157,7 @@ const MarkingComponent = () => {
             </div>
             <button
               className="p-[1.3rem_6.3rem] text-custom-red button opacity-button border bg-white rounded-[2.8rem] border-custom-red disabled:opacity-50"
-              onClick={()=>window.open(data?.submittedFileURL)}
+              onClick={() => window.open(data?.submittedFileURL)}
               disabled={!dirty}
             >
               View Assignment

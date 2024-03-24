@@ -26,12 +26,11 @@ import {
   getTeacherId,
 } from "@/store/actions/dashboardActions";
 
-const Assignments = ({ forStudent = false }) => {
+const OGA = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [addAssignmentModal, setAddAssignmentModal] = useState(false);
   const [selectedSection, setSelectedSection] = useState();
-  const [term, setTerm] = useState("Term 1");
 
   const { assignmentsData } = useSelector((s) => s.assignmentReducer);
 
@@ -101,6 +100,7 @@ const Assignments = ({ forStudent = false }) => {
         placeholder="Select a section"
         onChange={(e) => setSelectedSection(e.target.value)}
       >
+        <option value="">Select a Section</option>
         {teacherIdData?.data?.teacherSections?.map((section, index) => (
           <option value={section?.section}>{section?.section}</option>
         ))}
@@ -125,10 +125,10 @@ const Assignments = ({ forStudent = false }) => {
         <div className="flex flex-row gap-4">
           <button
             type="button"
-            className="inline-block text-[1rem] rounded-full bg-custom-red px-6 pb-2 pt-2.5 font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
+            className="inline-block rounded-full bg-custom-red px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
             onClick={() => setAddAssignmentModal(true)}
           >
-            Add Assignment
+            Add On Going Assignment
           </button>
         </div>
       )}
@@ -184,7 +184,7 @@ const Assignments = ({ forStudent = false }) => {
   );
 };
 
-export default Assignments;
+export default OGA;
 
 const QuizCard = ({
   aid,
@@ -364,7 +364,6 @@ const AddAssignment = ({ onClose, onAdd }) => {
       visibility: true,
       teacherId: teacherIdData?.data?.teacherId,
       section: "",
-      term: "Term 1",
     },
     validationSchema: AddAssignmentSchema,
     onSubmit: (v) => {
@@ -506,26 +505,6 @@ const AddAssignment = ({ onClose, onAdd }) => {
                 {teacherIdData?.data?.teacherSections?.map((section, index) => (
                   <option value={section?.section}>{section?.section}</option>
                 ))}
-              </MyInput>
-            </div>
-            <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
-              <h1 className="body-medium h5">Select Section</h1>
-            </div>
-            <div>
-              <MyInput
-                type="select"
-                placeholder="Select a term"
-                className="col-span-1 sm:col-span-6"
-                value={values.term}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.term && errors.term}
-                name="term"
-              >
-                <option value="">Select a Term</option>
-                <option value="Term 1">Term 1</option>
-                <option value="Term 2">Term 2</option>
-                <option value="Term 3">Term 3</option>
               </MyInput>
             </div>
           </div>

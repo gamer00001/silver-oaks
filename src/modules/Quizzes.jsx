@@ -80,7 +80,7 @@ const Quizzes = ({ forStudent = false }) => {
       {quizzesData?.data?.quizList?.map((item, k) => (
         <div className="w-5/6" key={k}>
           <QuizCard
-            qid={item?.assignmentId}
+            qid={item?.quizId}
             quizNo={k + 1}
             title={item?.quizTitle ?? item?.title}
             attempts={23}
@@ -132,9 +132,9 @@ const QuizCard = ({
               <h1 className="body-medium text-[#161736A3]">{title}</h1>
             </div>
             <div className={`flex flex-row ${expanded ? "block" : "hidden"}`}>
-              <h1 className="font-bold text-[1.5rem] text-custom-red">
+              {/* <h1 className="font-bold text-[1.5rem] text-custom-red">
                 {attempts + " "} of {" " + total + " "} attempted
-              </h1>
+              </h1> */}
             </div>
           </div>
           {forStudent ? (

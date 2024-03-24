@@ -2,11 +2,18 @@ import EditIcon from "@/assets/Icons/EditIcon";
 import { MyPagination } from "@/components/common";
 import SearchForm from "@/components/common/SearchForm";
 import { useQueryParams } from "@/hooks";
-import React from "react";
+import { getAcademicRecord } from "@/store/actions/academicRecord";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AcademicRecord = () => {
   const { page } = useQueryParams({ page: 1, query: "" });
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getAcademicRecord());
+  // }, []);
 
   return (
     <div>
@@ -80,9 +87,13 @@ const Table = () => {
       CourseTotal: item.total || "--",
     }));
 
-    const csvContent = "data:text/csv;charset=utf-8," +
-      Object.keys(exportedData[0]).map(key => key).join(",") + "\n" +
-      exportedData.map(obj => Object.values(obj).join(",")).join("\n");
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      Object.keys(exportedData[0])
+        .map((key) => key)
+        .join(",") +
+      "\n" +
+      exportedData.map((obj) => Object.values(obj).join(",")).join("\n");
 
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -116,7 +127,9 @@ const Table = () => {
                   {" "}
                   <img
                     className="w-[4.3rem] h-[4.3rem] border-2 border-custom-offwhite rounded-full object-cover "
-                    src={"https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+                    src={
+                      "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                    }
                     alt="Admin"
                     onClick={(e) => setAnchorEl(e.currentTarget)}
                   />
@@ -133,20 +146,20 @@ const Table = () => {
         </table>
 
         <div className="grid gap-[3.2rem] justify-end grid-cols-[auto_auto] items-center m-16">
-            <button
-              className="p-[1.3rem_6.3rem] text-custom-red button opacity-button border bg-white rounded-[2.8rem] border-custom-red disabled:opacity-50"
-              type="submit"
-            >
-              Import
-            </button>
-            <button
-              className="p-[1.3rem_6.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
-              type="submit"
-              onClick={exportData}
-            >
-              Export
-            </button>
-          </div>
+          <button
+            className="p-[1.3rem_6.3rem] text-custom-red button opacity-button border bg-white rounded-[2.8rem] border-custom-red disabled:opacity-50"
+            type="submit"
+          >
+            Import
+          </button>
+          <button
+            className="p-[1.3rem_6.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
+            type="submit"
+            onClick={exportData}
+          >
+            Export
+          </button>
+        </div>
       </div>
     </>
   );
