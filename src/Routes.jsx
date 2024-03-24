@@ -38,6 +38,7 @@ import StudentDashboard from "./modules/StudentDashboard";
 import EnrolledCourses from "./modules/EnrolledCourses";
 import { StudentCoursesTabs } from "./constants/common";
 import OnGoingAssignments from "./modules/OnGoingAssignments";
+import StudentGrades from "./modules/StudentGrades";
 
 const Routes = () => {
   return (
@@ -154,11 +155,11 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/graded/:id"
+        path="/enrolled-courses/grades"
         element={
           <MyReactHelmet
-            title="Quizzes"
-            element={<Assignments forStudent={true} />}
+            title="Student Grades"
+            element={<StudentGrades forStudent={true} />}
           />
         }
       />
