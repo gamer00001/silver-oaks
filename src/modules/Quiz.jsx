@@ -314,8 +314,12 @@ const Quiz = ({
                   className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
                   onClick={backQuestion}
                 >
+                  <img
+                    src="/next-icon.svg"
+                    className="transform rotate-180"
+                    alt="icon"
+                  />
                   Previous
-                  <img src="/next-icon.svg" alt="icon" />
                 </button>
               )}
               <button
