@@ -14,16 +14,33 @@ import { addEvent, getEvents } from "@/store/actions/eventActions";
 import { getCourses } from "@/store/actions/coursesActions";
 import { useNavigate } from "react-router-dom";
 import { isCurrentUserStudent } from "@/utils/helper";
+import {
+  getDashboardData,
+  getTeacherId,
+} from "@/store/actions/dashboardActions";
 
 const ManageEvents = () => {
   const [isAddEvent, setIsAddEvent] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
+  const [isViewEvent, setIsViewEvent] = useState(false);
+  const [date, setDate] = useState();
   const dispatch = useDispatch();
 
   const { getEventsData } = useSelector((s) => s.eventReducer);
+  const { teacherIdData } = useSelector((s) => s.dashboardReducer);
 
   useEffect(() => {
+    dispatch(
+      getTeacherId({
+        payload: {
+          query: {
+            email: localStorage.getItem("email"),
+          },
+        },
+        // onError: () => navigate("/404", { replace: true }),
+      })
+    );
     dispatch(
       getEvents({
         onError: () => navigate("/404", { replace: true }),
@@ -44,6 +61,10 @@ const ManageEvents = () => {
   const handleCloseAddEventModal = () => {
     setIsAddEvent(!isAddEvent);
   };
+
+  const selectedDateEvents = getEventsData?.data?.eventList?.filter(
+    (event) => event?.eventDate === date?.dateStr
+  );
 
   const exportToExcel = () => {
     const header = ["Title", "Date", "Type", "Description", "Duration"];
@@ -101,19 +122,28 @@ const ManageEvents = () => {
                 date: item.eventDate,
               };
             })}
-            dateClick={isCurrentUserStudent() ? "" : addCalanderEvent}
+            dateClick={
+              isCurrentUserStudent()
+                ? ""
+                : (e) => {
+                    console.log(getEventsData?.data?.eventList);
+                    console.log(e);
+                    setDate(e);
+                    setIsViewEvent(true);
+                  }
+            }
             eventContent={renderEventContent}
           />
         </StyleWrapper>
       </div>
       <div className="flex flex-row justify-end gap-8">
-        <motion.button
+        {/* <motion.button
           onClick={() => setIsAddEvent(true)}
           className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-6 transition-opacity"
           whileHover={{ scale: 1.05 }}
         >
           Get Calendar URL
-        </motion.button>
+        </motion.button> */}
         <motion.button
           onClick={exportToExcel}
           className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-4 transition-opacity w-[14rem]"
@@ -161,6 +191,35 @@ const ManageEvents = () => {
           editIndex={editIndex}
         />
       </ModalTop>
+      <ModalTop
+        className="!rounded-[2.4rem] !max-w-[95.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
+        open={Boolean(isViewEvent)}
+        onClose={() => setIsViewEvent(false)}
+      >
+        <div className="grid gap-4">
+          {selectedDateEvents?.map((event) => (
+            <div key={event.id} className="border p-4 rounded-lg shadow-md">
+              <h2 className="text-[2rem] font-semibold">{event.title}</h2>
+              <p className="text-gray-600 text-[2rem]">
+                <span className="font-semibold">Type:</span> {event.type}
+              </p>
+              <p className="text-gray-600 text-[2rem]">
+                <span className="font-semibold">Description:</span>{" "}
+                {event.description}
+              </p>
+              <p className="text-gray-600 text-[2rem]">
+                <span className="font-semibold">Date:</span> {event.eventDate}
+              </p>
+              <p className="text-gray-600 text-[2rem]">
+                <span className="font-semibold">Section:</span> {event.section}
+              </p>
+            </div>
+          ))}
+          {selectedDateEvents?.length === 0 && (
+            <p className="text-gray-600 text-[2rem]">No events for this date</p>
+          )}
+        </div>
+      </ModalTop>
     </motion.div>
   );
 };
@@ -180,6 +239,7 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { coursesData } = useSelector((s) => s.courseReducer);
+  const { teacherIdData } = useSelector((s) => s.dashboardReducer);
 
   useEffect(() => {
     dispatch(
@@ -209,7 +269,8 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
             description: "",
             time: "",
             courseId: "",
-            teacherId: "1",
+            teacherId: teacherIdData?.data?.teacherId,
+            section: "",
           },
     validationSchema: AddEventSchema,
     onSubmit: (v) => {
@@ -331,6 +392,26 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
                 <option value="">Select a Course</option>
                 {coursesData.data?.courseList?.map((course, index) => (
                   <option value={course?.courseId}>{course?.courseName}</option>
+                ))}
+              </MyInput>
+            </div>
+            <div className="grid grid-cols-2 gap-x-[2.1rem] gap-y-[3.6rem] items-start">
+              <h1 className="body-medium h5">Select Section</h1>
+            </div>
+            <div>
+              <MyInput
+                type="select"
+                placeholder="Select a section"
+                className="col-span-1 sm:col-span-6"
+                value={values.section}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.section && errors.section}
+                name="section"
+              >
+                <option value="">Select a Section</option>
+                {teacherIdData?.data?.teacherSections?.map((section, index) => (
+                  <option value={section?.section}>{section?.section}</option>
                 ))}
               </MyInput>
             </div>
