@@ -74,12 +74,14 @@ const Assignment = ({ forStudent = false }) => {
   const handleUploadAssignment = () => {
     handleLoader();
 
+    const {studentId} = JSON.parse(localStorage.getItem("userInfo"))
+
     const formData = new FormData();
 
     const obj = {
       assignmentId: data.assignmentId,
       comments: "Pending",
-      studentId: 2,
+      studentId: studentId,
       description: "dummy",
       submissionDate: moment().format("MM-DD-YYYY"),
       submittedFile: state.uploadedFile,

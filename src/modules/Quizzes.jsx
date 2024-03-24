@@ -83,7 +83,7 @@ const Quizzes = ({ forStudent = false }) => {
       {quizzesData?.data?.quizList?.map((item, k) => (
         <div className="w-5/6" key={k}>
           <QuizCard
-            qid={item?.assignmentId}
+            qid={item?.assignmentId || item?.quizId}
             quizNo={k + 1}
             title={item?.quizTitle ?? item?.title}
             attempts={23}
