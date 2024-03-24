@@ -46,7 +46,7 @@ const AssignmentSummary = () => {
 };
 
 const Table = () => {
-const { assignmentSubmissionsData } = useSelector((s) => s.assignmentReducer);
+  const { assignmentSubmissionsData } = useSelector((s) => s.assignmentReducer);
   const navigate = useNavigate();
   const { id, aid } = useParams();
   const { query } = useQueryParams({ page: 1, query: "" });
@@ -55,50 +55,64 @@ const { assignmentSubmissionsData } = useSelector((s) => s.assignmentReducer);
 
   useEffect(() => {
     if (query) {
-      const filtered = assignmentSubmissionsData?.data?.assignmentSubmissionResponseList?.filter(item =>
-        item?.studentName?.toLowerCase().includes(query.toLowerCase()) ||  
-        item?.studentId === query.toLowerCase() || 
-        item?.submissionDate?.toLowerCase().includes(query.toLowerCase()) 
-      );
+      const filtered =
+        assignmentSubmissionsData?.data?.assignmentSubmissionResponseList?.filter(
+          (item) =>
+            item?.studentName?.toLowerCase().includes(query.toLowerCase()) ||
+            item?.studentId === query.toLowerCase() ||
+            item?.submissionDate?.toLowerCase().includes(query.toLowerCase())
+        );
       setFilteredData(filtered);
     } else {
-      setFilteredData(assignmentSubmissionsData?.data?.assignmentSubmissionResponseList);
+      setFilteredData(
+        assignmentSubmissionsData?.data?.assignmentSubmissionResponseList
+      );
     }
   }, [assignmentSubmissionsData, query]);
 
   return (
     <>
-    {assignmentSubmissionsData.loading && <Loader type="screen" />}
-   <div className="overflow-x-auto">
-  <table className="w-full table text-[2rem]">
-    <thead>
-      <tr className="tr">
-        <th className="p-9 th">Full Name</th>
-        <th className="p-9 th">Roll No</th>
-        <th className="p-9 th">Submission Date</th>
-        <th className="p-9 th">Marking Status</th>
-        <th className="p-9 th">Grade</th>
-        <th className="p-9 th">Feedback</th>
-        <th className="p-9 th">Final Marks</th>
-      </tr>
-    </thead>
-    <tbody>
-    {filteredData?.map((b, i) => (
-        <tr key={i} className="tr">
-          <td className="p-9 td">{b?.studentName || "--"}</td>
-          <td className="p-9 td">{b?.studentId || "--"}</td>
-          <td className="p-9 td">{b?.submissionDate || "--"}</td>
-          <td className={`flex flex-row items-center gap-4 p-9 td underline ${b?.obtainedMarks!==-1? 'text-green-700': 'text-red-800'} hover:text-gray-700 cursor-pointer`} onClick={()=>navigate(`/course/${b?.studentId}/assignment/${aid}/student/${b?.assignmentId}`)}>{b?.obtainedMarks===-1?"Unmarked": "Marked" || "--"} <EditIcon/></td>
-          <td className="p-9 td">{b?.obtainedGrade || "--"}</td>
-          <td className="p-9 td">{b?.comments || "--"}</td>
-          <td className="p-9 td">{b?.obtainedMarks || "--"}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
-
+      {assignmentSubmissionsData.loading && <Loader type="screen" />}
+      <div className="overflow-x-auto">
+        <table className="w-full table text-[2rem]">
+          <thead>
+            <tr className="tr">
+              <th className="p-9 th">Full Name</th>
+              <th className="p-9 th">Roll No</th>
+              <th className="p-9 th">Submission Date</th>
+              <th className="p-9 th">Marking Status</th>
+              <th className="p-9 th">Grade</th>
+              <th className="p-9 th">Feedback</th>
+              <th className="p-9 th">Final Marks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData?.map((b, i) => (
+              <tr key={i} className="tr">
+                <td className="p-9 td">{b?.studentName || "--"}</td>
+                <td className="p-9 td">{b?.studentId || "--"}</td>
+                <td className="p-9 td">{b?.submissionDate || "--"}</td>
+                <td
+                  className={`flex flex-row items-center gap-4 p-9 td underline ${
+                    b?.obtainedMarks !== -1 ? "text-green-700" : "text-red-800"
+                  } hover:text-gray-700 cursor-pointer`}
+                  onClick={() =>
+                    navigate(
+                      `/course/${b?.studentId}/assignment/${aid}/student/${b?.studentRollNumber}`
+                    )
+                  }
+                >
+                  {b?.obtainedMarks === -1 ? "Unmarked" : "Marked" || "--"}{" "}
+                  <EditIcon />
+                </td>
+                <td className="p-9 td">{b?.obtainedGrade || "--"}</td>
+                <td className="p-9 td">{b?.comments || "--"}</td>
+                <td className="p-9 td">{b?.obtainedMarks || "--"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };

@@ -12,7 +12,7 @@ export const getEvents = asyncCatch(
   "eventSlice/getEvents",
   async ({ config, query }) =>
     axios.get(
-      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/events/teacher?teacherEmail=${query.teacherEmail}`,
+      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/events/teacher/${query.teacherEmail}`,
       config
     )
 );

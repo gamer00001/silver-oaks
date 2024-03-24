@@ -38,6 +38,7 @@ import StudentDashboard from "./modules/StudentDashboard";
 import EnrolledCourses from "./modules/EnrolledCourses";
 import { StudentCoursesTabs } from "./constants/common";
 import OnGoingAssignments from "./modules/OnGoingAssignments";
+import OGA from "./modules/OGA";
 
 const Routes = () => {
   return (
@@ -273,6 +274,10 @@ const headerLayoutRoutes = [
         element={
           <MyReactHelmet title="Assignments" element={<Assignments />} />
         }
+      />
+      <Route
+        path="/course/oga/:id"
+        element={<MyReactHelmet title="OGA" element={<OGA />} />}
       />
       <Route
         path="/course/participants/:id"

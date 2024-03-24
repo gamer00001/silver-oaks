@@ -5,6 +5,7 @@ import {
   getAssignmentSubmission,
   getAssignmentSubmissions,
   getAssignments,
+  getAssignmentsByCourseId,
   markAssignment,
 } from "../actions/assignmentsActions";
 
@@ -74,6 +75,26 @@ const assignmentSlice = createSlice({
       };
     });
     builder.addCase(getAssignments.rejected, (state) => {
+      state.assignmentsData = {
+        ...initialState.assignmentsData,
+        loading: false,
+      };
+    });
+
+    //get asssignments by Id
+    builder.addCase(getAssignmentsByCourseId.pending, (state) => {
+      state.assignmentsData = {
+        ...initialState.assignmentsData,
+        loading: true,
+      };
+    });
+    builder.addCase(getAssignmentsByCourseId.fulfilled, (state, action) => {
+      state.assignmentsData = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getAssignmentsByCourseId.rejected, (state) => {
       state.assignmentsData = {
         ...initialState.assignmentsData,
         loading: false,

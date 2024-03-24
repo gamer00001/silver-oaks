@@ -14,7 +14,10 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import StatsIcon from "@/assets/Icons/StatsIcon";
 import { PieChart, Pie, Legend, ResponsiveContainer } from "recharts";
-import { getDashboardData } from "@/store/actions/dashboardActions";
+import {
+  getDashboardData,
+  getTeacherId,
+} from "@/store/actions/dashboardActions";
 import StudentDashboard from "./StudentDashboard";
 import { currentLoggedInUserType } from "@/utils/helper";
 import { scrollToTop } from "@/utils";
@@ -77,6 +80,15 @@ const Dashboard = ({ forStudent = false }) => {
           // onError: () => navigate("/404", { replace: true }),
         })
       );
+    dispatch(
+      getTeacherId({
+        payload: {
+          query: {
+            email: localStorage.getItem("email"),
+          },
+        },
+      })
+    );
   }, [dispatch, navigate]);
 
   if (state.userType === "student") {
