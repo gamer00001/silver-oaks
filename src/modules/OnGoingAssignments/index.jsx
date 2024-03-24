@@ -26,6 +26,7 @@ const OnGoingAssignments = ({ forStudent = false }) => {
         payload: {
           query: {
             courseId: id,
+            studentRollNumber: localStorage.getItem("email")
           },
           dispatch,
         },

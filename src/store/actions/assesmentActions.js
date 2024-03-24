@@ -8,7 +8,7 @@ export const getAssesments = asyncCatch(
   async ({ config, query }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/course/${query.courseId}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/course/${query.courseId}/${query.studentRollNumber}`,
         config
       )
       .then((resp) => resp)

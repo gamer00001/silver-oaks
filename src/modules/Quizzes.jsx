@@ -13,6 +13,7 @@ import { Loader } from "@/components/common";
 import CourseBlock from "@/components/common/CourseBlock";
 import { fetchSelectedCourseInfo } from "@/utils/helper";
 
+
 const Quizzes = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -20,12 +21,14 @@ const Quizzes = ({ forStudent = false }) => {
   const { quizzesData } = useSelector((s) => s.quizReducer);
 
   useEffect(() => {
+    
     dispatch(
       getQuizzes({
         onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
             courseId: id,
+            studentRollNumber: localStorage.getItem("email")
           },
           dispatch,
         },
