@@ -6,49 +6,6 @@ import { getCourses } from "@/store/actions/coursesActions";
 import { CoursesColors } from "@/utils/helper";
 import { Loader } from "@/components/common";
 
-const coursesList = [
-  {
-    heading: "Grade 1",
-    title: "English",
-    bgColor: "#0BF4C8",
-    link: "/enrolled-courses/lectures/1",
-  },
-  {
-    heading: "Grade 1",
-    title: "Science",
-    bgColor: "#FAD85D",
-    textColor: "#fff",
-    link: "",
-  },
-  {
-    heading: "Grade 1",
-    title: "Maths",
-    bgColor: "#0C7E40",
-    textColor: "#fff",
-    link: "",
-  },
-  {
-    heading: "Grade 1",
-    title: "Urdu",
-    bgColor: "#7A1317",
-    textColor: "#fff",
-    link: "",
-  },
-  {
-    heading: "Grade 1",
-    title: "Islamiat",
-    bgColor: "#FAD85D",
-    textColor: "#fff",
-    link: "",
-  },
-  {
-    heading: "Grade 1",
-    title: "Computer",
-    bgColor: "#0C7E40",
-    textColor: "#fff",
-    link: "",
-  },
-];
 
 const EnrolledCourses = () => {
   const dispatch = useDispatch();
@@ -79,8 +36,9 @@ const EnrolledCourses = () => {
             width="w-5/12"
             height="h-72"
             bookIcon="w-40"
-            titleFontSize="text-7xl"
+            titleFontSize="text-5xl"
             headingFontSize="text-2xl"
+            title={item?.courseName}
             data={CoursesColors[index]}
             link={`/enrolled-courses/lectures/${item?.courseId}`}
             bgColor={CoursesColors[index]?.backgroundColor}
