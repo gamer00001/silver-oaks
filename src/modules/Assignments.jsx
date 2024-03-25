@@ -65,7 +65,7 @@ const Assignments = ({ forStudent = false }) => {
             },
           })
         )
-      : getAssignments({
+      : dispatch(getAssignments({
           onError: () => navigate("/404", { replace: true }),
           payload: {
             query: {
@@ -75,8 +75,8 @@ const Assignments = ({ forStudent = false }) => {
             },
             dispatch,
           },
-        });
-  }, []);
+        }));
+  }, []); 
 
   useEffect(() => {
     selectedSection &&
@@ -96,7 +96,7 @@ const Assignments = ({ forStudent = false }) => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
-      <select
+      {!forStudent && <select
         type="select"
         placeholder="Select a section"
         onChange={(e) => setSelectedSection(e.target.value)}
@@ -104,7 +104,7 @@ const Assignments = ({ forStudent = false }) => {
         {teacherIdData?.data?.teacherSections?.map((section, index) => (
           <option value={section?.section}>{section?.section}</option>
         ))}
-      </select>
+      </select> }
 
       {assignmentsData.loading && <Loader type="screen" />}
 
