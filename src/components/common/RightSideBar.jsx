@@ -182,7 +182,7 @@ const AddNewEventModal = ({ value, onAdd, onClose, editIndex }) => {
             description: "",
             time: "",
             courseId: "",
-            teacherId: "1",
+            teacherId: "7",
           },
     validationSchema: AddEventSchema,
     onSubmit: (v) => {

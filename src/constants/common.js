@@ -12,6 +12,10 @@ export const TeacherCoursesTabs = [
     to: "./assignments",
   },
   {
+    title: "OGA",
+    to: "./oga",
+  },
+  {
     title: "Participants",
     to: "./participants",
   },
