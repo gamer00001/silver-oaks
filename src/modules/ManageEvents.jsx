@@ -31,16 +31,16 @@ const ManageEvents = () => {
   const { teacherIdData } = useSelector((s) => s.dashboardReducer);
 
   useEffect(() => {
-    dispatch(
-      getTeacherId({
-        payload: {
-          query: {
-            email: localStorage.getItem("email"),
+    !isCurrentUserStudent() && dispatch(
+        getTeacherId({
+          payload: {
+            query: {
+              email: localStorage.getItem("email"),
+            },
           },
-        },
-        // onError: () => navigate("/404", { replace: true }),
-      })
-    );
+          // onError: () => navigate("/404", { replace: true }),
+        })
+      );
     dispatch(
       getEvents({
         onError: () => navigate("/404", { replace: true }),
@@ -136,22 +136,26 @@ const ManageEvents = () => {
           />
         </StyleWrapper>
       </div>
-      <div className="flex flex-row justify-end gap-8">
-        {/* <motion.button
-          onClick={() => setIsAddEvent(true)}
-          className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-6 transition-opacity"
-          whileHover={{ scale: 1.05 }}
-        >
-          Get Calendar URL
-        </motion.button> */}
-        <motion.button
-          onClick={exportToExcel}
-          className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-4 transition-opacity w-[14rem]"
-          whileHover={{ scale: 1.05 }}
-        >
-          Export
-        </motion.button>
-      </div>
+      {
+        
+        !isCurrentUserStudent() && <div className="flex flex-row justify-end gap-8">
+              {/* <motion.button
+                onClick={() => setIsAddEvent(true)}
+                className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-6 transition-opacity"
+                whileHover={{ scale: 1.05 }}
+              >
+                Get Calendar URL
+              </motion.button> */}
+              <motion.button
+                onClick={exportToExcel}
+                className="grid-center text-[1.5rem] text-white hover:opacity-70 duration-300 bg-custom-red rounded-full p-4 transition-opacity w-[14rem]"
+                whileHover={{ scale: 1.05 }}
+              >
+                Export
+              </motion.button>
+            </div>
+      }
+
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[95.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
         open={Boolean(isAddEvent)}

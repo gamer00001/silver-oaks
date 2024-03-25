@@ -69,26 +69,27 @@ const Dashboard = ({ forStudent = false }) => {
     const userType = currentLoggedInUserType();
     scrollToTop();
 
-    if (userType === "teacher")
+    if (userType === "teacher"){
+        dispatch(
+          getDashboardData({
+            payload: {
+              query: {
+                email: localStorage.getItem("email"),
+              },
+            },
+            // onError: () => navigate("/404", { replace: true }),
+          })
+        );
       dispatch(
-        getDashboardData({
+        getTeacherId({
           payload: {
             query: {
               email: localStorage.getItem("email"),
             },
           },
-          // onError: () => navigate("/404", { replace: true }),
         })
       );
-    dispatch(
-      getTeacherId({
-        payload: {
-          query: {
-            email: localStorage.getItem("email"),
-          },
-        },
-      })
-    );
+    }
   }, [dispatch, navigate]);
 
   if (state.userType === "student") {
