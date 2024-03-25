@@ -33,6 +33,20 @@ export const getAssignments = asyncCatch(
       })
 );
 
+export const getAssignmentsByCourseId = asyncCatch(
+  "assignmentSlice/getAssignmentsByCourseId",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/getByCourse/${query.courseId}/${query.section}`,
+        config
+      )
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const getAssignmentById = asyncCatch(
   "assignmentSlice/getAssignmentById",
   async ({ config, query, dispatch }) =>
