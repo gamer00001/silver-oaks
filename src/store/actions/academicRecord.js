@@ -7,7 +7,10 @@ export const getAcademicRecord = asyncCatch(
   "academicRecordSlice/getAcademicRecord",
   async ({ config, query }) =>
     axios
-      .get(`${CONSTANTS.VITE_BACKEND_API_URL}/academic-record`, config)
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/academic-record?academicCategory=${query.academicCategory}&page=${query.page}&size=${query.size}&studentRollNumber=${query.studentRollNumber}&term=${query.term}`,
+        config
+      )
       .then((resp) => resp)
       .catch((error) => {
         handleError(error);
