@@ -216,6 +216,7 @@ const EnrolledCourses = ({ coursesList = [], navigate }) => {
             textColor={CoursesColors[index].textColor}
             bgColor={CoursesColors[index].backgroundColor}
             title={item?.courseName}
+            heading={item?.grade}
             link={`/enrolled-courses/lectures/${item.courseId}`}
             {...item}
           />

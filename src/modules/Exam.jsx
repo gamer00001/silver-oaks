@@ -21,7 +21,19 @@ const Exam = ({ forStudent = false }) => {
 
   const { assesmentsData } = useSelector((s) => s.assesmentReducer);
 
+  const [course, setCourse] = useState(null)
+
+  const { coursesData } = useSelector((s) => s.courseReducer);
+
+  const findCourseById = () => {
+    const foundCourse = coursesData?.data?.courseList?.find(
+      (course) => course.courseId == id
+    );
+    setCourse(foundCourse);
+  };
+
   useEffect(() => {
+    forStudent && findCourseById()
     dispatch(
       getAssesments({
         onError: () => navigate("/404", { replace: true }),
@@ -43,8 +55,10 @@ const Exam = ({ forStudent = false }) => {
           bookIcon="w-72"
           width="w-5/6"
           height="h-96"
-          titleFontSize="text-9xl"
+          titleFontSize="text-7xl"
           headingFontSize="text-4xl"
+          title={course?.courseName}
+          heading={course?.grade}
           textColor={fetchSelectedCourseInfo()?.textColor}
           bgColor={fetchSelectedCourseInfo()?.backgroundColor}
         />
