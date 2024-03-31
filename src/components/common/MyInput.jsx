@@ -485,7 +485,7 @@ const CheckBoxesGroup = ({
         {label}
       </label>
       <div className="border border-custom-golden outline-none px-[3.2rem] py-[1.8rem] rounded-[.8rem] grid gap-[1.6rem] items-start">
-        {options.map((option, index) => (
+        {options?.map((option, index) => (
           <CheckboxInput
             label={option}
             key={index}
