@@ -15,7 +15,7 @@ const CourseHeader = ({ courseTabs }) => {
 
   const findCourseById = () => {
     const foundCourse = coursesData?.data?.courseList?.find(
-      (course) => course.courseId === 1
+      (course) => course.courseId == id
     );
     setCourse(foundCourse);
   };

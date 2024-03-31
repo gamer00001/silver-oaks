@@ -19,8 +19,10 @@ import {
 } from "@/store/actions/lecturesActions";
 import CourseBlock from "@/components/common/CourseBlock";
 import { fetchSelectedCourseInfo } from "@/utils/helper";
+import { courseReducer } from "@/store";
 
 const Lectures = ({ forStudent = false, courseInfo }) => {
+  debugger
   const { id } = useParams();
   const { state } = useLocation();
 
@@ -29,7 +31,20 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
     (s) => s.lectureReducer
   );
 
+  const [course, setCourse] = useState(null)
+
+  const { coursesData } = useSelector((s) => s.courseReducer);
+
+  const findCourseById = () => {
+    const foundCourse = coursesData?.data?.courseList?.find(
+      (course) => course.courseId == id
+    );
+    setCourse(foundCourse);
+  };
+
+
   useEffect(() => {
+    forStudent && findCourseById()
     dispatch(
       getLectures({
         onError: () => navigate("/404", { replace: true }),
@@ -53,8 +68,10 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
           bookIcon="w-72"
           width="w-5/6"
           height="h-96"
-          titleFontSize="text-9xl"
+          titleFontSize="text-7xl"
           headingFontSize="text-4xl"
+          title={course?.courseName}
+          heading={course?.grade}
           textColor={fetchSelectedCourseInfo()?.textColor}
           bgColor={fetchSelectedCourseInfo()?.backgroundColor}
         />
@@ -75,7 +92,7 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
             lid={item?.lectureId}
             lectureNo={k + 1}
             title={item?.lectureTitle}
-            link={item?.videoURL}
+            link={item?.videoURL  || item?.powerPointURL}
             status={!item?.visible}
             forStudent={forStudent}
           />

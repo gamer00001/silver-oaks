@@ -39,6 +39,7 @@ const EnrolledCourses = () => {
             titleFontSize="text-5xl"
             headingFontSize="text-2xl"
             title={item?.courseName}
+            heading={item?.grade}
             data={CoursesColors[index]}
             link={`/enrolled-courses/lectures/${item?.courseId}`}
             bgColor={CoursesColors[index]?.backgroundColor}
