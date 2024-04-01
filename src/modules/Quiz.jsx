@@ -26,6 +26,8 @@ const Quiz = ({
 }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
+  const [timeInSeconds, setTimeInSeconds] = useState(0); // 30 minutes in seconds
+
   const [state, setState] = useState({
     quizInfo: {},
     ogaInfo: {},
@@ -52,6 +54,9 @@ const Quiz = ({
       dispatch(
         getOnGoingAssigmentById({
           onSuccess: (res) => {
+            const time = res.time ?? 1;
+            setTimeInSeconds(+time * 60);
+
             setState((prev) => ({
               ...prev,
               ogaInfo: res,
@@ -70,6 +75,9 @@ const Quiz = ({
       dispatch(
         getExamById({
           onSuccess: (res) => {
+            const time = res?.time ?? 1;
+            setTimeInSeconds(+time * 60);
+
             setState((prev) => ({
               ...prev,
               examInfo: res,
@@ -88,6 +96,9 @@ const Quiz = ({
       dispatch(
         getQuizById({
           onSuccess: (res) => {
+            const time = res.time ?? 1;
+            setTimeInSeconds(+time * 60);
+
             setState((prev) => ({
               ...prev,
               quizInfo: res,
@@ -103,6 +114,30 @@ const Quiz = ({
         })
       );
   }, []);
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimeInSeconds((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(timerInterval);
+          handleSubmitQuiz();
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000); // Update every second
+
+    return () => clearInterval(timerInterval);
+  }, []); // Empty dependency array means this effect runs only once on component mount
+
+  // Convert timeInSeconds to minutes and seconds
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = timeInSeconds % 60;
+
+  // Format minutes and seconds with leading zeros if necessary
+  const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
+    seconds
+  ).padStart(2, "0")}`;
 
   const backQuestion = () => {
     count > 0 && setCount(count - 1);
@@ -166,7 +201,10 @@ const Quiz = ({
     const payload = {
       courseId: examInfo?.course?.courseId,
       examId: examInfo?.examId,
-      examQuestionList: examInfo.examQuestions,
+      examQuestionList: examInfo.examQuestions.map((item) => ({
+        ...item,
+        answer: item.answer ?? "",
+      })),
       studentRollNumber: +localStorage.getItem("email"),
       totalMarks: examInfo.totalMarks,
     };
@@ -189,7 +227,10 @@ const Quiz = ({
     const payload = {
       courseId: ogaInfo?.course?.courseId,
       ogaId: ogaInfo?.ogaId,
-      ogaQuestionList: ogaInfo.ogaQuestions,
+      ogaQuestionList: ogaInfo.ogaQuestions.map((item) => ({
+        ...item,
+        answer: item.answer ?? "",
+      })),
       studentRollNumber: +localStorage.getItem("email"),
       totalMarks: ogaInfo.totalMarks,
     };
@@ -216,7 +257,10 @@ const Quiz = ({
     const payload = {
       courseId: quizInfo?.course?.courseId,
       quizId: quizInfo?.quizId,
-      quizQuestionList: quizInfo.quizQuestions,
+      quizQuestionList: quizInfo.quizQuestions.map((item) => ({
+        ...item,
+        answer: item?.answer ?? "",
+      })),
       studentRollNumber: +localStorage.getItem("email"),
       totalMarks: quizInfo.totalMarks,
     };
@@ -253,33 +297,40 @@ const Quiz = ({
 
   return (
     <div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 justify-between items-center">
         {(loading || assesmentData?.loading || singleExamData?.loading) && (
           <Loader type="screen" />
         )}
 
-        <QuizIcon />
-        <div className={`flex flex-col justify-center`}>
-          <div className="flex flex-row gap-2 justify-center items-center">
-            <h1 className="font-extrabold text-[1.5rem]">{`${
-              forAssesment ? "Assesment" : "Quiz"
-            } ${
-              (selectedData?.ogaId ||
-                selectedData?.quizId ||
-                selectedData?.examId) ??
-              "N/A"
-            }:`}</h1>
+        <div className={`flex flex-row gap-4 justify-center`}>
+          <QuizIcon />
+          <div className={`flex flex-col justify-center`}>
+            <div className="flex flex-row gap-2 justify-center items-center">
+              <h1 className="font-extrabold text-[1.5rem]">{`${
+                forAssesment ? "Assesment" : "Quiz"
+              } ${
+                (selectedData?.ogaId ||
+                  selectedData?.quizId ||
+                  selectedData?.examId) ??
+                "N/A"
+              }:`}</h1>
 
-            <h1 className="body-medium">
-              {(selectedData?.ogaTitle ||
-                selectedData?.quizTitle ||
-                selectedData?.examTitle) ??
-                "N/A"}
-            </h1>
-          </div>
-          {/* <h1 className="font-bold text-[1.5rem] text-custom-red">
+              <h1 className="body-medium">
+                {(selectedData?.ogaTitle ||
+                  selectedData?.quizTitle ||
+                  selectedData?.examTitle) ??
+                  "N/A"}
+              </h1>
+            </div>
+
+            {/* <h1 className="font-bold text-[1.5rem] text-custom-red">
             23 of 26 attempted
           </h1> */}
+          </div>
+        </div>
+
+        <div className="text-custom-red font-bold text-[2rem]">
+          {formattedTime}
         </div>
       </div>
       <h1 className="px-[6rem] py-[2rem] text-custom-red font-bold text-[2rem]">

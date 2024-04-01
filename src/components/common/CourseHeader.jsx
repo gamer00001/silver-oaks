@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 
-const CourseHeader = ({ courseTabs }) => {
+const CourseHeader = ({ courseTabs, forStudent = false }) => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const { coursesData } = useSelector((s) => s.courseReducer);
@@ -31,7 +31,7 @@ const CourseHeader = ({ courseTabs }) => {
   return (
     <header>
       <div className="flex flex-row">
-        <Link to={"/my-courses"}>
+        <Link to={forStudent ? "/enrolled-courses" : "/my-courses"}>
           <h1 className="body-medium mb-8 font-extrabold">My Courses {">"} </h1>
         </Link>
         <span className="body-regular">{course?.courseName}</span>

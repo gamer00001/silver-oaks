@@ -32,7 +32,6 @@ const Login = ({ forStudent = false }) => {
     validationSchema: LoginSchema,
     onSubmit: (body) => {
       localStorage.setItem("email", body.email);
-      localStorage.setItem("userType", forStudent ? "student" : "teacher");
 
       dispatch(
         loginUser({
@@ -42,8 +41,13 @@ const Login = ({ forStudent = false }) => {
               password: body.password,
             },
           },
-          onSuccess: () => {
+          onSuccess: (res) => {
+            console.log({ res });
             navigate("/", { replace: true });
+            localStorage.setItem(
+              "userType",
+              res.role === "ROLE_STUDENT" ? "student" : "teacher"
+            );
             toast.success("Logged in successfully!");
           },
         })
@@ -124,7 +128,7 @@ const Login = ({ forStudent = false }) => {
             </div>
           </div>
         </form>
-        <span className="text-center text-2xl font-bold">OR</span>
+        {/* <span className="text-center text-2xl font-bold">OR</span>
 
         <div>
           <button
@@ -134,7 +138,7 @@ const Login = ({ forStudent = false }) => {
           >
             {`Login as ${forStudent ? "Teacher" : "Student"}`}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

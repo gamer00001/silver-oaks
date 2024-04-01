@@ -102,7 +102,7 @@ const studentLayoutRoutes = [
     />
     <Route
       path="/enrolled-courses"
-      element={<CourseLayout tabs={StudentCoursesTabs} />}
+      element={<CourseLayout tabs={StudentCoursesTabs} forStudent={true} />}
     >
       <Route
         path="/enrolled-courses/:id"
