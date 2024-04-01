@@ -22,7 +22,7 @@ import { fetchSelectedCourseInfo } from "@/utils/helper";
 import { courseReducer } from "@/store";
 
 const Lectures = ({ forStudent = false, courseInfo }) => {
-  debugger
+  // debugger
   const { id } = useParams();
   const { state } = useLocation();
 
@@ -31,7 +31,7 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
     (s) => s.lectureReducer
   );
 
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
 
   const { coursesData } = useSelector((s) => s.courseReducer);
 
@@ -42,9 +42,8 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
     setCourse(foundCourse);
   };
 
-
   useEffect(() => {
-    forStudent && findCourseById()
+    forStudent && findCourseById();
     dispatch(
       getLectures({
         onError: () => navigate("/404", { replace: true }),
@@ -92,7 +91,7 @@ const Lectures = ({ forStudent = false, courseInfo }) => {
             lid={item?.lectureId}
             lectureNo={k + 1}
             title={item?.lectureTitle}
-            link={item?.videoURL  || item?.powerPointURL}
+            link={item?.videoURL || item?.powerPointURL}
             status={!item?.visible}
             forStudent={forStudent}
           />
@@ -196,9 +195,9 @@ const LectureCard = ({ lid, lectureNo, title, link, status, forStudent }) => {
             >
               <PlayIcon />
               {/* {expanded && ( */}
-                <h1 className="font-bold text-[1.5rem] text-custom-red">
-                  {title}
-                </h1>
+              <h1 className="font-bold text-[1.5rem] text-custom-red">
+                {title}
+              </h1>
               {/* )} */}
             </div>
           </div>

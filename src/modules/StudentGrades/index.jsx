@@ -197,9 +197,11 @@ const StudentGrades = () => {
 
   return (
     <div>
-      <SearchForm />
+      <div className="flex items-center gap-10 justify-start">
+        <SearchForm />
+      </div>
 
-      <div className="flex flex-row justify-between items-center mb-8 pt-5">
+      <div className="flex flex-row justify-start gap-10 items-center mb-8 pt-5">
         <div class="flex flex-row gap-6">
           <RadioGroup
             selectionOption={state.academicCategory}
@@ -210,20 +212,22 @@ const StudentGrades = () => {
           />
         </div>
 
-        <MyPagination page={page} totalPages={10 || 0} />
-        <select
-          className="text-[2rem] border border-custom-golden border-solid"
-          onChange={handleAcademicTerm}
-        >
-          <option>Term 01</option>
-          <option>Term 02</option>
-          <option>Term 03</option>
-          <option>All</option>
-        </select>
+        <div className="md:flex">
+          <select
+            className="text-[2rem] border border-custom-golden border-solid"
+            onChange={handleAcademicTerm}
+          >
+            <option>Term 01</option>
+            <option>Term 02</option>
+            <option>Term 03</option>
+            <option>All</option>
+          </select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 w-full">
         <Table
+          page={page}
           columns={["Name", "Date", "Marks", "Feedback"]}
           rows={state.tableData.length > 0 ? state.tableData : Mock_Table_Data}
         />
@@ -261,7 +265,7 @@ const RadioGroup = ({ optionsList, selectionOption, onChange }) => {
   );
 };
 
-const Table = ({ columns, rows }) => {
+const Table = ({ columns, rows, page }) => {
   const exportData = () => {
     const exportedData = data.map((item) => ({
       FullName: item.fullName || "--",
@@ -313,14 +317,16 @@ const Table = ({ columns, rows }) => {
           </tbody>
         </table>
 
-        <div className="grid gap-[3.2rem] justify-end grid-cols-[auto_auto] items-center m-16">
+        <div className="grid gap-[3.2rem] justify-end grid-cols-[auto_auto] items-center mt-16">
           <button
-            className="p-[1.3rem_6.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
+            className="p-[1.3rem_2.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
             type="submit"
             onClick={exportData}
           >
             Download Excel
           </button>
+
+          <MyPagination page={page} totalPages={10 || 0} />
         </div>
       </div>
     </>
