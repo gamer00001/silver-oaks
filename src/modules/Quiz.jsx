@@ -257,7 +257,7 @@ const Quiz = ({
     const payload = {
       courseId: quizInfo?.course?.courseId,
       quizId: quizInfo?.quizId,
-      quizQuestionList: quizInfo.quizQuestions.map((item) => ({
+      quizQuestionList: quizInfo?.quizQuestions?.map((item) => ({
         ...item,
         answer: item?.answer ?? "",
       })),
@@ -394,6 +394,7 @@ const Quiz = ({
 };
 
 const QuizOptions = ({ checked, setChecked, data, options }) => {
+  debugger
   return (
     <div className="flex flex-col gap-4 px-[6rem]">
       {/* {data?.map((data, i) => ( */}
