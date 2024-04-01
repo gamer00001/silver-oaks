@@ -40,6 +40,7 @@ import { StudentCoursesTabs } from "./constants/common";
 import OnGoingAssignments from "./modules/OnGoingAssignments";
 import OGA from "./modules/OGA";
 import StudentGrades from "./modules/StudentGrades";
+import StudentLogin from "./modules/StudentLogin";
 
 const Routes = () => {
   return (
@@ -58,18 +59,23 @@ const authRoutes = [
       element={<MyReactHelmet title="Logout" element={<Logout />} />}
     />
   </Route>,
+
   <Route key="AuthRoutes" element={<UnProtectedRoute />}>
+    <Route
+      path="/student-login"
+      element={
+        <MyReactHelmet
+          title="Login"
+          element={<StudentLogin forStudent={true} />}
+        />
+      }
+    />
     <Route element={<AuthLayout />}>
       <Route
         path="/login"
         element={<MyReactHelmet title="Login" element={<Login />} />}
       />
-      <Route
-        path="/student-login"
-        element={
-          <MyReactHelmet title="Login" element={<Login forStudent={true} />} />
-        }
-      />
+
       <Route
         path="/forget-password"
         element={
