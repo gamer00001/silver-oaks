@@ -8,7 +8,7 @@ import { loginUser } from "@/store";
 import { SOIESLogo } from "@/assets/common";
 import { useEffect } from "react";
 
-const Login = ({ forStudent = false }) => {
+const StudentLogin = ({ forStudent = false }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -60,21 +60,23 @@ const Login = ({ forStudent = false }) => {
   }, [pathname]);
 
   return (
-    <div className="w-3/4 min-h-screen grid items-center grid-cols-1 p-[5rem] md:p-[5rem_5rem_5rem_0rem]">
-      <div className="grid gap-[4.3rem] max-w-[73rem] p-16">
-        <img className="w-[8rem]" src={SOIESLogo} alt="Silver Oaks Icon" />
-        <div className="grid gap-[1.2rem]">
-          <h1 className="text-custom-red text-[3.8rem] font-bold leading-[140%]">
-            Welcome
-          </h1>
+    <div className="flex h-screen">
+      <div className="flex-1 flex justify-center items-center ">
+        <form
+          className="bg-white rounded px-8 pt-6 pb-8 mb-4 w-2/3"
+          onSubmit={handleSubmit}
+        >
+          <img className="w-[8rem]" src={SOIESLogo} alt="Silver Oaks Icon" />
+          <div className="flex flex-col gap-[1.2rem]">
+            <h1 className="text-custom-red text-[3.8rem] font-bold leading-[140%]">
+              Welcome
+            </h1>
 
-          <p className="text-[#363848] text-[2rem] leading-[185%]">
-            Please fill your detail to access your account.
-          </p>
-        </div>
-
-        <form className="grid gap-[4.4rem]" onSubmit={handleSubmit}>
-          <div className="grid gap-[3.7rem]">
+            <p className="text-[#363848] text-[2rem] leading-[185%]">
+              Please fill your detail to access your account.
+            </p>
+          </div>
+          <div className="flex flex-col gap-[3.7rem]">
             <MyInput
               type="text"
               label="Username/Email"
@@ -97,10 +99,10 @@ const Login = ({ forStudent = false }) => {
             />
           </div>
 
-          <div className="grid gap-[4.5rem]">
-            <div className="grid grid-cols-2">
+          <div className="flex flex-col gap-[4.5rem] pt-12">
+            <div className="flex flex-col grid-cols-2">
               <MyInput type="checkbox" label="Remember me" />
-              <div className="grid justify-end opacity">
+              <div className="flex flex-col justify-end opacity">
                 {/* <Link
                 className="text-custom-red text-[1.8rem] underline"
                 to="/forget-password"
@@ -112,6 +114,7 @@ const Login = ({ forStudent = false }) => {
 
             <div>
               <button
+                type="submit"
                 className="relative overflow-hidden w-full bg-custom-red text-white text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!isValid || !dirty || loginUserData?.loading}
               >
@@ -127,21 +130,48 @@ const Login = ({ forStudent = false }) => {
               </button>
             </div>
           </div>
-        </form>
-        <span className="text-center text-2xl font-bold">OR</span>
+          <div className="text-center text-2xl font-bold py-8">OR</div>
 
-        <div>
-          <button
-            onClick={() => navigate(forStudent ? "/login" : "/student-login")}
-            className="relative overflow-hidden w-full bg-white border border-custom-red text-custom-red text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-            // disabled={!isValid || !dirty || loginUserData?.loading}
-          >
-            {`Login as ${forStudent ? "Teacher" : "Student"}`}
-          </button>
+          <div>
+            <button
+              onClick={() => navigate(forStudent ? "/login" : "/student-login")}
+              className="relative overflow-hidden w-full bg-white border border-custom-red text-custom-red text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              // disabled={!isValid || !dirty || loginUserData?.loading}
+            >
+              {`Login as ${forStudent ? "Teacher" : "Student"}`}
+            </button>
+            {/* </div> */}
+          </div>
+        </form>
+      </div>
+      {/* Right side with image */}
+      <div className="flex-1 flex flex-col justify-center items-start bg-[#7A1315] relative">
+        <img
+          src="/login-logo.svg"
+          alt="Background"
+          className="pl-16 pb-5"
+          //   className="max-w-full h-auto absolute left-14 top-5"
+        />
+
+        <div className="flex flex-col items-center">
+          <div className=" flex flex-col px-60 py-5">
+            <span className="font-bold text-white text-8xl">
+              Welcome to Student Portal
+            </span>
+
+            <span className="text-white text-4xl pt-6">
+              Login to access your account
+            </span>
+          </div>
+          <img
+            src="/student-login.svg"
+            alt="Background"
+            className="max-w-full h-auto"
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default StudentLogin;
