@@ -336,65 +336,69 @@ const Quiz = ({
       <h1 className="px-[6rem] py-[2rem] text-custom-red font-bold text-[2rem]">
         {count + 1}/{questionsList?.length}
       </h1>
-      {questionsList?.map((item, i) => (
-        <div
-          key={i}
-          className={`flex flex-col gap-4 ${count === i ? "block" : "hidden"}`}
-        >
-          <h1 className="px-[6rem] py-[2rem] font-semibold text-[2rem]">
-            {item.question}
-          </h1>
+      {!isEmpty(questionsList) &&
+        questionsList?.map((item, i) => (
+          <div
+            key={i}
+            className={`flex flex-col gap-4 ${
+              count === i ? "block" : "hidden"
+            }`}
+          >
+            <h1 className="px-[6rem] py-[2rem] font-semibold text-[2rem]">
+              {item.question}
+            </h1>
 
-          <QuizOptions
-            options={item}
-            data={item.options}
-            checked={selectedOptions[i]}
-            setChecked={(option) => {
-              if (option) {
-                let updatedList = [...selectedOptions];
-                updatedList[i] = option;
-                setSelectedOptions(updatedList);
-              }
-            }}
-          />
+            <QuizOptions
+              options={item}
+              data={item.options}
+              checked={selectedOptions[i]}
+              setChecked={(option) => {
+                if (option) {
+                  let updatedList = [...selectedOptions];
+                  updatedList[i] = option;
+                  setSelectedOptions(updatedList);
+                }
+              }}
+            />
 
-          {questionsList?.length > 0 && (
-            <div className="flex justify-end items-center py-[2rem]">
-              {count > 0 && (
+            {questionsList?.length > 0 && (
+              <div className="flex justify-end items-center py-[2rem]">
+                {count > 0 && (
+                  <button
+                    className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
+                    onClick={backQuestion}
+                  >
+                    <img
+                      src="/next-icon.svg"
+                      className="transform rotate-180"
+                      alt="icon"
+                    />
+                    Previous
+                  </button>
+                )}
                 <button
                   className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
-                  onClick={backQuestion}
+                  onClick={
+                    isCompleted
+                      ? () => handleSubmitQuiz()
+                      : () =>
+                          selectedOptions[i] && nextQuest(selectedOptions[i])
+                  }
                 >
-                  <img
-                    src="/next-icon.svg"
-                    className="transform rotate-180"
-                    alt="icon"
-                  />
-                  Previous
-                </button>
-              )}
-              <button
-                className=" flex gap-4 font-semibold bg-custom-red rounded-[4rem] pl-8 pr-8 pt-4 pb-4 text-white enabled:hover:opacity-70 transition-opacity text-4xl mr-[6rem]"
-                onClick={
-                  isCompleted
-                    ? () => handleSubmitQuiz()
-                    : () => selectedOptions[i] && nextQuest(selectedOptions[i])
-                }
-              >
-                {isCompleted ? "Finish" : "Next"}
+                  {isCompleted ? "Finish" : "Next"}
 
-                <img src="/next-icon.svg" alt="icon" />
-              </button>
-            </div>
-          )}
-        </div>
-      ))}
+                  <img src="/next-icon.svg" alt="icon" />
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
     </div>
   );
 };
 
 const QuizOptions = ({ checked, setChecked, data, options }) => {
-  debugger
+  debugger;
   return (
     <div className="flex flex-col gap-4 px-[6rem]">
       {/* {data?.map((data, i) => ( */}
