@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CardContent } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import MUICard from "@mui/material/Card";
 import QuizIcon from "@/assets/Icons/QuizIcon";
@@ -19,6 +20,7 @@ import {
   submitExamByStudent,
 } from "@/store/actions/assesmentActions";
 import { isEmpty } from "validator";
+import { handleError } from "@/utils/errorHandling";
 
 const Quiz = ({
   forStudent = false,
@@ -120,8 +122,8 @@ const Quiz = ({
     const timerInterval = setInterval(() => {
       setTimeInSeconds((prevTime) => {
         if (prevTime <= 0) {
-          clearInterval(timerInterval);
           handleSubmitQuiz();
+          clearInterval(timerInterval);
           return 0;
         }
         return prevTime - 1;
@@ -129,7 +131,13 @@ const Quiz = ({
     }, 1000); // Update every second
 
     return () => clearInterval(timerInterval);
-  }, []); // Empty dependency array means this effect runs only once on component mount
+  }, [state]); // Empty dependency array means this effect runs only once on component mount
+
+  // useEffect(() => {
+  //   if (timeInSeconds === 0) {
+  //     handleSubmitQuiz();
+  //   }
+  // }, [timeInSeconds]);
 
   // Convert timeInSeconds to minutes and seconds
   const minutes = Math.floor(timeInSeconds / 60);
@@ -139,8 +147,6 @@ const Quiz = ({
   const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
     seconds
   ).padStart(2, "0")}`;
-
-  console.log({ formattedTime, state, timeInSeconds });
 
   const backQuestion = () => {
     count > 0 && setCount(count - 1);
@@ -190,79 +196,76 @@ const Quiz = ({
 
   const handleSubmitQuiz = () => {
     if (forAssesment) {
-      submitOga();
+      submitOga(state.ogaInfo);
     } else if (forExam) {
-      submitExam();
+      submitExam(state.examInfo);
     } else {
-      submitQuiz();
+      submitQuiz(state.quizInfo);
     }
   };
 
-  const submitExam = () => {
-    const { examInfo } = state;
+  const submitExam = (examInfo) => {
+    const payload = {
+      courseId: examInfo?.course?.courseId,
+      examId: examInfo?.examId,
+      examQuestionList: examInfo?.examQuestions?.map((item) => ({
+        ...item,
+        answer: item.answer ?? "",
+      })),
+      studentRollNumber: +localStorage.getItem("email"),
+      totalMarks: examInfo.totalMarks,
+    };
 
-    if (examInfo) {
-      const payload = {
-        courseId: examInfo?.course?.courseId,
-        examId: examInfo?.examId,
-        examQuestionList: examInfo?.examQuestions?.map((item) => ({
-          ...item,
-          answer: item.answer ?? "",
-        })),
-        studentRollNumber: +localStorage.getItem("email"),
-        totalMarks: examInfo.totalMarks,
-      };
-
-      dispatch(
-        submitExamByStudent({
-          payload: {
-            body: payload,
-          },
-          onSuccess: () =>
-            navigate(
-              `/${forStudent ? "enrolled-courses" : "course"}/exam/${id}`
-            ),
-          onError: () => navigate("/404", { replace: true }),
-        })
-      );
-    }
+    dispatch(
+      submitExamByStudent({
+        payload: {
+          body: payload,
+        },
+        onSuccess: () => {
+          toast.success("Exam has been submitted!");
+          navigate(`/${forStudent ? "enrolled-courses" : "course"}/exam/${id}`);
+        },
+        onError: (error) => {
+          handleError(error);
+        },
+      })
+    );
   };
 
-  const submitOga = () => {
-    const { ogaInfo } = state;
+  const submitOga = (ogaInfo) => {
+    const payload = {
+      courseId: ogaInfo?.course?.courseId,
+      ogaId: ogaInfo?.ogaId,
+      ogaQuestionList: ogaInfo?.ogaQuestions?.map((item) => ({
+        ...item,
+        answer: item.answer ?? "",
+      })),
+      studentRollNumber: +localStorage.getItem("email"),
+      totalMarks: ogaInfo.totalMarks,
+    };
 
-    if (ogaInfo) {
-      const payload = {
-        courseId: ogaInfo?.course?.courseId,
-        ogaId: ogaInfo?.ogaId,
-        ogaQuestionList: ogaInfo?.ogaQuestions?.map((item) => ({
-          ...item,
-          answer: item.answer ?? "",
-        })),
-        studentRollNumber: +localStorage.getItem("email"),
-        totalMarks: ogaInfo.totalMarks,
-      };
+    dispatch(
+      submitOgaByStudent({
+        payload: {
+          body: payload,
+        },
+        onSuccess: () => {
+          toast.success("OGA has been submitted!");
 
-      dispatch(
-        submitOgaByStudent({
-          payload: {
-            body: payload,
-          },
-          onSuccess: () =>
-            navigate(
-              `/${
-                forStudent ? "enrolled-courses" : "course"
-              }/on-going-assesments/${id}`
-            ),
-          onError: () => navigate("/404", { replace: true }),
-        })
-      );
-    }
+          navigate(
+            `/${
+              forStudent ? "enrolled-courses" : "course"
+            }/on-going-assesments/${id}`
+          );
+        },
+        onError: (error) => {
+          handleError(error);
+        },
+      })
+    );
   };
 
-  const submitQuiz = () => {
-    const { quizInfo } = state;
-
+  const submitQuiz = (quizInfo) => {
     if (quizInfo) {
       const payload = {
         courseId: quizInfo?.course?.courseId,
@@ -280,10 +283,12 @@ const Quiz = ({
           payload: {
             body: payload,
           },
-          onSuccess: () =>
+          onSuccess: () => {
+            toast.success("Quiz has been submitted!");
             navigate(
               `/${forStudent ? "enrolled-courses" : "course"}/quizzes/${id}`
-            ),
+            );
+          },
           onError: () => navigate("/404", { replace: true }),
         })
       );
