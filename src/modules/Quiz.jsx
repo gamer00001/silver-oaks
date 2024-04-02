@@ -27,7 +27,7 @@ const Quiz = ({
 }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const [timeInSeconds, setTimeInSeconds] = useState(0); // 30 minutes in seconds
+  const [timeInSeconds, setTimeInSeconds] = useState(60);
 
   const [state, setState] = useState({
     quizInfo: {},
