@@ -181,9 +181,10 @@ const ActivityBlock = ({ activityData }) => {
       <span className="text-black font-bold text-4xl">Your Activity</span>
 
       <div className="flex gap-12 pt-12">
-        <StatsBlock value={activityData?.attendancePercentAge ?? 0} />
+        <StatsBlock value={activityData?.termCompletion ?? 0} />
         <StatsBlock
-          value={activityData?.termCompletion ?? 0}
+          title="Attendance"
+          value={activityData?.attendancePercentAge ?? 0}
           bgColor="#FFF8F0"
           activeColor="#F9AB35"
           heading="Your Activity"

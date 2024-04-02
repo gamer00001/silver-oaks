@@ -8,6 +8,7 @@ import {
   submitAssignmentByStudent,
 } from "@/store/actions/assignmentsActions";
 import { Loader, ModalTop } from "@/components/common";
+import { handleError } from "@/utils/errorHandling";
 
 const Assignment = ({ forStudent = false }) => {
   const [state, setState] = useState({
@@ -74,7 +75,7 @@ const Assignment = ({ forStudent = false }) => {
   const handleUploadAssignment = () => {
     handleLoader();
 
-    const {studentId} = JSON.parse(localStorage.getItem("userInfo"))
+    const { studentId } = JSON.parse(localStorage.getItem("userInfo"));
 
     const formData = new FormData();
 
@@ -98,7 +99,11 @@ const Assignment = ({ forStudent = false }) => {
           handleModal();
           fetchAssignment();
         },
-        // onError: () => navigate("/404", { replace: true }),
+        onError: (error) => {
+          handleLoader();
+          handleModal();
+          handleError(error);
+        },
         payload: {
           query: {
             queryParams: "",
