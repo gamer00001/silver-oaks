@@ -394,6 +394,7 @@ const Quiz = ({
 };
 
 const QuizOptions = ({ checked, setChecked, data, options }) => {
+  debugger
   return (
     <div className="flex flex-col gap-4 px-[6rem]">
       {/* {data?.map((data, i) => ( */}
