@@ -140,6 +140,8 @@ const Quiz = ({
     seconds
   ).padStart(2, "0")}`;
 
+  console.log({ formattedTime, state, timeInSeconds });
+
   const backQuestion = () => {
     count > 0 && setCount(count - 1);
     setIsCompleted(false);
@@ -168,7 +170,7 @@ const Quiz = ({
     setState((prev) => ({
       ...prev,
       quizInfo: {
-        ...prev.quizInfo,
+        ...prev?.quizInfo,
         quizQuestions: forAssesment ? [] : updatedList,
       },
       ogaInfo: {
@@ -199,85 +201,93 @@ const Quiz = ({
   const submitExam = () => {
     const { examInfo } = state;
 
-    const payload = {
-      courseId: examInfo?.course?.courseId,
-      examId: examInfo?.examId,
-      examQuestionList: examInfo?.examQuestions?.map((item) => ({
-        ...item,
-        answer: item.answer ?? "",
-      })),
-      studentRollNumber: +localStorage.getItem("email"),
-      totalMarks: examInfo.totalMarks,
-    };
+    if (examInfo) {
+      const payload = {
+        courseId: examInfo?.course?.courseId,
+        examId: examInfo?.examId,
+        examQuestionList: examInfo?.examQuestions?.map((item) => ({
+          ...item,
+          answer: item.answer ?? "",
+        })),
+        studentRollNumber: +localStorage.getItem("email"),
+        totalMarks: examInfo.totalMarks,
+      };
 
-    dispatch(
-      submitExamByStudent({
-        payload: {
-          body: payload,
-        },
-        onSuccess: () =>
-          navigate(`/${forStudent ? "enrolled-courses" : "course"}/exam/${id}`),
-        onError: () => navigate("/404", { replace: true }),
-      })
-    );
+      dispatch(
+        submitExamByStudent({
+          payload: {
+            body: payload,
+          },
+          onSuccess: () =>
+            navigate(
+              `/${forStudent ? "enrolled-courses" : "course"}/exam/${id}`
+            ),
+          onError: () => navigate("/404", { replace: true }),
+        })
+      );
+    }
   };
 
   const submitOga = () => {
     const { ogaInfo } = state;
 
-    const payload = {
-      courseId: ogaInfo?.course?.courseId,
-      ogaId: ogaInfo?.ogaId,
-      ogaQuestionList: ogaInfo?.ogaQuestions?.map((item) => ({
-        ...item,
-        answer: item.answer ?? "",
-      })),
-      studentRollNumber: +localStorage.getItem("email"),
-      totalMarks: ogaInfo.totalMarks,
-    };
+    if (ogaInfo) {
+      const payload = {
+        courseId: ogaInfo?.course?.courseId,
+        ogaId: ogaInfo?.ogaId,
+        ogaQuestionList: ogaInfo?.ogaQuestions?.map((item) => ({
+          ...item,
+          answer: item.answer ?? "",
+        })),
+        studentRollNumber: +localStorage.getItem("email"),
+        totalMarks: ogaInfo.totalMarks,
+      };
 
-    dispatch(
-      submitOgaByStudent({
-        payload: {
-          body: payload,
-        },
-        onSuccess: () =>
-          navigate(
-            `/${
-              forStudent ? "enrolled-courses" : "course"
-            }/on-going-assesments/${id}`
-          ),
-        onError: () => navigate("/404", { replace: true }),
-      })
-    );
+      dispatch(
+        submitOgaByStudent({
+          payload: {
+            body: payload,
+          },
+          onSuccess: () =>
+            navigate(
+              `/${
+                forStudent ? "enrolled-courses" : "course"
+              }/on-going-assesments/${id}`
+            ),
+          onError: () => navigate("/404", { replace: true }),
+        })
+      );
+    }
   };
 
   const submitQuiz = () => {
     const { quizInfo } = state;
 
-    const payload = {
-      courseId: quizInfo?.course?.courseId,
-      quizId: quizInfo?.quizId,
-      quizQuestionList: quizInfo?.quizQuestions?.map((item) => ({
-        ...item,
-        answer: item?.answer ?? "",
-      })),
-      studentRollNumber: +localStorage.getItem("email"),
-      totalMarks: quizInfo.totalMarks,
-    };
+    if (quizInfo) {
+      const payload = {
+        courseId: quizInfo?.course?.courseId,
+        quizId: quizInfo?.quizId,
+        quizQuestionList: quizInfo?.quizQuestions?.map((item) => ({
+          ...item,
+          answer: item?.answer ?? "",
+        })),
+        studentRollNumber: +localStorage.getItem("email"),
+        totalMarks: quizInfo.totalMarks,
+      };
 
-    dispatch(
-      submitQuizByStudent({
-        payload: {
-          body: payload,
-        },
-        onSuccess: () =>
-          navigate(
-            `/${forStudent ? "enrolled-courses" : "course"}/quizzes/${id}`
-          ),
-        onError: () => navigate("/404", { replace: true }),
-      })
-    );
+      dispatch(
+        submitQuizByStudent({
+          payload: {
+            body: payload,
+          },
+          onSuccess: () =>
+            navigate(
+              `/${forStudent ? "enrolled-courses" : "course"}/quizzes/${id}`
+            ),
+          onError: () => navigate("/404", { replace: true }),
+        })
+      );
+    }
   };
 
   if (loading) {
