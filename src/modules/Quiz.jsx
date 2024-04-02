@@ -104,7 +104,7 @@ const Quiz = ({
               quizInfo: res,
             }));
           },
-          onError: () => navigate("/404", { replace: true }),
+          // onError: () => navigate("/404", { replace: true }),
           payload: {
             query: {
               quizId: qid,
@@ -201,7 +201,7 @@ const Quiz = ({
     const payload = {
       courseId: examInfo?.course?.courseId,
       examId: examInfo?.examId,
-      examQuestionList: examInfo.examQuestions.map((item) => ({
+      examQuestionList: examInfo?.examQuestions?.map((item) => ({
         ...item,
         answer: item.answer ?? "",
       })),
@@ -227,7 +227,7 @@ const Quiz = ({
     const payload = {
       courseId: ogaInfo?.course?.courseId,
       ogaId: ogaInfo?.ogaId,
-      ogaQuestionList: ogaInfo.ogaQuestions.map((item) => ({
+      ogaQuestionList: ogaInfo?.ogaQuestions?.map((item) => ({
         ...item,
         answer: item.answer ?? "",
       })),
@@ -257,7 +257,7 @@ const Quiz = ({
     const payload = {
       courseId: quizInfo?.course?.courseId,
       quizId: quizInfo?.quizId,
-      quizQuestionList: quizInfo.quizQuestions.map((item) => ({
+      quizQuestionList: quizInfo?.quizQuestions?.map((item) => ({
         ...item,
         answer: item?.answer ?? "",
       })),
