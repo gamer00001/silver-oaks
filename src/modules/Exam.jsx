@@ -119,11 +119,11 @@ const ExamCard = ({
               <h1 className="font-extrabold text-[1.5rem]">Exam {examNo}: </h1>
               <h1 className="body-medium">{title}</h1>
             </div>
-            <div className={`flex flex-row ${expanded ? "block" : "hidden"}`}>
+            {/* <div className={`flex flex-row ${expanded ? "block" : "hidden"}`}>
               <h1 className="font-bold text-[1.5rem] text-custom-red">
                 {attempts + " "} of {" " + total + " "} attempted
               </h1>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col gap-2 justify-end items-end">
             {!forStudent && (
