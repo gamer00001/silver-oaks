@@ -236,11 +236,11 @@ const QuizCard = ({
               </h1>
               <h1 className="body-medium">{title}</h1>
             </div>
-            {!forStudent && (
+            {/* {!forStudent && (
               <h1 className="font-bold text-[1.5rem] text-custom-red">
                 {attempts + " "} of {" " + total + " "} attempted
               </h1>
-            )}
+            )} */}
             <div
               className={`flex flex-row ${
                 expanded ? "block" : "hidden"
