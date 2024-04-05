@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Set VITE_BACKEND_API_URL
+        run: echo "VITE_BACKEND_API_URL=https://soies-lms.azurewebsites.net" >> $GITHUB_ENV
+
+
+
       - name: npm install, build, and test
         run: |
           npm install
