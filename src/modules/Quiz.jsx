@@ -19,7 +19,6 @@ import {
   getExamById,
   submitExamByStudent,
 } from "@/store/actions/assesmentActions";
-import { isEmpty } from "validator";
 import { handleError } from "@/utils/errorHandling";
 
 const Quiz = ({
