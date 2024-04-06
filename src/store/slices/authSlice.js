@@ -52,6 +52,7 @@ export const changePassword = asyncCatch(
 const initialState = {
   loginUserData: {
     user: null,
+    userDetail: null,
     token: "",
     loading: false,
   },
@@ -90,8 +91,10 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
+      debugger
       state.loginUserData = {
         user: "Teacher",
+        userDetail: payload?.role === "ROLE_TEACHER" ?  payload?.teacher : payload?.student,
         token: payload?.accessToken,
         loading: false,
       };
