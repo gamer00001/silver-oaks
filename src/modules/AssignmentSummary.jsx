@@ -90,8 +90,8 @@ const Table = () => {
             {filteredData?.map((b, i) => (
               <tr key={i} className="tr">
                 <td className="p-9 td">{b?.studentName || "--"}</td>
-                <td className="p-9 td">{b?.studentId || "--"}</td>
-                <td className="p-9 td">{b?.submissionDate || "--"}</td>
+                <td className="p-9 td">{b?.studentId || b?.studentRollNumber || "--"}</td>
+                <td className="p-9 td">{b?.submissionDate || b?.date || "--"}</td>
                 <td
                   className={`flex flex-row items-center gap-4 p-9 td underline ${
                     b?.obtainedMarks !== -1 ? "text-green-700" : "text-red-800"
