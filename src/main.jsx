@@ -18,9 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           loading={<Loader type="screen" />}
         >
           {/* <CheckTokenSession> */}
-            <GlobalContextProvider>
-              <App />
-            </GlobalContextProvider>
+          <GlobalContextProvider>
+            <App />
+          </GlobalContextProvider>
           {/* </CheckTokenSession> */}
         </PersistGate>
       </StoreProvider>
