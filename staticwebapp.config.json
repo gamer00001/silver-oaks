@@ -1,0 +1,19 @@
+{
+    "navigationFallback": {
+      "rewrite": "/index.html",
+      "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+    },
+    "globalHeaders": {
+      "cache-control": "no-cache, no-store, must-revalidate"
+    },
+    "mimeTypes": {
+      ".json": "application/json",
+      ".webmanifest": "application/manifest+json"
+    },
+    "responseOverrides": {
+      "404": {
+        "rewrite": "/index.html"
+      }
+    }
+  }
+  
