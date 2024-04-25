@@ -145,21 +145,16 @@ const StudentLogin = ({ forStudent = false }) => {
         </form>
       </div>
       {/* Right side with image */}
-      <div className="flex-1 flex flex-col justify-center items-start bg-[#7A1315] relative">
-        <img
-          src="/login-logo.svg"
-          alt="Background"
-          className="pl-16 pb-5"
-          //   className="max-w-full h-auto absolute left-14 top-5"
-        />
+      <div className="flex-1 flex-col justify-center items-start relative bg-custom-red hidden md:grid col-start-2">
+        <img src="/login-logo.svg" alt="Background" className="pl-16 pb-5" />
 
         <div className="flex flex-col items-center">
-          <div className=" flex flex-col px-60 py-5">
-            <span className="font-bold text-white text-8xl">
+          <div className=" flex flex-col w-full pl-16 py-5">
+            <span className="font-bold text-white xl:text-7xl md:text-3xl">
               Welcome to Student Portal
             </span>
 
-            <span className="text-white text-4xl pt-6">
+            <span className="text-white xl:text-4xl md:text-xl pt-6">
               Login to access your account
             </span>
           </div>
