@@ -45,8 +45,21 @@ import StudentLogin from "./modules/StudentLogin";
 const Routes = () => {
   return (
     <RouterRoutes>
-      {authRoutes}
-      {headerSidebarLayoutRoutes}
+      <Route
+        path="/student-login"
+        element={
+          <MyReactHelmet
+            title="Login"
+            element={<StudentLogin forStudent={true} />}
+          />
+        }
+      />
+      <Route
+        path="/login"
+        element={<MyReactHelmet title="Login" element={<Login />} />}
+      />
+      {/* {authRoutes}
+      {headerSidebarLayoutRoutes} */}
       <Route path="*" element={<NotFound404 />} />
     </RouterRoutes>
   );
