@@ -91,10 +91,12 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
-      debugger
       state.loginUserData = {
         user: "Teacher",
-        userDetail: payload?.role === "ROLE_TEACHER" ?  payload?.teacher : payload?.student,
+        userDetail:
+          payload?.role === "ROLE_TEACHER"
+            ? payload?.teacher
+            : payload?.student,
         token: payload?.accessToken,
         loading: false,
       };

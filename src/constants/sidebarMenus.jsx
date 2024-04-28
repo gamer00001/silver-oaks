@@ -35,6 +35,20 @@ export const panelSideBar = () => ({
       to: "/enrolled-courses",
       name: "Enrolled Courses",
       icon: <CoursesIcon />,
+      courses: [
+        {
+          id: "43657457",
+          name: "Grade 1(Alliums)",
+        },
+        {
+          id: "43635654",
+          name: "Grade 2(Alliums)",
+        },
+        {
+          id: "43645776",
+          name: "Grade 3(Alliums)",
+        },
+      ],
     },
     // {
     //   to: "/to-do",
