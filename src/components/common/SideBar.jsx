@@ -57,7 +57,9 @@ const SideBar = () => {
           onClick={(e) => setAnchorEl(e.currentTarget)}
           className="body-medium !font-semiboldcapitalize max-w-[20rem] capitalize overflow-hidden text-ellipsis whitespace-nowrap text-white py-[1rem]"
         >
-          {userDetail?.employeeName ?? userDetail?.studentName ?? currentLoggedInUserType()}
+          {userDetail?.employeeName ??
+            userDetail?.studentName ??
+            currentLoggedInUserType()}
         </span>
       </div>
       <div className="gap-16 border-b-2 border-gray-100 ml-12 mr-12" />
@@ -79,6 +81,7 @@ const SideBarItem = ({ route }) => {
   const [expanded, setExpanded] = useState(false);
   const { coursesData } = useSelector((s) => s.courseReducer);
   const { pathname } = useLocation();
+
   const handleItemClick = () => {
     setIsSidebarOpen(false);
     if (route.name === "My Courses") {
@@ -121,7 +124,13 @@ const SideBarItem = ({ route }) => {
           >
             {coursesData?.data?.courseList?.map((course, index) => (
               <li className="px-[2.9rem] md:px-0 " key={index}>
-                <NavLink to={`/course/lectures/${course.courseId}`}>
+                <NavLink
+                  to={`/${
+                    currentLoggedInUserType() === "student"
+                      ? "enrolled-courses"
+                      : "course"
+                  }/lectures/${course.courseId}`}
+                >
                   <span
                     className={`md:pl-24  body-medium hover:text-custom-golden ${
                       pathname.includes(course.courseId)
