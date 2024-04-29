@@ -3,7 +3,7 @@ import Desktop from "@/assets/Icons/Desktop";
 import Events from "@/assets/Icons/Events";
 
 export const panelSideBar = () => ({
-  superAdmin: [
+  admin: [
     {
       to: "/",
       name: "Dashboard",
@@ -11,17 +11,27 @@ export const panelSideBar = () => ({
     },
     {
       to: "/my-courses",
-      name: "Enrolled Courses",
+      name: "All Classes",
       icon: <CoursesIcon />,
     },
     {
       to: "/manage-events",
-      name: "To do",
+      name: "Manage Students",
       icon: <Events />,
     },
     {
       to: "/manage-events",
-      name: "Calender",
+      name: "Manage Teachers",
+      icon: <Events />,
+    },
+    {
+      to: "/manage-events",
+      name: "Manage Anouncements",
+      icon: <Events />,
+    },
+    {
+      to: "/manage-events",
+      name: "Manage Notifications",
       icon: <Events />,
     },
   ],

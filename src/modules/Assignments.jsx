@@ -36,7 +36,7 @@ const Assignments = ({ forStudent = false }) => {
   const { assignmentsData } = useSelector((s) => s.assignmentReducer);
 
   const { teacherIdData } = useSelector((s) => s.dashboardReducer);
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
 
   const { coursesData } = useSelector((s) => s.courseReducer);
 
@@ -48,7 +48,7 @@ const Assignments = ({ forStudent = false }) => {
   };
 
   useEffect(() => {
-    forStudent && findCourseById()
+    forStudent && findCourseById();
     const studentInfo = JSON.parse(localStorage.getItem("userInfo")) ?? {};
 
     localStorage.getItem("userType") == "teacher"
@@ -76,18 +76,20 @@ const Assignments = ({ forStudent = false }) => {
             },
           })
         )
-      : dispatch(getAssignments({
-          onError: () => navigate("/404", { replace: true }),
-          payload: {
-            query: {
-              courseId: id,
-              section: studentInfo?.sectionName,
-              rollNumber: studentInfo?.rollNumber,
+      : dispatch(
+          getAssignments({
+            onError: () => navigate("/404", { replace: true }),
+            payload: {
+              query: {
+                courseId: id,
+                section: studentInfo?.sectionName,
+                rollNumber: studentInfo?.rollNumber,
+              },
+              dispatch,
             },
-            dispatch,
-          },
-        }));
-  }, []); 
+          })
+        );
+  }, []);
 
   useEffect(() => {
     selectedSection &&
@@ -107,15 +109,19 @@ const Assignments = ({ forStudent = false }) => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
-      {!forStudent && <select
-        type="select"
-        placeholder="Select a section"
-        onChange={(e) => setSelectedSection(e.target.value)}
-      >
-        {teacherIdData?.data?.teacherSections?.map((section, index) => (
-          <option value={section?.section}>{section?.section}</option>
-        ))}
-      </select> }
+      {!forStudent && (
+        <select
+          type="select"
+          placeholder="Select a section"
+          onChange={(e) => setSelectedSection(e.target.value)}
+        >
+          {teacherIdData?.data?.teacherSections?.map((section, index) => (
+            <option value={section?.section} key={index}>
+              {section?.section}
+            </option>
+          ))}
+        </select>
+      )}
 
       {assignmentsData.loading && <Loader type="screen" />}
 

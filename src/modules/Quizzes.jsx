@@ -12,15 +12,17 @@ import { getQuizzes } from "@/store/actions/quizzesActions";
 import { Loader } from "@/components/common";
 import CourseBlock from "@/components/common/CourseBlock";
 import { fetchSelectedCourseInfo } from "@/utils/helper";
-
+import { getTeacherId } from "@/store/actions/dashboardActions";
 
 const Quizzes = ({ forStudent = false }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
   const { quizzesData } = useSelector((s) => s.quizReducer);
+  const { teacherIdData } = useSelector((s) => s.dashboardReducer);
 
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
+  const [selectedSection, setSelectedSection] = useState();
 
   const { coursesData } = useSelector((s) => s.courseReducer);
 
@@ -32,19 +34,33 @@ const Quizzes = ({ forStudent = false }) => {
   };
 
   useEffect(() => {
-    forStudent && findCourseById()
-    dispatch(
-      getQuizzes({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            courseId: id,
-            studentRollNumber: localStorage.getItem("email")
-          },
-          dispatch,
-        },
-      })
-    );
+    forStudent && findCourseById();
+
+    localStorage.getItem("userType") == "teacher"
+      ? dispatch(
+          getTeacherId({
+            payload: {
+              query: {
+                email: localStorage.getItem("email"),
+              },
+            },
+            onSuccess: (data) => {
+              setSelectedSection(data?.teacherSections[0]?.section);
+            },
+          })
+        )
+      : dispatch(
+          getQuizzes({
+            onError: () => navigate("/404", { replace: true }),
+            payload: {
+              query: {
+                courseId: id,
+                studentRollNumber: localStorage.getItem("email"),
+              },
+              dispatch,
+            },
+          })
+        );
   }, []);
 
   const Quizzes = [
@@ -74,6 +90,20 @@ const Quizzes = ({ forStudent = false }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">
       {quizzesData.loading && <Loader type="screen" />}
+      {!forStudent && (
+        <select
+          type="select"
+          placeholder="Select a section"
+          onChange={(e) => setSelectedSection(e.target.value)}
+        >
+          {teacherIdData?.data?.teacherSections?.map((section, index) => (
+            <option value={section?.section} key={index}>
+              {section?.section}
+            </option>
+          ))}
+        </select>
+      )}
+
       {forStudent ? (
         <CourseBlock
           bookIcon="w-72"
@@ -126,6 +156,8 @@ const QuizCard = ({
 
   const navigate = useNavigate();
   const { id } = useParams();
+
+  console.log({ file });
 
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>

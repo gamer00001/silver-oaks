@@ -124,7 +124,7 @@ input[type="number"] {
   }
 
   .h5-bold {
-    @apply text-[2rem] md:text-[2.2rem] xl:text-[2.5rem] font-bold leading-[120%];
+    @apply text-[2rem] sm:text-[1.5rem] md:text-[2.0rem] xl:text-[2.5rem] font-bold leading-[120%];
   }
 
   .meri-h5 {
