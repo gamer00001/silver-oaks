@@ -59,7 +59,7 @@ const Table = () => {
   return (
     <div className="overflow-x-auto">
       {quizSubmissionsData?.loading && <Loader type={"screen"} />}
-      <table className="w-full table text-[2rem]">
+      <table className="w-full table text-[1.5rem]">
         <tr className="tr">
           <th className="p-9 th">Full Name</th>
           <th className="p-9 th">Roll No</th>
@@ -69,11 +69,13 @@ const Table = () => {
         </tr>
         {quizSubmissionsData?.data?.quizSubmissionList?.map((b, i) => (
           <tr className="tr">
-            <td className="p-9 td">{b?.fullName || "--"}</td>
-            <td className="p-9 td">{b?.studentRollNumber || "--"}</td>
-            <td className="p-9 td">{b?.gainedMarks || "--"}</td>
-            <td className="p-9 td">{b?.percentage || "--"}</td>
-            <td className="p-9 td">
+            <td className="p-9 td text-center">{b?.fullName || "--"}</td>
+            <td className="p-9 td text-center">
+              {b?.studentRollNumber || "--"}
+            </td>
+            <td className="p-9 td text-center">{b?.gainedMarks || "--"}</td>
+            <td className="p-9 td text-center">{b?.percentage || "--"}</td>
+            <td className="p-9 td text-center">
               <div className="flex flex-col justify-center items-center">
                 <span>{b?.date || "--"}</span>
               </div>

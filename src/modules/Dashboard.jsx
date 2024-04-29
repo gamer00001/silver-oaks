@@ -21,6 +21,8 @@ import {
 import StudentDashboard from "./StudentDashboard";
 import { currentLoggedInUserType } from "@/utils/helper";
 import { scrollToTop } from "@/utils";
+import AdminDashboard from "./admin/AdminDashboard";
+import StatsBlock from "@/components/common/StatsBlock";
 
 const demoActivityData = [
   {
@@ -69,17 +71,17 @@ const Dashboard = ({ forStudent = false }) => {
     const userType = currentLoggedInUserType();
     scrollToTop();
 
-    if (userType === "teacher"){
-        dispatch(
-          getDashboardData({
-            payload: {
-              query: {
-                email: localStorage.getItem("email"),
-              },
+    if (userType === "teacher") {
+      dispatch(
+        getDashboardData({
+          payload: {
+            query: {
+              email: localStorage.getItem("email"),
             },
-            // onError: () => navigate("/404", { replace: true }),
-          })
-        );
+          },
+          // onError: () => navigate("/404", { replace: true }),
+        })
+      );
       dispatch(
         getTeacherId({
           payload: {
@@ -91,6 +93,10 @@ const Dashboard = ({ forStudent = false }) => {
       );
     }
   }, [dispatch, navigate]);
+
+  if (state.userType === "admin") {
+    return <AdminDashboard />;
+  }
 
   if (state.userType === "student") {
     return <StudentDashboard />;
@@ -119,69 +125,22 @@ const Dashboard = ({ forStudent = false }) => {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex justify-center items-center mt-4 gap-12"
+          // className="flex justify-center items-center mt-4 gap-12"
         >
-          <MUICard className="flex justify-center items-center">
-            <CardContent className=" bg-[#ECFFF5]">
-              <div className="grid  md:grid-cols-3">
-                <div className="col-span-2 flex flex-row p-2 pr-12">
-                  <div className="mt-12 mr-4">
-                    <StatsIcon />
-                  </div>
-                  <div>
-                    <h1 className="text-gray-400 text-[2.5rem]">
-                      Course Stats
-                    </h1>
-                    <h1 className="text-bold text-[2rem]">Term Completion</h1>
-                  </div>
-                </div>
-                <div style={{ width: 180, height: 180 }}>
-                  <CircularProgressbar
-                    value={dashboardData.data?.termCompletion}
-                    text={`${dashboardData.data?.termCompletion}%`}
-                    className="text-red"
-                    styles={buildStyles({
-                      pathColor: `rgba(168, 2, 2, ${60 / 100})`,
-                      textColor: "#f88",
-                      trailColor: "#d6d6d6",
-                      backgroundColor: "#a80202",
-                    })}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </MUICard>
-          <MUICard className="flex justify-center items-center">
-            <CardContent className=" bg-[#FFF8F0]">
-              <div className="grid md:grid-cols-3">
-                <div className="col-span-2 flex flex-row p-2 pr-12">
-                  <div className="mt-12 mr-4">
-                    <StatsIcon />
-                  </div>
-                  <div>
-                    <h1 className="text-gray-400 text-[2.5rem]">
-                      Your Activity
-                    </h1>
-                    <h1 className="text-bold text-[2rem]">Punctuality</h1>
-                  </div>
-                </div>
-                <div style={{ width: 180, height: 180 }}>
-                  <CircularProgressbar
-                    value={dashboardData.data?.punctualityScore}
-                    text={`${dashboardData.data?.punctualityScore}%`}
-                    className="text-red"
-                    styles={buildStyles({
-                      pathColor: `rgba(168, 2, 2, ${60 / 100})`,
-                      textColor: "#f88",
-                      trailColor: "#d6d6d6",
-                      backgroundColor: "#a80202",
-                    })}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </MUICard>
+          <div className="flex gap-12 pt-12 p-10">
+            <StatsBlock value={dashboardData.data?.termCompletion ?? 0} />
+            <StatsBlock
+              title="Punctuality"
+              value={dashboardData.data?.punctualityScore ?? 0}
+              bgColor="#FFF8F0"
+              activeColor="#F9AB35"
+              heading="Your Activity"
+              inactiveColor="#F3F6FF"
+              icon="/activity-icon.svg"
+            />
+          </div>
         </motion.div>
+
         <div className="pt-9 px-[1.7rem]">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -241,50 +200,50 @@ const Dashboard = ({ forStudent = false }) => {
             transition={{ duration: 0.5, delay: 0.8 }}
             className="flex justify-center items-center"
           >
-            <MUICard className="flex justify-center items-center mb-4">
+            <MUICard className="flex justify-between items-center mb-4 w-full">
               <CardContent>
                 {/* {demoActivityData.map((activity, index) => ( */}
-                <div className="w-[96rem] h-[36rem] flex justify-center items-center">
-                  <ResponsiveContainer>
-                    <PieChart
-                      width={1000}
-                      height={300}
-                      className="flex justify-center items-center"
-                    >
-                      <Legend
-                        height={36}
-                        iconType="circle"
-                        layout="vertical"
-                        verticalAlign="middle"
-                        iconSize={20}
-                        padding={5}
-                        formatter={renderColorfulLegendText}
-                      />
-                      <Pie
-                        data={
-                          dashboardData.data?.dashboardGraphStats?.map(
-                            (item, index) => ({
-                              name: item?.courseName,
-                              value: item?.percentage,
-                              fill: `#${Math.floor(
-                                Math.random() * 16777215
-                              ).toString(16)}`,
-                            })
-                          ) || data
-                        }
-                        cx={120}
-                        cy={200}
-                        innerRadius={50}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        paddingAngle={0}
-                        dataKey="value"
-                        label={({ name, percent }) =>
-                          `${name} ${(percent * 100).toFixed(0)}`
-                        }
-                      ></Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
+                <div className="w-full h-[36rem] flex justify-center items-center">
+                  {/* <ResponsiveContainer className="w-full"> */}
+                  <PieChart
+                    width={400}
+                    height={300}
+                    className="flex justify-center items-center"
+                  >
+                    <Legend
+                      height={36}
+                      iconType="circle"
+                      layout="vertical"
+                      verticalAlign="middle"
+                      iconSize={20}
+                      padding={5}
+                      formatter={renderColorfulLegendText}
+                    />
+                    <Pie
+                      data={
+                        dashboardData.data?.dashboardGraphStats?.map(
+                          (item, index) => ({
+                            name: item?.courseName,
+                            value: item?.percentage,
+                            fill: `#${Math.floor(
+                              Math.random() * 16777215
+                            ).toString(16)}`,
+                          })
+                        ) || data
+                      }
+                      cx={120}
+                      cy={200}
+                      innerRadius={50}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      paddingAngle={0}
+                      dataKey="value"
+                      label={({ name, percent }) =>
+                        `${name} ${(percent * 100).toFixed(0)}`
+                      }
+                    ></Pie>
+                  </PieChart>
+                  {/* </ResponsiveContainer> */}
                 </div>
                 {/* ))} */}
               </CardContent>

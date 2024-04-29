@@ -1,16 +1,12 @@
 import { Link, Loader, MyInput } from "@/components/common";
 import { LoginSchema } from "@/schema";
 import { useFormik } from "formik";
-import { scrollToTop, toast } from "@/utils";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "@/store";
 import { SOIESLogo } from "@/assets/common";
-import { useEffect } from "react";
 
-const StudentLogin = ({ forStudent = false }) => {
+const AdminLogin = ({ forStudent = false }) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const dispatch = useDispatch();
   const { loginUserData } = useSelector((s) => s.authReducer);
@@ -32,37 +28,32 @@ const StudentLogin = ({ forStudent = false }) => {
     validationSchema: LoginSchema,
     onSubmit: (body) => {
       localStorage.setItem("email", body.email);
+      localStorage.setItem("userType", "admin");
 
-      dispatch(
-        loginUser({
-          payload: {
-            body: {
-              usernameOrEmail: body.email,
-              password: body.password,
-            },
-          },
-          onSuccess: (res) => {
-            console.log({ res });
-            navigate("/", { replace: true });
-            localStorage.setItem(
-              "userType",
-              res.role === "ROLE_STUDENT" ? "student" : "teacher"
-            );
-            toast.success("Logged in successfully!");
-          },
-        })
-      );
+      navigate("/", { replace: true });
+
+      //   dispatch(
+      //     loginUser({
+      //       payload: {
+      //         body: {
+      //           usernameOrEmail: body.email,
+      //           password: body.password,
+      //         },
+      //       },
+      //       onSuccess: (res) => {
+      //         console.log({ res });
+      //         navigate("/", { replace: true });
+      //         localStorage.setItem("userType", "admin");
+      //         toast.success("Logged in successfully!");
+      //       },
+      //     })
+      //   );
     },
   });
-
-  useEffect(() => {
-    scrollToTop();
-  }, [pathname]);
 
   return (
     <div className="grid md:grid-cols-[1055fr_955fr] gap-[5rem] xl:gap-[9rem] items-stretch min-h-screen">
       <div className="flex-1 flex justify-center items-center relative">
-        <AdminLoginBtn navigate={navigate} />
         <form
           className="bg-white rounded px-8 pt-6 pb-8 mb-4 w-2/3"
           onSubmit={handleSubmit}
@@ -73,7 +64,7 @@ const StudentLogin = ({ forStudent = false }) => {
               Welcome
             </h1>
 
-            <p className="text-[#363848] text-[2rem] leading-[185%] pb-20">
+            <p className="text-[#363848] text-[2rem] leading-[185%]">
               Please fill your detail to access your account.
             </p>
           </div>
@@ -117,7 +108,7 @@ const StudentLogin = ({ forStudent = false }) => {
               <button
                 type="submit"
                 className="relative overflow-hidden w-full bg-custom-red text-white text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!isValid || !dirty || loginUserData?.loading}
+                // disabled={!isValid || !dirty || loginUserData?.loading}
               >
                 {loginUserData?.loading && (
                   <Loader
@@ -131,18 +122,6 @@ const StudentLogin = ({ forStudent = false }) => {
               </button>
             </div>
           </div>
-          <div className="text-center text-2xl font-bold py-8">OR</div>
-
-          <div>
-            <button
-              onClick={() => navigate(forStudent ? "/login" : "/student-login")}
-              className="relative overflow-hidden w-full bg-white border border-custom-red text-custom-red text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-              // disabled={!isValid || !dirty || loginUserData?.loading}
-            >
-              {`Login as ${forStudent ? "Teacher" : "Student"}`}
-            </button>
-            {/* </div> */}
-          </div>
         </form>
       </div>
       {/* Right side with image */}
@@ -152,7 +131,7 @@ const StudentLogin = ({ forStudent = false }) => {
         <div className="flex flex-col items-center">
           <div className=" flex flex-col w-full pl-16 py-5">
             <span className="font-bold text-white xl:text-7xl md:text-3xl">
-              Welcome to Student Portal
+              Welcome to Admin Portal
             </span>
 
             <span className="text-white xl:text-4xl md:text-xl pt-6">
@@ -160,7 +139,7 @@ const StudentLogin = ({ forStudent = false }) => {
             </span>
           </div>
           <img
-            src="/student-login.svg"
+            src="/admin-login-side-imaage.svg"
             alt="Background"
             className="max-w-full h-auto"
           />
@@ -170,16 +149,4 @@ const StudentLogin = ({ forStudent = false }) => {
   );
 };
 
-export default StudentLogin;
-
-const AdminLoginBtn = ({ navigate }) => {
-  return (
-    <div
-      onClick={() => navigate("/admin-login")}
-      className="border border-[##7A13153B] rounded-3xl absolute top-10 p-8 text-2xl cursor-pointer text-[#7A1315] font-bold flex items-center flex-col gap-5 right-20"
-    >
-      <img src="/admin-login.png" alt="user" />
-      Admin Login
-    </div>
-  );
-};
+export default AdminLogin;

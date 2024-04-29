@@ -41,6 +41,7 @@ import OnGoingAssignments from "./modules/OnGoingAssignments";
 import OGA from "./modules/OGA";
 import StudentGrades from "./modules/StudentGrades";
 import StudentLogin from "./modules/StudentLogin";
+import AdminLogin from "./modules/admin/AdminLogin";
 
 const Routes = () => {
   return (
@@ -70,6 +71,10 @@ const authRoutes = [
         />
       }
     />
+    <Route
+      path="/admin-login"
+      element={<MyReactHelmet title="Login" element={<AdminLogin />} />}
+    />
     <Route element={<AuthLayout />}>
       <Route
         path="/login"
@@ -89,6 +94,17 @@ const authRoutes = [
         }
       />
     </Route>
+  </Route>,
+];
+
+const adminLayoutRoutes = [
+  <Route key="headerLayoutRoutes" element={<HeaderLayout />}>
+    <Route
+      path="/notifications"
+      element={
+        <MyReactHelmet title="Notifications" element={<Notifications />} />
+      }
+    />
   </Route>,
 ];
 
@@ -367,6 +383,7 @@ const headerSidebarLayoutRoutes = [
     <Route element={<HeaderSidebar />}>
       {headerLayoutRoutes}
       {studentLayoutRoutes}
+      {adminLayoutRoutes}
 
       <Route path="/my-profile">
         <Route

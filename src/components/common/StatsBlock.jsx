@@ -17,7 +17,9 @@ const StatsBlock = ({
         <div className="flex items-center gap-4 pt-4">
           <img src={icon ?? "/course-stats-icon.svg"} alt="icon" />
 
-          <span className="text-black text-2xl font-semibold">{title}</span>
+          <span className="text-black text-2xl font-semibold sm:text:md">
+            {title}
+          </span>
         </div>
 
         <div>
