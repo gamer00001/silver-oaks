@@ -15,22 +15,22 @@ export const panelSideBar = () => ({
       icon: <CoursesIcon />,
     },
     {
-      to: "/manage-events",
+      to: "/manage-students",
       name: "Manage Students",
       icon: <Events />,
     },
     {
-      to: "/manage-events",
+      to: "/manage-teachers",
       name: "Manage Teachers",
       icon: <Events />,
     },
     {
-      to: "/manage-events",
-      name: "Manage Anouncements",
+      to: "/manage-announcements",
+      name: "Manage Announcements",
       icon: <Events />,
     },
     {
-      to: "/manage-events",
+      to: "/manage-notifications",
       name: "Manage Notifications",
       icon: <Events />,
     },

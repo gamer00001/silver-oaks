@@ -304,7 +304,7 @@ const UploadAssignmnet = ({
 
       <div className="flex justify-end gap-5">
         <button
-          className="mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-black text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-black border-opacity-58 "
+          className="mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-black text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-black border-opacity-58"
           onClick={onClose}
         >
           Cancel

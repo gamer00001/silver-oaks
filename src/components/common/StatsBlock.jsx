@@ -10,7 +10,10 @@ const StatsBlock = ({
   inactiveColor = "#05AF3552",
 }) => {
   return (
-    <div className={`bg-[${bgColor}] p-10 rounded-3xl w-2/4`}>
+    <div
+      style={{ backgroundColor: bgColor ?? "" }}
+      className={`bg-[${bgColor}] p-10 rounded-3xl w-2/4`}
+    >
       <span className="text-lg text-[#00000080] font-semibold">{heading}</span>
 
       <div className="flex justify-between gap-10">

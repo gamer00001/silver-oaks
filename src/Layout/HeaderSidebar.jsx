@@ -9,6 +9,8 @@ import { Outlet, useLocation } from "react-router-dom";
 const HeaderSidebar = () => {
   const { pathname } = useLocation();
 
+  const userRole = localStorage.getItem("userType");
+
   return (
     <div className="min-h-screen">
       <WithResponsiveSidebar>
@@ -17,10 +19,16 @@ const HeaderSidebar = () => {
       <div
         className={`lg:pl-[28.5rem] ${
           allowedPathsForRightSidebar()?.includes(pathname) && "lg:pr-[35.5rem]"
-        } min-h-screen bg-[#edf0f3] scrollbar`}
+        } min-h-screen ${
+          userRole === "admin" ? "bg-white" : "bg-[#edf0f3]"
+        } scrollbar`}
       >
         <div className="mx-auto grid grid-cols-1 gap-[1.5rem]">
-          <div className="sticky lg:hidden top-0 py-[2.3rem] px-[1.6rem] bg-[#edf0f3] z-40">
+          <div
+            className={`sticky lg:hidden top-0 py-[2.3rem] px-[1.6rem] ${
+              userRole === "admin" ? "bg-white" : "bg-[#edf0f3]"
+            } z-40`}
+          >
             <Header />
           </div>
           <div>
