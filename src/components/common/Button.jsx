@@ -1,0 +1,42 @@
+import React from "react";
+
+const Button = ({ children, variant, size, fullWidth, onClick }) => {
+  const getVariantClasses = () => {
+    switch (variant) {
+      case "primary":
+        return "p-8 text-white button opacity-button border bg-custom-red rounded-[1rem] disabled:opacity-50";
+      case "secondary":
+        return "p-8 button border-custom-red text-custom-red bg-white rounded-[1rem] text-xl text-black enabled:hover:opacity-70 transition-opacity border-2 border-black border-opacity-58";
+      case "text":
+        return "text-blue-500 hover:text-blue-600";
+      case "danger":
+        return "bg-red-500 hover:bg-red-600 text-white";
+      default:
+        return "";
+    }
+  };
+
+  const getSizeClasses = () => {
+    switch (size) {
+      case "small":
+        return "px-2 py-1 text-sm";
+      case "large":
+        return "px-4 py-2 text-lg";
+      default:
+        return "px-3 py-2";
+    }
+  };
+
+  const fullWidthClass = fullWidth ? "w-full" : "";
+
+  return (
+    <button
+      onClick={onClick}
+      className={`${getVariantClasses()} ${fullWidthClass}`}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default Button;

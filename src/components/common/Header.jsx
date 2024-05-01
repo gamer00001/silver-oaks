@@ -34,6 +34,29 @@ const allowedPathsForSearch = [
   "/applications/invitation-letter",
 ];
 
+const headerTitlesForAdmin = [
+  {
+    title: "Dashboard",
+    route: "/",
+  },
+  {
+    title: "Manage Students",
+    route: "/manage-students",
+  },
+  {
+    title: "Manage Teachers",
+    route: "/manage-teachers",
+  },
+  {
+    title: "Manage Announcements",
+    route: "/manage-announcements",
+  },
+  {
+    title: "Manage Notifications",
+    route: "/manage-notifications",
+  },
+];
+
 const Header = () => {
   const { setIsSidebarOpen, setIsRightSidebarOpen, isNotLargeScreen } =
     useGlobalContext();
@@ -47,6 +70,10 @@ const Header = () => {
             Welcome Back to your Student Portal
           </span>
         )}
+        <span className="text-5xl text-black font-semibold">
+          {headerTitlesForAdmin.find((item) => item.route === pathname)
+            ?.title ?? ""}
+        </span>
       </div>
 
       <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]">

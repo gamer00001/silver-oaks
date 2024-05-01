@@ -42,6 +42,10 @@ import OGA from "./modules/OGA";
 import StudentGrades from "./modules/StudentGrades";
 import StudentLogin from "./modules/StudentLogin";
 import AdminLogin from "./modules/admin/AdminLogin";
+import ManageStudents from "./modules/admin/ManageStudents";
+import ManageTeachers from "./modules/admin/ManageTeachers";
+import ManageAnnouncements from "./modules/admin/ManageAnnouncements";
+import ManageNotifications from "./modules/admin/ManageNotifications";
 
 const Routes = () => {
   return (
@@ -103,6 +107,36 @@ const adminLayoutRoutes = [
       path="/notifications"
       element={
         <MyReactHelmet title="Notifications" element={<Notifications />} />
+      }
+    />
+    <Route
+      path="/manage-students"
+      element={
+        <MyReactHelmet title="Manage Students" element={<ManageStudents />} />
+      }
+    />
+    <Route
+      path="/manage-teachers"
+      element={
+        <MyReactHelmet title="Manage Teachers" element={<ManageTeachers />} />
+      }
+    />
+    <Route
+      path="/manage-announcements"
+      element={
+        <MyReactHelmet
+          title="Manage Announcements"
+          element={<ManageAnnouncements />}
+        />
+      }
+    />{" "}
+    <Route
+      path="/manage-notifications"
+      element={
+        <MyReactHelmet
+          title="Manage Notifications"
+          element={<ManageNotifications />}
+        />
       }
     />
   </Route>,
