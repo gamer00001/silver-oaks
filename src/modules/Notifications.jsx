@@ -35,20 +35,21 @@ const Notifications = () => {
 
   useEffect(() => {
     const courses = localStorage.getItem("coursesList");
-    const studentInfo = JSON.parse(localStorage.getItem("userInfo") ?? {});
+    const studentInfo = JSON.parse(localStorage.getItem("userInfo") ?? false);
 
-    dispatch(
-      getEventsByStudent({
-        onError: () => navigate("/404", { replace: true }),
-        payload: {
-          query: {
-            courseId: courses,
-            section: studentInfo?.sectionName,
+    studentInfo &&
+      dispatch(
+        getEventsByStudent({
+          onError: () => navigate("/404", { replace: true }),
+          payload: {
+            query: {
+              courseId: courses,
+              section: studentInfo?.sectionName,
+            },
+            dispatch,
           },
-          dispatch,
-        },
-      })
-    );
+        })
+      );
   }, []);
 
   if (loading) {

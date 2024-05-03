@@ -5,7 +5,7 @@ import { Loader, ModalTop, MyInput } from ".";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { AddEventSchema } from "@/schema";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Tick from "@/assets/Icons/Tick";
 import Flag from "@/assets/Icons/Flag";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +26,9 @@ export const allowedPathsForRightSidebar = () => {
   }
 };
 
-const RightSideBar = () => {
+const RightSideBar = ({ handleSidebar }) => {
   const [isAddEvent, setIsAddEvent] = useState(false);
+
   const [editIndex, setEditIndex] = useState(null);
   const [events, setEvents] = useState([]);
   const [date, setDate] = useState();
@@ -66,7 +67,7 @@ const RightSideBar = () => {
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
       <div className="px-[1.9rem]">
-        <UserProfile />
+        <UserProfile setIsOpen={handleSidebar} />
         <Calendar
           date={new Date()}
           onChange={(date) => {
