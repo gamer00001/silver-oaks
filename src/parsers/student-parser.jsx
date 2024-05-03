@@ -1,4 +1,4 @@
-export const MockManageStudentsData = () => {
+export const MockManageStudentsData = (handleModal) => {
   return [
     {
       id: 1,
@@ -19,10 +19,11 @@ export const MockManageStudentsData = () => {
             title="Edit"
           />
           <img
-            className="cursor-pointer"
-            src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -50,6 +51,7 @@ export const MockManageStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -77,6 +79,7 @@ export const MockManageStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -104,6 +107,7 @@ export const MockManageStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -131,6 +135,7 @@ export const MockManageStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -138,7 +143,7 @@ export const MockManageStudentsData = () => {
   ];
 };
 
-export const MockTeacherStudentsData = () => {
+export const MockTeacherStudentsData = (handleModal) => {
   return [
     {
       id: 1,
@@ -162,6 +167,7 @@ export const MockTeacherStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -188,6 +194,7 @@ export const MockTeacherStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -214,6 +221,7 @@ export const MockTeacherStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -240,6 +248,7 @@ export const MockTeacherStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
@@ -266,6 +275,7 @@ export const MockTeacherStudentsData = () => {
             src="/delete-action.svg"
             alt="delete"
             title="Delete"
+            onClick={() => handleModal("deleteModalIsOpen")}
           />
         </div>
       ),
