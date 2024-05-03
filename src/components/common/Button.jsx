@@ -19,11 +19,11 @@ const Button = ({ children, variant, size, fullWidth, onClick }) => {
   const getSizeClasses = () => {
     switch (size) {
       case "small":
-        return "px-2 py-1 text-sm";
+        return "px-2 py-1 text-xl";
       case "large":
-        return "px-4 py-2 text-lg";
+        return "px-10 py-6";
       default:
-        return "px-3 py-2";
+        return "px-1 py-6";
     }
   };
 
@@ -32,7 +32,7 @@ const Button = ({ children, variant, size, fullWidth, onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`${getVariantClasses()} ${fullWidthClass}`}
+      className={`${getVariantClasses()} ${fullWidthClass} ${getSizeClasses()}`}
     >
       {children}
     </button>

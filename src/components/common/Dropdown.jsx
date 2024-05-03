@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Dropdown = ({ placeholder, options, onSelect }) => {
+const Dropdown = ({ icon, placeholder, options, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
@@ -26,14 +26,25 @@ const Dropdown = ({ placeholder, options, onSelect }) => {
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className="relative inline-block w-full" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-[#FAFAFA] text-[#7A7A7A] font-semibold rounded-xl text-3xl inline-flex items-center p-8"
+        className={`bg-[#FAFAFA] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
+          icon && "px-20"
+        }`}
       >
         <span>{selectedOption || placeholder || "Select an option"}</span>
+
+        {icon && (
+          <img
+            src={icon}
+            alt="icon"
+            className="fill-current h-8 w-8 ml-4 absolute left-0"
+          />
+        )}
+
         <svg
-          className="fill-current h-8 w-8 ml-8"
+          className="fill-current h-8 w-8 ml-8 absolute right-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
         >
