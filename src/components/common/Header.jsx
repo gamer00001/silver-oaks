@@ -1,17 +1,17 @@
-import { useFormik } from "formik";
+// import { useFormik } from "formik";
 import { NavLink, MyInput, Link } from ".";
 import { Avatar, Logo } from "@/assets/common";
 import { useGlobalContext, useQueryParams } from "@/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
-import { convertObjectToQueryString, scrollToTop } from "@/utils";
-import { useState } from "react";
-import MyMenu from "./MyMenu";
+// import { convertObjectToQueryString, scrollToTop } from "@/utils";
+// import { useState } from "react";
+// import MyMenu from "./MyMenu";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { SearchOutline } from "@/assets/Icons";
-import { useSelector } from "react-redux";
-import { CONSTANTS } from "@/constants";
-import Notifications from "@/assets/Icons/Notifications";
-import NotificationsBing from "@/assets/Icons/NotificationsBing";
+// import { SearchOutline } from "@/assets/Icons";
+// import { useSelector } from "react-redux";
+// import { CONSTANTS } from "@/constants";
+// import Notifications from "@/assets/Icons/Notifications";
+// import NotificationsBing from "@/assets/Icons/NotificationsBing";
 import UserProfile from "../Header/UserProfile";
 import { allowedPathsForRightSidebar } from "./RightSideBar";
 import SearchForm from "./SearchForm";
@@ -57,23 +57,25 @@ const headerTitlesForAdmin = [
   },
 ];
 
-const Header = () => {
+const Header = ({ isOpen, setIsOpen }) => {
   const { setIsSidebarOpen, setIsRightSidebarOpen, isNotLargeScreen } =
     useGlobalContext();
   const { pathname } = useLocation();
+
   return (
     <header className="h-full grid grid-cols-[1fr_auto] items-center justify-between">
       <div className="hidden lg:block">
         {allowedPathsForSearch.includes(pathname) && <SearchForm />}
-        {isCurrentUserStudent() && pathname === "/" && (
+        {isCurrentUserStudent() && pathname === "/" ? (
           <span className="text-5xl text-black font-semibold">
             Welcome Back to your Student Portal
           </span>
+        ) : (
+          <span className="text-5xl text-black font-semibold">
+            {headerTitlesForAdmin.find((item) => item.route === pathname)
+              ?.title ?? ""}
+          </span>
         )}
-        <span className="text-5xl text-black font-semibold">
-          {headerTitlesForAdmin.find((item) => item.route === pathname)
-            ?.title ?? ""}
-        </span>
       </div>
 
       <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]">
@@ -91,7 +93,14 @@ const Header = () => {
         {allowedPathsForSearch.includes(pathname) && !isNotLargeScreen && (
           <SearchForm />
         )}
-        {!allowedPathsForRightSidebar()?.includes(pathname) && <UserProfile />}
+        {/* {!allowedPathsForRightSidebar()?.includes(pathname) && (
+          <UserProfile setIsOpen={setIsOpen} />
+        )} */}
+
+        {/* {<UserProfile setIsOpen={setIsOpen} />} */}
+
+        {!isOpen && <UserProfile setIsOpen={setIsOpen} />}
+
         <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]"></div>
         <button
           onClick={() => setIsRightSidebarOpen(true)}

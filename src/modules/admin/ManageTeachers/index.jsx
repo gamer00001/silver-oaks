@@ -9,7 +9,7 @@ import { AddTeacherFields } from "@/constants/forms";
 import { ManageTeachersColumns } from "@/constants/table-constants";
 import { MockTeacherStudentsData } from "@/parsers/student-parser";
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 

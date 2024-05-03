@@ -4,9 +4,21 @@ import RightSideBar, {
 } from "@/components/common/RightSideBar";
 import { useGlobalContext } from "@/hooks";
 import { Drawer } from "@mui/material";
+import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 const HeaderSidebar = () => {
+  const [state, setState] = useState({
+    isOpen: false,
+  });
+
+  const handleRightSidebar = () => {
+    setState((prev) => ({
+      ...prev,
+      isOpen: !prev.isOpen,
+    }));
+  };
+
   const { pathname } = useLocation();
 
   const userRole = localStorage.getItem("userType");
@@ -18,7 +30,9 @@ const HeaderSidebar = () => {
       </WithResponsiveSidebar>
       <div
         className={`lg:pl-[28.5rem] ${
-          allowedPathsForRightSidebar()?.includes(pathname) && "lg:pr-[35.5rem]"
+          allowedPathsForRightSidebar()?.includes(pathname) &&
+          state.isOpen &&
+          "lg:pr-[35.5rem]"
         } min-h-screen ${
           userRole === "admin" ? "bg-white" : "bg-[#edf0f3]"
         } scrollbar`}
@@ -29,20 +43,21 @@ const HeaderSidebar = () => {
               userRole === "admin" ? "bg-white" : "bg-[#edf0f3]"
             } z-40`}
           >
-            <Header />
+            <Header isOpen={state.isOpen} setIsOpen={handleRightSidebar} />
           </div>
           <div>
             <Outlet />
           </div>
         </div>
       </div>
-      {(allowedPathsForRightSidebar()?.includes(pathname) ||
-        pathname.includes("/course") ||
-        pathname.includes("/enrolled-courses")) && (
-        <WithResponsiveRightSidebar>
-          <RightSideBar />
-        </WithResponsiveRightSidebar>
-      )}
+      {state.isOpen &&
+        (allowedPathsForRightSidebar()?.includes(pathname) ||
+          pathname.includes("/course") ||
+          pathname.includes("/enrolled-courses")) && (
+          <WithResponsiveRightSidebar>
+            <RightSideBar />
+          </WithResponsiveRightSidebar>
+        )}
     </div>
   );
 };
@@ -76,7 +91,7 @@ const WithResponsiveSidebar = ({ children }) => {
   );
 };
 
-const WithResponsiveRightSidebar = ({ children }) => {
+export const WithResponsiveRightSidebar = ({ children }) => {
   const { isNotLargeScreen, isRightSidebarOpen, setIsRightSidebarOpen } =
     useGlobalContext();
 
