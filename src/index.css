@@ -76,6 +76,7 @@ input[type="number"] {
 .td {
   border: 1px solid #debb5b;
   border-collapse: collapse;
+  text-align: start;
 }
 
 @layer utilities {

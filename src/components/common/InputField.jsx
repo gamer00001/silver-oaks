@@ -1,15 +1,23 @@
+import { ErrorMessage } from "formik";
 import React, { useState, useEffect } from "react";
 
-const InputField = ({ type, icon, placeholder = "Search...", onSearch }) => {
+const InputField = ({
+  name,
+  type,
+  icon,
+  error,
+  placeholder = "Search...",
+  onChange,
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      onSearch(searchQuery);
+      onChange(searchQuery);
     }, 300); // Adjust the debounce delay as needed (in milliseconds)
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, onSearch]);
+  }, [searchQuery, onChange]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -26,21 +34,33 @@ const InputField = ({ type, icon, placeholder = "Search...", onSearch }) => {
           />
         )}
 
-        <input
-          type={type}
-          placeholder={placeholder}
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="bg-[#FAFAFA] text-[#7A7A7A] text-3xl p-8 pl-20 rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]"
-        />
+        {type === "textarea" ? (
+          <textarea
+            name={name}
+            type={"text"}
+            placeholder={placeholder}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            rows={5} // Number of visible text lines
+            cols={30}
+            className={`bg-[#FAFAFA] text-[#7A7A7A] text-3xl p-8 ${
+              icon ? "pl-20" : "pl-8"
+            } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}
+          />
+        ) : (
+          <input
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className={`bg-[#FAFAFA] text-[#7A7A7A] text-3xl p-8 ${
+              icon ? "pl-20" : "pl-8"
+            } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}
+          />
+        )}
+        {error && <div className="text-red-600 text-left text-xl">{error}</div>}
       </div>
-      {/* <input
-        type="text"
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="px-4 py-2 bg-[#FAFAFA] text-[#7A7A7A] text-xl rounded-xl focus:outline-none focus:ring focus:ring-blue-500"
-      /> */}
     </>
   );
 };

@@ -27,8 +27,6 @@ const ManageStudents = () => {
     }));
   };
 
-  console.log({ state });
-
   return (
     <div className="bg-white h-full">
       <div className="flex justify-end gap-12 pr-12">
@@ -63,19 +61,6 @@ const ManageStudents = () => {
           <Dropdown placeholder="Year" options={options} />
         </Grid>
       </Grid>
-
-      {/* <div className="p-12 flex gap-10 justify-between">
-        <div>
-          <InputField />
-        </div>
-
-        <div className="flex gap-12">
-          <Dropdown placeholder="Select Grade" options={options} />
-          <Dropdown placeholder="Campus" options={options} />
-          <Dropdown placeholder="Section" options={options} />
-          <Dropdown placeholder="Year" options={options} />
-        </div>
-      </div> */}
 
       <div className="p-12">
         <CustomTable

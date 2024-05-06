@@ -1,6 +1,13 @@
 import React from "react";
 
-const Button = ({ children, variant, size, fullWidth, onClick }) => {
+const Button = ({
+  type = "button",
+  children,
+  variant,
+  size,
+  fullWidth,
+  onClick,
+}) => {
   const getVariantClasses = () => {
     switch (variant) {
       case "primary":
@@ -31,6 +38,7 @@ const Button = ({ children, variant, size, fullWidth, onClick }) => {
 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`${getVariantClasses()} ${fullWidthClass} ${getSizeClasses()}`}
     >

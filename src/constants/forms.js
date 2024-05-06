@@ -165,3 +165,75 @@ export const AddTeacherFields = () => {
     },
   ];
 };
+
+export const AddAnnouncementFields = () => {
+  return [
+    {
+      name: "title",
+      placeholder: "Enter Announcements",
+      column: 12,
+      // icon: "/icon-1.svg",
+      type: "textarea",
+    },
+    {
+      name: "visibleTo",
+      placeholder: "Visible To",
+      options: ["Student", "Teachers", "Both"],
+      column: 4,
+      // icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+    {
+      name: "date",
+      placeholder: "Select Date",
+      column: 4,
+      // icon: "/icon-8.svg",
+      type: "date",
+    },
+    {
+      name: "grade",
+      placeholder: "Select Grade",
+      options: ["Grade 1", "Grade 2", "Grade 3"],
+      column: 4,
+      // icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+    ,
+  ];
+};
+
+export const AddNotificationFields = () => {
+  return [
+    {
+      name: "title",
+      placeholder: "Enter Notification",
+      column: 12,
+      // icon: "/icon-1.svg",
+      type: "textarea",
+    },
+    {
+      name: "visibleTo",
+      placeholder: "Visible To",
+      options: ["Student", "Teachers", "Both"],
+      column: 4,
+      // icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+    {
+      name: "date",
+      placeholder: "Select Date",
+      column: 4,
+      // icon: "/icon-8.svg",
+      type: "date",
+    },
+    {
+      name: "grade",
+      placeholder: "Select Grade",
+      options: ["Grade 1", "Grade 2", "Grade 3"],
+      column: 4,
+      // icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+    ,
+  ];
+};

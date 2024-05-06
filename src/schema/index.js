@@ -89,3 +89,10 @@ export const MarkAssignment = Yup.object().shape({
 export const searchSchema = Yup.object().shape({
   query: Yup.mixed().required("Query is required"),
 });
+
+export const AddAnnouncementSchema = Yup.object().shape({
+  title: Yup.string().required("Title is required"),
+  visibleTo: Yup.string().required("Visibe To is required"),
+  date: Yup.string().required("Date is required"),
+  grade: Yup.string().required("Grade is required"),
+});
