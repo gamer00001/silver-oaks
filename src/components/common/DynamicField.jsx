@@ -2,19 +2,20 @@ import React from "react";
 import InputField from "./InputField";
 import Dropdown from "./Dropdown";
 
-const DynamicField = ({ field }) => {
+const DynamicField = (props) => {
   const renderField = () => {
-    switch (field.type) {
+    switch (props?.field?.type) {
       case "number":
       case "email":
       case "date":
       case "password":
+      case "textarea":
       case "text": {
-        return <InputField {...field} />;
+        return <InputField {...props.field} {...props} />;
       }
 
       case "dropdown": {
-        return <Dropdown {...field} />;
+        return <Dropdown {...props.field} {...props} />;
       }
 
       default:

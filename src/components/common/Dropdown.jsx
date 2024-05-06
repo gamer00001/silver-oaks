@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Dropdown = ({ icon, placeholder, options, onSelect }) => {
+const Dropdown = ({
+  icon,
+  error,
+  placeholder,
+  options,
+  onChange = () => {},
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
@@ -8,7 +14,7 @@ const Dropdown = ({ icon, placeholder, options, onSelect }) => {
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
-    onSelect(option);
+    onChange(option);
   };
 
   useEffect(() => {
@@ -67,6 +73,7 @@ const Dropdown = ({ icon, placeholder, options, onSelect }) => {
           ))}
         </div>
       )}
+      {error && <div className="text-red-600 text-left text-xl">{error}</div>}
     </div>
   );
 };

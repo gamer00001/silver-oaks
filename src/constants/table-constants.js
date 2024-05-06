@@ -39,3 +39,41 @@ export const ManageTeachersColumns = [
     key: "actions",
   },
 ];
+
+export const ManageAnnouncementsColumns = [
+  {
+    header: "Announcement Title",
+    key: "title",
+  },
+  {
+    header: "Published Date",
+    key: "publishDate",
+  },
+  {
+    header: "Visible to",
+    key: "visibleTo",
+  },
+  {
+    header: "Actions",
+    key: "actions",
+  },
+];
+
+export const ManageNotificationsColumns = [
+  {
+    header: "Notification Title",
+    key: "title",
+  },
+  {
+    header: "Published Date",
+    key: "publishDate",
+  },
+  {
+    header: "Visible to",
+    key: "visibleTo",
+  },
+  {
+    header: "Actions",
+    key: "actions",
+  },
+];

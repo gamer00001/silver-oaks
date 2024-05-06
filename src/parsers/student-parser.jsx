@@ -6,7 +6,7 @@ export const MockManageStudentsData = (handleModal) => {
       rollNumber: "10800",
       grade: "IV",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -34,7 +34,7 @@ export const MockManageStudentsData = (handleModal) => {
       rollNumber: "10800",
       grade: "V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -62,7 +62,7 @@ export const MockManageStudentsData = (handleModal) => {
       rollNumber: "10800",
       grade: "V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -90,7 +90,7 @@ export const MockManageStudentsData = (handleModal) => {
       rollNumber: "10800",
       grade: "V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -118,7 +118,7 @@ export const MockManageStudentsData = (handleModal) => {
       rollNumber: "10800",
       grade: "V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -150,7 +150,7 @@ export const MockTeacherStudentsData = (handleModal) => {
       name: "Minahil Fatima",
       gradeAssigned: "IV,IV",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -177,7 +177,7 @@ export const MockTeacherStudentsData = (handleModal) => {
       name: "Minahil Fatima",
       gradeAssigned: "IV,V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -204,7 +204,7 @@ export const MockTeacherStudentsData = (handleModal) => {
       name: "Minahil Fatima",
       gradeAssigned: "IV,V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -231,7 +231,7 @@ export const MockTeacherStudentsData = (handleModal) => {
       name: "Minahil Fatima",
       gradeAssigned: "IV,V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
@@ -258,7 +258,7 @@ export const MockTeacherStudentsData = (handleModal) => {
       name: "Minahil Fatima",
       gradeAssigned: "IV,V",
       lastLoggedIn: (
-        <div className="text-[#FE964A] bg-[#FFF0E6] rounded-2xl">
+        <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
           9:45 am ,12-02-2024
         </div>
       ),
