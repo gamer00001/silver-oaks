@@ -46,6 +46,7 @@ import ManageStudents from "./modules/admin/ManageStudents";
 import ManageTeachers from "./modules/admin/ManageTeachers";
 import ManageAnnouncements from "./modules/admin/ManageAnnouncements";
 import ManageNotifications from "./modules/admin/ManageNotifications";
+import AllClasses from "./modules/admin/AllClasses";
 
 const Routes = () => {
   return (
@@ -129,7 +130,7 @@ const adminLayoutRoutes = [
           element={<ManageAnnouncements />}
         />
       }
-    />{" "}
+    />
     <Route
       path="/manage-notifications"
       element={
@@ -138,6 +139,10 @@ const adminLayoutRoutes = [
           element={<ManageNotifications />}
         />
       }
+    />
+    <Route
+      path="/all-classes"
+      element={<MyReactHelmet title="All Classes" element={<AllClasses />} />}
     />
   </Route>,
 ];

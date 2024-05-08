@@ -20,7 +20,6 @@ const ManageStudents = () => {
   });
 
   const handleModal = (key = "deleteModalIsOpen") => {
-    console.log({ key }, [key], !state[key]);
     setState((prev) => ({
       ...prev,
       [key]: !prev[key],
