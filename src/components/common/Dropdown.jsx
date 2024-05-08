@@ -4,7 +4,7 @@ const Dropdown = ({
   icon,
   error,
   placeholder,
-  options,
+  options = [],
   onChange = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);

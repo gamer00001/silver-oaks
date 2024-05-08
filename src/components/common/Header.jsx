@@ -55,6 +55,10 @@ const headerTitlesForAdmin = [
     title: "Manage Notifications",
     route: "/manage-notifications",
   },
+  {
+    title: "All Classes",
+    route: "/all-classes",
+  },
 ];
 
 const Header = ({ isOpen, setIsOpen }) => {

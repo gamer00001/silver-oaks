@@ -237,3 +237,69 @@ export const AddNotificationFields = () => {
     ,
   ];
 };
+
+export const AddGradeFields = () => {
+  return [
+    {
+      name: "title",
+      placeholder: "Enter Title",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+    },
+    {
+      name: "campus",
+      placeholder: "Select Campus",
+      options: ["Campus 1", "Campus 2", "Campus 3"],
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+  ];
+};
+
+export const AddCampusFields = () => {
+  return [
+    {
+      name: "name",
+      placeholder: "Enter Campus Name",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+    },
+    {
+      name: "campusLocation",
+      placeholder: "Enter Campus Location",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+  ];
+};
+
+export const AddSectionFields = () => {
+  return [
+    {
+      name: "name",
+      placeholder: "Enter Section Name",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+    },
+    {
+      name: "grade",
+      placeholder: "Select Grade",
+      options: ["Grade 1", "Grade 2", "Grade 3"],
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+    },
+    {
+      name: "maxStudents",
+      placeholder: "Enter Max Number of Students",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "number",
+    },
+  ];
+};
