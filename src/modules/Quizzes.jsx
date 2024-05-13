@@ -206,7 +206,7 @@ const QuizCard = ({
                 className="text-custom-red font-bold text-[1.5rem]"
                 onClick={
                   // () => window.open(file)
-                  () => navigate(`/course/${id}/quiz/${qid}`)
+                  () => navigate(`/course/${id}/quiz-detail/${qid}`)
                 }
               >
                 View Quiz

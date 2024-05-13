@@ -101,7 +101,7 @@ const Header = ({ isOpen, setIsOpen }) => {
           <UserProfile setIsOpen={setIsOpen} />
         )} */}
 
-        {/* {<UserProfile setIsOpen={setIsOpen} />} */}
+        {/* <UserProfile setIsOpen={setIsOpen} /> */}
 
         {!isOpen && <UserProfile setIsOpen={setIsOpen} />}
 
