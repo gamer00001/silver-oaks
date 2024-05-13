@@ -14,6 +14,7 @@ const asyncCatch = (name, cb, type) =>
       } = {},
       { rejectWithValue, getState, dispatch, ...rest }
     ) => {
+      console.log("DDDD", getState());
       try {
         payload.config = {
           headers: {

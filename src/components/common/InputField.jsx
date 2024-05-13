@@ -6,22 +6,29 @@ const InputField = ({
   type,
   icon,
   error,
+  value,
   placeholder = "Search...",
-  onChange,
+  onChange = () => {},
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(value ?? "");
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       onChange(searchQuery);
-    }, 300); // Adjust the debounce delay as needed (in milliseconds)
+    }, 500); // Adjust the debounce delay as needed (in milliseconds)
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, onChange]);
+  }, [searchQuery]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  useEffect(() => {
+    setSearchQuery(value);
+  }, [value]);
+
+  console.log({ value });
 
   return (
     <>

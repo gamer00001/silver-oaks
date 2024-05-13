@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const Dropdown = ({
   icon,
   error,
+  value,
   placeholder,
   options = [],
   onChange = () => {},
@@ -31,9 +32,14 @@ const Dropdown = ({
     };
   }, []);
 
+  useEffect(() => {
+    setSelectedOption(value);
+  }, [value]);
+
   return (
     <div className="relative inline-block w-full" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`bg-[#FAFAFA] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
           icon && "px-20"

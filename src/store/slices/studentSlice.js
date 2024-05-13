@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchStudentDashboardInfo,
   fetchStudentInfo,
+  fetchStudentsListing,
 } from "../actions/studentActions";
 
 const initialState = {
@@ -10,6 +11,10 @@ const initialState = {
     data: null,
   },
   studentDashboardData: {
+    loading: false,
+    data: null,
+  },
+  studentsListing: {
     loading: false,
     data: null,
   },
@@ -40,6 +45,7 @@ const studentSlice = createSlice({
       };
     });
 
+    //Student Dashboard info
     builder.addCase(fetchStudentDashboardInfo.pending, (state) => {
       state.studentDashboardData = {
         ...initialState.studentDashboardData,
@@ -55,6 +61,26 @@ const studentSlice = createSlice({
     builder.addCase(fetchStudentDashboardInfo.rejected, (state) => {
       state.studentDashboardData = {
         ...initialState.studentDashboardData,
+        loading: false,
+      };
+    });
+
+    //Fetch All Students
+    builder.addCase(fetchStudentsListing.pending, (state) => {
+      state.studentsListing = {
+        ...initialState.studentsListing,
+        loading: true,
+      };
+    });
+    builder.addCase(fetchStudentsListing.fulfilled, (state, action) => {
+      state.studentsListing = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(fetchStudentsListing.rejected, (state) => {
+      state.studentsListing = {
+        ...initialState.studentsListing,
         loading: false,
       };
     });

@@ -7,36 +7,43 @@ import Button from "../common/Button";
 
 const initialValues = {
   name: "",
+  studentName: "",
   grade: "",
   roleNumber: "",
   section: "",
-  campus: "",
+  campusName: "",
   gender: "",
   password: "",
-  dob: "",
+  dateOfBirth: "",
   guardianName: "",
   city: "",
   guardianEmail: "",
-  contactNumber: "",
+  guardianPhoneNumber: "",
   address: "",
 };
 
 const AddStudentTeacher = ({
-  title = "Add Student",
-  subtitle = "Student Details",
+  handleAddUser,
+  editValues,
   fields = [],
   handleModal,
+  title = "Add Student",
+  subtitle = "Student Details",
 }) => {
   const { handleSubmit, handleChange, handleBlur, values } = useFormik({
-    initialValues,
+    initialValues: editValues ?? initialValues,
     enableReinitialize: true,
-    onSubmit: (v) => {
+    onSubmit: (values) => {
+      console.log({ values });
       handleModal();
+      handleAddUser(values);
       // if (!v.query) delete v.query;
       // navigate(`${pathname}?${convertObjectToQueryString({ ...v, page: 1 })}`);
       // scrollToTop();
     },
   });
+
+  console.log({ values, editValues });
 
   return (
     <div>
@@ -49,12 +56,24 @@ const AddStudentTeacher = ({
         <Grid className="pb-8" container spacing={4}>
           {fields?.map((field, key) => (
             <Grid item sm={field.column} key={key}>
-              <DynamicField field={field} onChange={handleChange} />
+              <DynamicField
+                field={field}
+                value={values[field.name]}
+                onChange={(value) => {
+                  const event = {
+                    target: {
+                      name: field.name,
+                      value: value,
+                    },
+                  };
+                  handleChange(event);
+                }}
+              />
             </Grid>
           ))}
         </Grid>
 
-        <Button variant="primary" size={"large"} fullWidth={true}>
+        <Button type="submit" variant="primary" size={"large"} fullWidth={true}>
           Submit
         </Button>
       </form>

@@ -1,7 +1,7 @@
 export const AddStudentFields = () => {
   return [
     {
-      name: "name",
+      name: "studentName",
       placeholder: "Name",
       column: 6,
       icon: "/icon-1.svg",
@@ -31,7 +31,7 @@ export const AddStudentFields = () => {
       type: "dropdown",
     },
     {
-      name: "campus",
+      name: "campusName",
       placeholder: "Campus",
       options: [],
       column: 6,
@@ -54,7 +54,7 @@ export const AddStudentFields = () => {
       type: "password",
     },
     {
-      name: "dob",
+      name: "dateOfBirth",
       placeholder: "Date of Birth",
       column: 6,
       icon: "/icon-8.svg",
@@ -84,7 +84,7 @@ export const AddStudentFields = () => {
     },
 
     {
-      name: "contactNumber",
+      name: "guardianPhoneNumber",
       placeholder: "Contact Number",
       column: 6,
       icon: "/icon-11.svg",
