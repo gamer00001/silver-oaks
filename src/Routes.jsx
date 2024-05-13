@@ -47,6 +47,7 @@ import ManageTeachers from "./modules/admin/ManageTeachers";
 import ManageAnnouncements from "./modules/admin/ManageAnnouncements";
 import ManageNotifications from "./modules/admin/ManageNotifications";
 import AllClasses from "./modules/admin/AllClasses";
+import QuizDetail from "./modules/QuizDetail";
 
 const Routes = () => {
   return (
@@ -370,10 +371,15 @@ const headerLayoutRoutes = [
         path="/course/exam/:id"
         element={<MyReactHelmet title="Exam" element={<Exam />} />}
       />
-
       <Route
         path="/course/:id/quiz/:qid"
         element={<MyReactHelmet title="Quiz Summary" element={<Quiz />} />}
+      />
+      <Route
+        path="/course/:id/quiz-detail/:qid"
+        element={
+          <MyReactHelmet title="Quiz Summary" element={<QuizDetail />} />
+        }
       />
 
       <Route
@@ -387,21 +393,18 @@ const headerLayoutRoutes = [
         path="/course/:id/assignment/:aid"
         element={<MyReactHelmet title="Assignment" element={<Assignment />} />}
       />
-
       <Route
         path="/course/:id/assignmentSummary/:aid"
         element={
           <MyReactHelmet title="Assignment" element={<AssignmentSummary />} />
         }
       />
-
       <Route
         path="/course/:id/assignment/:aid/student/:sid"
         element={
           <MyReactHelmet title="Assignment" element={<MarkAssignment />} />
         }
       />
-
       <Route
         path="/course/:id/lectures/:lid"
         element={<MyReactHelmet title="Lecture Report" element={<Reports />} />}
