@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SOIESLogo } from "@/assets/common";
+import { loginUser } from "@/store";
+import toast from "react-hot-toast";
 
 const AdminLogin = ({ forStudent = false }) => {
   const navigate = useNavigate();
@@ -27,27 +29,28 @@ const AdminLogin = ({ forStudent = false }) => {
     },
     validationSchema: LoginSchema,
     onSubmit: (body) => {
-      localStorage.setItem("email", body.email);
-      localStorage.setItem("userType", "admin");
+      // localStorage.setItem("email", body.email);
+      // localStorage.setItem("userType", "admin");
 
-      navigate("/", { replace: true });
+      // navigate("/", { replace: true });
 
-      //   dispatch(
-      //     loginUser({
-      //       payload: {
-      //         body: {
-      //           usernameOrEmail: body.email,
-      //           password: body.password,
-      //         },
-      //       },
-      //       onSuccess: (res) => {
-      //         console.log({ res });
-      //         navigate("/", { replace: true });
-      //         localStorage.setItem("userType", "admin");
-      //         toast.success("Logged in successfully!");
-      //       },
-      //     })
-      //   );
+      dispatch(
+        loginUser({
+          payload: {
+            body: {
+              usernameOrEmail: body.email,
+              password: body.password,
+            },
+          },
+          onSuccess: (res) => {
+            console.log({ res });
+            navigate("/", { replace: true });
+            localStorage.setItem("email", body.email);
+            localStorage.setItem("userType", "admin");
+            toast.success("Logged in successfully!");
+          },
+        })
+      );
     },
   });
 

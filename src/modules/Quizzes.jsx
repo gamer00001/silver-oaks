@@ -36,31 +36,32 @@ const Quizzes = ({ forStudent = false }) => {
   useEffect(() => {
     forStudent && findCourseById();
 
-    localStorage.getItem("userType") == "teacher"
-      ? dispatch(
-          getTeacherId({
-            payload: {
-              query: {
-                email: localStorage.getItem("email"),
-              },
+    localStorage.getItem("userType") == "teacher" &&
+      dispatch(
+        getTeacherId({
+          payload: {
+            query: {
+              email: localStorage.getItem("email"),
             },
-            onSuccess: (data) => {
-              setSelectedSection(data?.teacherSections[0]?.section);
-            },
-          })
-        )
-      : dispatch(
-          getQuizzes({
-            onError: () => navigate("/404", { replace: true }),
-            payload: {
-              query: {
-                courseId: id,
-                studentRollNumber: localStorage.getItem("email"),
-              },
-              dispatch,
-            },
-          })
-        );
+          },
+          onSuccess: (data) => {
+            setSelectedSection(data?.teacherSections[0]?.section);
+          },
+        })
+      );
+    // :
+    dispatch(
+      getQuizzes({
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            courseId: id,
+            studentRollNumber: localStorage.getItem("email"),
+          },
+          dispatch,
+        },
+      })
+    );
   }, []);
 
   const Quizzes = [
@@ -204,8 +205,8 @@ const QuizCard = ({
               <button
                 className="text-custom-red font-bold text-[1.5rem]"
                 onClick={
-                  () => window.open(file)
-                  // navigate(`/course/${id}/quiz/${qid}`)
+                  // () => window.open(file)
+                  () => navigate(`/course/${id}/quiz/${qid}`)
                 }
               >
                 View Quiz

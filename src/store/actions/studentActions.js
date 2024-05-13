@@ -30,3 +30,58 @@ export const fetchStudentDashboardInfo = asyncCatch(
         handleError(error, dispatch);
       })
 );
+
+export const fetchStudentsListing = asyncCatch(
+  "studentSlice/fetchStudentsListing",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-all-students?page=${query.page}&size=${query.size}`,
+        config
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
+export const addStudent = asyncCatch(
+  "studentSlice/addStudent",
+  async ({ config, body, dispatch }) =>
+    axios
+      .post(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/create-student`,
+        body
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
+export const editStudent = asyncCatch(
+  "studentSlice/editStudent",
+  async ({ config, body, dispatch }) =>
+    axios
+      .put(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/update-student`,
+        body
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
+export const deleteStudent = asyncCatch(
+  "studentSlice/deleteStudent",
+  async ({ config, query, dispatch }) =>
+    axios
+      .delete(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/delete-student/${query?.rollNumber}`
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);

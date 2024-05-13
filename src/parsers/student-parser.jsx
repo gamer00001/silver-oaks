@@ -143,6 +143,44 @@ export const MockManageStudentsData = (handleModal) => {
   ];
 };
 
+export const parseStudentListing = (data = [], handleModal) => {
+  return data?.map((studentData) => ({
+    ...studentData,
+    name: studentData?.studentName ?? "N/A",
+    rollNumber: studentData?.rollNumber ?? "N/A",
+    grade: studentData?.grade ?? "N/A",
+    lastLoggedIn: (
+      <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
+        N/A
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            const { password, ...otherInfo } = studentData;
+            handleModal("addNewModalIsOpen", otherInfo, true);
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            const { password, ...otherInfo } = studentData;
+            handleModal("deleteModalIsOpen", otherInfo);
+          }}
+        />
+      </div>
+    ),
+  }));
+};
+
 export const MockTeacherStudentsData = (handleModal) => {
   return [
     {
@@ -281,4 +319,42 @@ export const MockTeacherStudentsData = (handleModal) => {
       ),
     },
   ];
+};
+
+export const parseTeachersListing = (data = [], handleModal) => {
+  return data?.map((teachersData) => ({
+    ...teachersData,
+    name: teachersData?.studentName ?? "N/A",
+    rollNumber: teachersData?.rollNumber ?? "N/A",
+    grade: teachersData?.grade ?? "N/A",
+    lastLoggedIn: (
+      <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
+        N/A
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            const { password, ...otherInfo } = teachersData;
+            handleModal("addNewModalIsOpen", otherInfo, true);
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            const { password, ...otherInfo } = teachersData;
+            handleModal("deleteModalIsOpen", otherInfo);
+          }}
+        />
+      </div>
+    ),
+  }));
 };

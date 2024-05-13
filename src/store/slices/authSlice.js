@@ -91,6 +91,7 @@ const authSlice = createSlice({
       };
     });
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
+      console.log("PAYLOA:", payload);
       state.loginUserData = {
         user: "Teacher",
         userDetail:
