@@ -7,6 +7,8 @@ const InputField = ({
   icon,
   error,
   value,
+  label = "",
+  showLabel = false,
   placeholder = "Search...",
   onChange = () => {},
 }) => {
@@ -32,6 +34,11 @@ const InputField = ({
 
   return (
     <>
+      {showLabel && (
+        <div className="text-[#7a7a7a] text-2xl font-semibold mb-4">
+          {placeholder}
+        </div>
+      )}
       <div className="relative">
         {icon && (
           <img
@@ -50,7 +57,7 @@ const InputField = ({
             onChange={handleSearchChange}
             rows={5} // Number of visible text lines
             cols={30}
-            className={`bg-[#FAFAFA] text-[#7A7A7A] text-3xl p-8 ${
+            className={`bg-[#f4f4f4] text-[#7A7A7A] text-3xl p-8 ${
               icon ? "pl-20" : "pl-8"
             } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}
           />
@@ -58,10 +65,10 @@ const InputField = ({
           <input
             name={name}
             type={type}
-            placeholder={placeholder}
             value={searchQuery}
+            placeholder={placeholder}
             onChange={handleSearchChange}
-            className={`bg-[#FAFAFA] text-[#7A7A7A] text-3xl p-8 ${
+            className={`bg-[#f4f4f4] text-[#7A7A7A] text-3xl p-8 ${
               icon ? "pl-20" : "pl-8"
             } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}
           />

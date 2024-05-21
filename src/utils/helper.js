@@ -28,3 +28,11 @@ export const CoursesColors = [
 export const fetchSelectedCourseInfo = () => {
   return JSON.parse(localStorage.getItem("selectedCourseInfo" ?? false));
 };
+
+export const manipulateCourseTabsForAdmin = (tabs = [], params) => {
+  return tabs?.map((item) => ({
+    ...item,
+    isAdminRoute: true,
+    baseRoute: `grade/${params?.gradeId}/${params?.courseName}/${params?.courseId}/${item.baseRoute}`,
+  }));
+};

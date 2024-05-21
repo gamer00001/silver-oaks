@@ -16,15 +16,53 @@ export const panelSideBar = () => ({
       courses: [
         {
           id: "43657457",
-          name: "Grade 1(Alliums)",
+          name: "Grade I",
+          route: "/all-classes/grade/I",
         },
         {
           id: "43635654",
-          name: "Grade 2(Alliums)",
+          name: "Grade II",
+          route: "/all-classes/grade/II",
         },
         {
           id: "43645776",
-          name: "Grade 3(Alliums)",
+          name: "Grade III",
+          route: "/all-classes/grade/III",
+        },
+        {
+          id: "43645776",
+          name: "Grade IV",
+          route: "/all-classes/grade/IV",
+        },
+        {
+          id: "43645776",
+          name: "Grade V",
+          route: "/all-classes/grade/V",
+        },
+        {
+          id: "43645776",
+          name: "Grade VI",
+          route: "all-classes/grade/VI",
+        },
+        {
+          id: "43645776",
+          name: "Grade VII",
+          route: "/all-classes/grade/VII",
+        },
+        {
+          id: "43645776",
+          name: "Grade VIII",
+          route: "/all-classes/grade/VIII",
+        },
+        {
+          id: "43645776",
+          name: "Grade IX",
+          route: "/all-classes/grade/IX",
+        },
+        {
+          id: "43645776",
+          name: "Grade X",
+          route: "/all-classes/grade/X",
         },
       ],
     },

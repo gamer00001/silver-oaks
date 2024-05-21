@@ -65,3 +65,37 @@ export const StudentCoursesTabs = [
     baseRoute: "enrolled-courses",
   },
 ];
+
+export const AdminCoursesTabs = [
+  {
+    title: "Lectures",
+    to: "./lectures",
+    baseRoute: "lectures",
+  },
+  {
+    title: "Assignments",
+    to: "./assignments",
+    baseRoute: "assignments",
+  },
+  {
+    title: "Quizzes",
+    to: "./quizzes",
+    baseRoute: "quizzes",
+  },
+  {
+    title: "Exams",
+    to: "./exams",
+    baseRoute: "exams",
+  },
+
+  {
+    title: "Students",
+    to: "./students",
+    baseRoute: "students",
+  },
+  {
+    title: "Reports",
+    to: "./reports",
+    baseRoute: "reports",
+  },
+];

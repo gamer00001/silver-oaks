@@ -4,6 +4,8 @@ const CourseBlock = ({
   link,
   bgColor,
   data,
+  showDeleteIcon = false,
+  handleDeleteAction,
   width = "w-2/6",
   bookIcon = "w-36",
   title = "English",
@@ -51,6 +53,15 @@ const CourseBlock = ({
         src="/books-icon.svg"
         alt="course-icon"
       />
+
+      {showDeleteIcon && (
+        <img
+          alt="delete-icon"
+          src="/delete-icon.png"
+          onClick={handleDeleteAction}
+          className="absolute w-10 cursor-pointer top-2 right-4"
+        />
+      )}
     </div>
   );
 };

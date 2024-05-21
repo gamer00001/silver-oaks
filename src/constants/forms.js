@@ -6,6 +6,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-1.svg",
       type: "text",
+      showLabel: true,
     },
     {
       name: "grade",
@@ -14,6 +15,7 @@ export const AddStudentFields = () => {
       options: [],
       icon: "/icon-2.svg",
       type: "dropdown",
+      showLabel: true,
     },
     {
       name: "rollNumber",
@@ -21,6 +23,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-3.svg",
       type: "text",
+      showLabel: true,
     },
     {
       name: "section",
@@ -29,6 +32,7 @@ export const AddStudentFields = () => {
       icon: "/icon-4.svg",
       options: [],
       type: "dropdown",
+      showLabel: true,
     },
     {
       name: "campusName",
@@ -37,6 +41,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-5.svg",
       type: "dropdown",
+      showLabel: true,
     },
     {
       name: "gender",
@@ -45,6 +50,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-6.svg",
       type: "dropdown",
+      showLabel: true,
     },
     {
       name: "password",
@@ -52,6 +58,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-7.svg",
       type: "password",
+      showLabel: true,
     },
     {
       name: "dateOfBirth",
@@ -59,6 +66,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-8.svg",
       type: "date",
+      showLabel: true,
     },
 
     {
@@ -67,6 +75,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-6.svg",
       type: "text",
+      showLabel: true,
     },
     {
       name: "city",
@@ -74,6 +83,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-9.svg",
       type: "text",
+      showLabel: true,
     },
     {
       name: "guardianEmail",
@@ -81,6 +91,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-11.svg",
       type: "email",
+      showLabel: true,
     },
 
     {
@@ -89,6 +100,7 @@ export const AddStudentFields = () => {
       column: 6,
       icon: "/icon-11.svg",
       type: "text",
+      showLabel: true,
     },
 
     {
@@ -97,11 +109,12 @@ export const AddStudentFields = () => {
       column: 12,
       icon: "/icon-12.svg",
       type: "text",
+      showLabel: true,
     },
   ];
 };
 
-export const AddTeacherFields = () => {
+export const AddTeacherFields = (campuses = []) => {
   return [
     {
       name: "employeeName",
@@ -109,13 +122,15 @@ export const AddTeacherFields = () => {
       column: 12,
       icon: "/icon-1.svg",
       type: "text",
+      showLabel: true,
     },
     {
-      name: "campus",
+      name: "campusName",
       placeholder: "Campus",
-      options: [],
+      options: campuses?.map((item) => item?.campusName),
       column: 12,
       icon: "/icon-5.svg",
+      showLabel: true,
       type: "dropdown",
     },
     {
@@ -123,14 +138,16 @@ export const AddTeacherFields = () => {
       placeholder: "Password",
       column: 6,
       icon: "/icon-7.svg",
+      showLabel: true,
       type: "password",
     },
     {
-      name: "dob",
+      name: "dateOfBirth",
       placeholder: "Date of Birth",
       column: 6,
       icon: "/icon-8.svg",
       type: "date",
+      showLabel: true,
     },
     {
       name: "joiningDate",
@@ -138,6 +155,7 @@ export const AddTeacherFields = () => {
       column: 6,
       icon: "/icon-6.svg",
       type: "date",
+      showLabel: true,
     },
 
     {
@@ -147,14 +165,16 @@ export const AddTeacherFields = () => {
       column: 6,
       icon: "/icon-6.svg",
       type: "dropdown",
+      showLabel: true,
     },
 
     {
-      name: "contactNumber",
+      name: "phoneNumber",
       placeholder: "Contact Number",
       column: 6,
       icon: "/icon-11.svg",
       type: "text",
+      showLabel: true,
     },
     {
       name: "email",
@@ -162,6 +182,7 @@ export const AddTeacherFields = () => {
       column: 6,
       icon: "/icon-11.svg",
       type: "email",
+      showLabel: true,
     },
   ];
 };
@@ -254,6 +275,35 @@ export const AddGradeFields = () => {
       column: 12,
       icon: "/icon-5.svg",
       type: "dropdown",
+    },
+  ];
+};
+
+export const AddCourseFields = () => {
+  return [
+    {
+      name: "name",
+      placeholder: "Course Name",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "description",
+      placeholder: "Course Description",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "credits",
+      placeholder: "Credit",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "number",
+      showLabel: true,
     },
   ];
 };

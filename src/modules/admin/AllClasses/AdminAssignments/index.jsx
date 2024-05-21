@@ -6,27 +6,24 @@ import InputField from "@/components/common/InputField";
 import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddTeacherFields } from "@/constants/forms";
-import { ManageTeachersColumns } from "@/constants/table-constants";
+import { AssignmentsColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
-import {
-  MockTeacherStudentsData,
-  parseTeachersListing,
-} from "@/parsers/student-parser";
+import { MockAssignmentData } from "@/parsers/student-parser";
 import {
   addTeacher,
   deleteTeacher,
   editTeacher,
   fetchTeachersListing,
 } from "@/store/actions/teacherActions";
-import { fetchCompusListing } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
-const ManageTeachers = () => {
+const AdminAssignments = () => {
   const [state, setState] = useState({
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
@@ -34,7 +31,9 @@ const ManageTeachers = () => {
     isEditMode: false,
   });
 
+  const { courseName, courseId, gradeId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     teachersListing: { data, loading },
@@ -121,10 +120,14 @@ const ManageTeachers = () => {
     );
   };
 
+  const handleViewSubmission = (assignmentId = 1) => {
+    navigate(`${1}`);
+  };
+
   useEffect(() => {
     fetchListing();
 
-    fetchCompusListing(dispatch);
+    // fetchCompusListing(dispatch);
   }, []);
 
   if (loading) {
@@ -134,16 +137,12 @@ const ManageTeachers = () => {
   return (
     <div className="bg-white h-full">
       <div className="flex justify-end gap-12 pr-12">
-        <Button variant="primary" size="large">
-          Upload CSV
-        </Button>
-
         <Button
           size="large"
           variant="secondary"
           onClick={() => handleModal("addNewModalIsOpen")}
         >
-          Add Teacher
+          Add New Lecture
         </Button>
       </div>
 
@@ -151,22 +150,17 @@ const ManageTeachers = () => {
         <Grid item md={6}>
           <InputField icon="/search-icon.svg" />
         </Grid>
+        <Grid item md={3} />
 
         <Grid item md={3}>
-          <Dropdown placeholder="Select Grade" options={options} />
-        </Grid>
-        <Grid item md={3}>
-          <Dropdown
-            placeholder="Campus"
-            options={campusesData?.data?.map((item) => item?.campusName)}
-          />
+          <Dropdown placeholder="Published Date" options={options} />
         </Grid>
       </Grid>
 
       <div className="p-12">
         <CustomTable
-          columns={ManageTeachersColumns}
-          rows={parseTeachersListing(data?.teacherList, handleModal)}
+          columns={AssignmentsColumns}
+          rows={MockAssignmentData(handleModal, handleViewSubmission)}
         />
       </div>
 
@@ -199,4 +193,4 @@ const ManageTeachers = () => {
   );
 };
 
-export default ManageTeachers;
+export default AdminAssignments;

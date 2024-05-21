@@ -6,33 +6,91 @@ import AddNewClass from "@/components/modals/AddNewClass";
 import { Grid } from "@mui/material";
 import React, { useState } from "react";
 
+import garde1 from "../../../assets/common/grade1.png";
+import garde2 from "../../../assets/common/grade2.png";
+import garde3 from "../../../assets/common/grade3.png";
+import garde4 from "../../../assets/common/grade4.png";
+import garde5 from "../../../assets/common/grade5.png";
+import garde6 from "../../../assets/common/grade6.png";
+import garde7 from "../../../assets/common/grade7.png";
+import garde8 from "../../../assets/common/grade8.png";
+import garde9 from "../../../assets/common/grade9.png";
+import garde10 from "../../../assets/common/grade10.png";
+import { useNavigate } from "react-router-dom";
+
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
 const MOCK_GRADES = [
   {
     id: 1,
-    title: "Grade 1 (Alliums)",
+    title: "Grade I",
     subtitle: "Campus 1_Faraz(Rawalpindi)",
+    image: garde1,
+    route: "/all-classes/grade/I",
   },
   {
     id: 2,
-    title: "Grade 2 (Alliums)",
+    title: "Grade II",
     subtitle: "Campus 2_Faraz(Rawalpindi)",
+    image: garde2,
+    route: "/all-classes/grade/II",
   },
   {
     id: 3,
-    title: "Grade 3 (Alliums)",
+    title: "Grade III",
     subtitle: "Campus 3_Faraz(Rawalpindi)",
+    image: garde3,
+    route: "/all-classes/grade/III",
   },
   {
     id: 4,
-    title: "Grade 4 (Alliums)",
+    title: "Grade IV",
     subtitle: "Campus 4_Faraz(Rawalpindi)",
+    image: garde4,
+    route: "/all-classes/grade/IV",
   },
   {
     id: 5,
-    title: "Grade 5 (Alliums)",
+    title: "Grade V",
+    image: garde5,
     subtitle: "Campus 5_Faraz(Rawalpindi)",
+    route: "/all-classes/grade/V",
+  },
+
+  {
+    id: 6,
+    title: "Grade VI",
+    image: garde6,
+    subtitle: "Campus 1_Faraz(Rawalpindi)",
+    route: "/all-classes/grade/VI",
+  },
+  {
+    id: 7,
+    title: "Grade VII",
+    image: garde7,
+    subtitle: "Campus 2_Faraz(Rawalpindi)",
+    route: "/all-classes/grade/VII",
+  },
+  {
+    id: 8,
+    title: "Grade VIII",
+    image: garde8,
+    subtitle: "Campus 3_Faraz(Rawalpindi)",
+    route: "/all-classes/grade/VIII",
+  },
+  {
+    id: 9,
+    title: "Grade IX",
+    image: garde9,
+    subtitle: "Campus 4_Faraz(Rawalpindi)",
+    route: "/all-classes/grade/IX",
+  },
+  {
+    id: 10,
+    image: garde10,
+    title: "Grade X",
+    subtitle: "Campus 5_Faraz(Rawalpindi)",
+    route: "/all-classes/grade/X",
   },
 ];
 
@@ -41,6 +99,8 @@ const AllClasses = () => {
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
   });
+
+  const navigate = useNavigate();
 
   const handleModal = (key = "deleteModalIsOpen") => {
     console.log({ key }, [key], !state[key]);
@@ -54,7 +114,7 @@ const AllClasses = () => {
     <div className="bg-white h-full">
       <Grid container spacing={4} className="px-12 py-12">
         <Grid item sm={3} md={3} lg={2}>
-          <Dropdown placeholder="Select Grade" options={options} />
+          <Dropdown placeholder="Grade" options={options} />
         </Grid>
         <Grid item sm={3} md={3} lg={2}>
           <Dropdown placeholder="Campus" options={options} />
@@ -78,7 +138,7 @@ const AllClasses = () => {
       <Grid container spacing={6} className="p-12 flex">
         {MOCK_GRADES.map((grade) => (
           <Grid item lg={4} key={grade.id}>
-            <GradeBlock {...grade} />
+            <GradeBlock onClick={() => navigate(grade.route)} {...grade} />
           </Grid>
         ))}
       </Grid>

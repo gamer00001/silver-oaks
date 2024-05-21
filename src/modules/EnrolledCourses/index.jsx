@@ -6,7 +6,6 @@ import { getCourses } from "@/store/actions/coursesActions";
 import { CoursesColors } from "@/utils/helper";
 import { Loader } from "@/components/common";
 
-
 const EnrolledCourses = () => {
   const dispatch = useDispatch();
 
@@ -29,7 +28,7 @@ const EnrolledCourses = () => {
   return (
     <div className="pl-20">
       <span className="text-black font-bold text-4xl">My Courses</span>
-      <div className="flex gap-12 pt-12 flex-wrap ">
+      <div className="flex gap-12 pt-12 flex-wrap">
         {data?.courseList?.map((item, index) => (
           <CourseBlock
             key={index}

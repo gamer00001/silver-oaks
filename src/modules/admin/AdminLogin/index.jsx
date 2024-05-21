@@ -46,7 +46,10 @@ const AdminLogin = ({ forStudent = false }) => {
             console.log({ res });
             navigate("/", { replace: true });
             localStorage.setItem("email", body.email);
-            localStorage.setItem("userType", "admin");
+            localStorage.setItem(
+              "userType",
+              res.role === "ROLE_ADMIN" ? "admin" : ""
+            );
             toast.success("Logged in successfully!");
           },
         })
