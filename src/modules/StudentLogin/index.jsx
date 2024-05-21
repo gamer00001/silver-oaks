@@ -31,8 +31,6 @@ const StudentLogin = ({ forStudent = false }) => {
     },
     validationSchema: LoginSchema,
     onSubmit: (body) => {
-      localStorage.setItem("email", body.email);
-
       dispatch(
         loginUser({
           payload: {
@@ -42,12 +40,21 @@ const StudentLogin = ({ forStudent = false }) => {
             },
           },
           onSuccess: (res) => {
-            console.log({ res });
+            let role;
+            switch (res.role) {
+              case "ROLE_STUDENT":
+                role = "student";
+                localStorage.setItem("email", body.email);
+                localStorage.setItem("userType", role);
+                return;
+
+              default:
+                role = "";
+                break;
+            }
+
             navigate("/", { replace: true });
-            localStorage.setItem(
-              "userType",
-              res.role === "ROLE_STUDENT" ? "student" : "teacher"
-            );
+
             toast.success("Logged in successfully!");
           },
         })

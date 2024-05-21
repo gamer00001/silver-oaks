@@ -15,3 +15,26 @@ export const parseAddStudentData = (data) => {
     studentName: data?.studentName,
   };
 };
+
+export const parseAddTeacherData = (data) => {
+  return {
+    // address: data,
+    campusName: data.campusName,
+    dateOfBirth: data.dateOfBirth,
+    email: data.email,
+    employeeName: data.employeeName,
+    gender: data.gender,
+    joiningDate: data.joiningDate,
+    password: data.password,
+    phoneNumber: data.phoneNumber,
+    teacherSectionList: [],
+    // teacherSectionList: [
+    //   {
+    //     grade: data,
+    //     id: 0,
+    //     section: data,
+    //     teacherId: 0,
+    //   },
+    // ],
+  };
+};

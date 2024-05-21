@@ -36,7 +36,7 @@ import Attendance from "./modules/Attendance";
 import Reports from "./modules/Reports";
 import StudentDashboard from "./modules/StudentDashboard";
 import EnrolledCourses from "./modules/EnrolledCourses";
-import { StudentCoursesTabs } from "./constants/common";
+import { AdminCoursesTabs, StudentCoursesTabs } from "./constants/common";
 import OnGoingAssignments from "./modules/OnGoingAssignments";
 import OGA from "./modules/OGA";
 import StudentGrades from "./modules/StudentGrades";
@@ -48,6 +48,14 @@ import ManageAnnouncements from "./modules/admin/ManageAnnouncements";
 import ManageNotifications from "./modules/admin/ManageNotifications";
 import AllClasses from "./modules/admin/AllClasses";
 import QuizDetail from "./modules/QuizDetail";
+import GradePage from "./modules/admin/AllClasses/Grade";
+import LecturesPage from "./modules/admin/AllClasses/Lectures";
+import AdminAssignments from "./modules/admin/AllClasses/AdminAssignments";
+import AdminQuizzes from "./modules/admin/AllClasses/AdminQuizzes";
+import AdminExams from "./modules/admin/AllClasses/AdminExams";
+import AdminStudents from "./modules/admin/AllClasses/AdminStudents";
+import AdminReports from "./modules/admin/AllClasses/AdminReports";
+import SubmittedAssignments from "./modules/admin/AllClasses/AdminAssignments/SubmittedAssignments";
 
 const Routes = () => {
   return (
@@ -145,6 +153,52 @@ const adminLayoutRoutes = [
       path="/all-classes"
       element={<MyReactHelmet title="All Classes" element={<AllClasses />} />}
     />
+
+    <Route
+      path="/all-classes/grade/:gradeId"
+      element={<MyReactHelmet title="Grade" element={<GradePage />} />}
+    />
+
+    <Route
+      path="/all-classes"
+      element={<CourseLayout tabs={AdminCoursesTabs} />}
+    >
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/lectures"
+        element={<MyReactHelmet title="Grade" element={<LecturesPage />} />}
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/assignments"
+        element={
+          <MyReactHelmet title="Assignment" element={<AdminAssignments />} />
+        }
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/assignments/:assignmentId"
+        element={
+          <MyReactHelmet
+            title="Assignment"
+            element={<SubmittedAssignments />}
+          />
+        }
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/quizzes"
+        element={<MyReactHelmet title="Quizzes" element={<AdminQuizzes />} />}
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/exams"
+        element={<MyReactHelmet title="Exams" element={<AdminExams />} />}
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/students"
+        element={<MyReactHelmet title="Students" element={<AdminStudents />} />}
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:courseName/:courseId/reports"
+        element={<MyReactHelmet title="Reports" element={<AdminReports />} />}
+      />
+    </Route>
   </Route>,
 ];
 

@@ -5,7 +5,7 @@ import React from "react";
 import DynamicField from "../common/DynamicField";
 import Button from "../common/Button";
 
-const initialValues = {
+const defaultValues = {
   name: "",
   studentName: "",
   grade: "",
@@ -23,27 +23,27 @@ const initialValues = {
 };
 
 const AddStudentTeacher = ({
+  schema,
   handleAddUser,
+  initialValues,
   editValues,
   fields = [],
   handleModal,
   title = "Add Student",
   subtitle = "Student Details",
 }) => {
-  const { handleSubmit, handleChange, handleBlur, values } = useFormik({
-    initialValues: editValues ?? initialValues,
-    enableReinitialize: true,
+  const { handleSubmit, handleChange, handleBlur, values, errors } = useFormik({
+    initialValues: editValues ?? initialValues ?? defaultValues,
+    // enableReinitialize: true,
+    validationSchema: schema,
     onSubmit: (values) => {
       console.log({ values });
       handleModal();
       handleAddUser(values);
-      // if (!v.query) delete v.query;
-      // navigate(`${pathname}?${convertObjectToQueryString({ ...v, page: 1 })}`);
-      // scrollToTop();
     },
   });
 
-  console.log({ values, editValues });
+  console.log({ values, editValues, errors });
 
   return (
     <div>
@@ -58,6 +58,7 @@ const AddStudentTeacher = ({
             <Grid item sm={field.column} key={key}>
               <DynamicField
                 field={field}
+                error={errors[field.name]}
                 value={values[field.name]}
                 onChange={(value) => {
                   const event = {

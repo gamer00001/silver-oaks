@@ -321,12 +321,632 @@ export const MockTeacherStudentsData = (handleModal) => {
   ];
 };
 
+export const MockLecturesData = (handleModal) => {
+  return [
+    {
+      id: 1,
+      title: "Introduction To ICT",
+      publishedDate: "12-09-2024",
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      title: "Introduction To ICT",
+      publishedDate: "12-09-2024",
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      title: "Introduction To ICT",
+      publishedDate: "12-09-2024",
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 4,
+      title: "Introduction To ICT",
+      publishedDate: "12-09-2024",
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 5,
+      title: "Introduction To ICT",
+      publishedDate: "12-09-2024",
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+  ];
+};
+
+export const MockAssignmentData = (handleModal, handleViewSubmission) => {
+  return [
+    {
+      id: 1,
+      title: "Introduction To ICT",
+      marks: 10,
+      dueDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center items-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+
+          <span
+            onClick={handleViewSubmission}
+            className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+          >
+            View Submissions
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      title: "Introduction To ICT",
+      marks: 10,
+      dueDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+          <span
+            onClick={handleViewSubmission}
+            className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+          >
+            View Submissions
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      title: "Introduction To ICT",
+      marks: 10,
+      dueDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+          <span
+            onClick={handleViewSubmission}
+            className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+          >
+            View Submissions
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: 4,
+      title: "Introduction To ICT",
+      marks: 10,
+      dueDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+          <span
+            onClick={handleViewSubmission}
+            className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+          >
+            View Submissions
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: 5,
+      title: "Introduction To ICT",
+      marks: 10,
+      dueDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+          <span
+            onClick={handleViewSubmission}
+            className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+          >
+            View Submissions
+          </span>
+        </div>
+      ),
+    },
+  ];
+};
+
+export const MockSubmittedAssignmentData = () => {
+  return [
+    {
+      id: 1,
+      fullName: "John Roe",
+      rollNumber: "123",
+      status: "No Submission",
+      marks: "Marked",
+      grade: "A",
+      submitted: "12-02-2023",
+      obtainedMarks: "13",
+    },
+    {
+      id: 2,
+      fullName: "John Roe",
+      rollNumber: "123",
+      status: "No Submission",
+      marks: "Marked",
+      grade: "A",
+      submitted: "12-02-2023",
+      obtainedMarks: "13",
+    },
+    {
+      id: 3,
+      fullName: "John Roe",
+      rollNumber: "123",
+      status: "No Submission",
+      marks: "Marked",
+      grade: "A",
+      submitted: "12-02-2023",
+      obtainedMarks: "13",
+    },
+    {
+      id: 4,
+      fullName: "John Roe",
+      rollNumber: "123",
+      status: "No Submission",
+      marks: "Marked",
+      grade: "A",
+      submitted: "12-02-2023",
+      obtainedMarks: "13",
+    },
+    {
+      id: 5,
+      fullName: "John Roe",
+      rollNumber: "123",
+      status: "No Submission",
+      marks: "Marked",
+      grade: "A",
+      submitted: "12-02-2023",
+      obtainedMarks: "13",
+    },
+  ];
+};
+
+export const MockQuizzesData = (handleModal) => {
+  return [
+    {
+      id: 1,
+      title: "Introduction To ICT",
+      visibleTo: "Teachers, Students",
+      publishedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      title: "Introduction To ICT",
+      visibleTo: "Teachers, Students",
+      publishedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      title: "Introduction To ICT",
+      visibleTo: "Teachers, Students",
+      publishedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 4,
+      title: "Introduction To ICT",
+      visibleTo: "Teachers, Students",
+      publishedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 5,
+      title: "Introduction To ICT",
+      visibleTo: "Teachers, Students",
+      publishedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+  ];
+};
+
+export const MockExamData = (handleModal) => {
+  return [
+    {
+      id: 1,
+      title: "Mid term exam",
+      marks: 10,
+      uploadedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      title: "Mid term exam",
+      marks: 10,
+      uploadedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      title: "Mid term exam",
+      marks: 10,
+      uploadedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 4,
+      title: "Mid term exam",
+      marks: 10,
+      uploadedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 5,
+      title: "Mid term exam",
+      marks: 10,
+      uploadedDate: (
+        <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+          12-02-2024
+        </div>
+      ),
+      actions: (
+        <div className="flex gap-8 justify-center">
+          <img
+            className="cursor-pointer"
+            src="/edit-action.svg"
+            alt="edit"
+            title="Edit"
+          />
+          <img
+            alt="delete"
+            title="Delete"
+            src="/delete-action.svg"
+            className="cursor-pointer"
+            onClick={() => handleModal("deleteModalIsOpen")}
+          />
+        </div>
+      ),
+    },
+  ];
+};
+
 export const parseTeachersListing = (data = [], handleModal) => {
   return data?.map((teachersData) => ({
     ...teachersData,
-    name: teachersData?.studentName ?? "N/A",
-    rollNumber: teachersData?.rollNumber ?? "N/A",
-    grade: teachersData?.grade ?? "N/A",
+    name: teachersData?.employeeName ?? "N/A",
+    gradeAssigned: teachersData?.gradeAssigned ?? "N/A",
     lastLoggedIn: (
       <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
         N/A

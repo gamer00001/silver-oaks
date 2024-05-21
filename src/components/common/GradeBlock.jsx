@@ -1,12 +1,15 @@
 import React from "react";
 
-const GradeBlock = ({ title = "", subtitle = "" }) => {
+const GradeBlock = ({ title = "", subtitle = "", image, onClick }) => {
   return (
-    <div className="rounded-2xl w-full h-full border border-custom-red cursor-pointer">
+    <div
+      className="rounded-2xl w-full h-full border border-custom-red cursor-pointer"
+      onClick={onClick}
+    >
       <div className="rounded-2xl w-auto  bg-custom-red flex justify-center">
         <img
           className="h-60 my-12 rounded-2xl"
-          src="/grade-icon.svg"
+          src={image ?? "/grade-icon.svg"}
           alt="grade"
         />
       </div>

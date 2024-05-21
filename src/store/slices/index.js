@@ -22,3 +22,5 @@ export * from "./ogaSlice";
 export * from "./academicRecordSlice";
 
 export * from "./teacherSlice";
+
+export * from "./commonSlice";

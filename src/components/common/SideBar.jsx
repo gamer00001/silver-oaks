@@ -118,31 +118,60 @@ const SideBarItem = ({ route }) => {
           <ul
             className={`ml-[2rem] ${
               expanded || route?.courses
-                ? "block max-h-[10rem] overflow-hidden transition-all duration-300"
+                ? "block max-h-auto overflow-hidden transition-all duration-300"
                 : "hidden max-h-0"
             }`}
           >
-            {coursesData?.data?.courseList?.map((course, index) => (
-              <li className="px-[2.9rem] md:px-0 " key={index}>
-                <NavLink
-                  to={`/${
-                    currentLoggedInUserType() === "student"
-                      ? "enrolled-courses"
-                      : "course"
-                  }/lectures/${course.courseId}`}
-                >
-                  <span
-                    className={`md:pl-24  body-medium hover:text-custom-golden ${
-                      pathname.includes(course.courseId)
-                        ? "text-custom-golden"
-                        : "text-white"
-                    }`}
+            {currentLoggedInUserType() === "admin" ? (
+              <>
+                {route.courses.map((item, index) => (
+                  <li className="px-[2.9rem] py-3 md:px-0 " key={index}>
+                    <NavLink
+                      className={({ isActive }) =>
+                        `grid grid-cols-[auto_auto] gap-[1.6rem] items-center justify-start ${
+                          isActive
+                            ? "text-custom-golden"
+                            : "text-white hover:text-custom-golden transition-colors duration-300"
+                        }`
+                      }
+                      to={`${item.route}`}
+                    >
+                      <span
+                        className={`md:pl-24  body-medium hover:text-custom-golden ${
+                          pathname === item.route
+                            ? "text-custom-golden"
+                            : "text-white"
+                        }`}
+                      >
+                        {item.name}
+                      </span>
+                    </NavLink>
+                  </li>
+                ))}
+              </>
+            ) : (
+              coursesData?.data?.courseList?.map((course, index) => (
+                <li className="px-[2.9rem] md:px-0 " key={index}>
+                  <NavLink
+                    to={`/${
+                      currentLoggedInUserType() === "student"
+                        ? "enrolled-courses"
+                        : "course"
+                    }/lectures/${course.courseId}`}
                   >
-                    {course.courseName}
-                  </span>
-                </NavLink>
-              </li>
-            ))}
+                    <span
+                      className={`md:pl-24  body-medium hover:text-custom-golden ${
+                        pathname.includes(course.courseId)
+                          ? "text-custom-golden"
+                          : "text-white"
+                      }`}
+                    >
+                      {course.courseName}
+                    </span>
+                  </NavLink>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       ) : (

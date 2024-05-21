@@ -5,6 +5,7 @@ const Dropdown = ({
   error,
   value,
   placeholder,
+  showLabel = false,
   options = [],
   onChange = () => {},
 }) => {
@@ -38,10 +39,15 @@ const Dropdown = ({
 
   return (
     <div className="relative inline-block w-full" ref={dropdownRef}>
+      {showLabel && (
+        <div className="text-[#7a7a7a] text-2xl font-semibold mb-4">
+          {placeholder}
+        </div>
+      )}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`bg-[#FAFAFA] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
+        className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
           icon && "px-20"
         }`}
       >

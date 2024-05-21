@@ -8,7 +8,7 @@ const DeleteActionModal = ({ handleAction, handleModal }) => {
       </div>
 
       <div className="text-black font-normal text-center text-3xl py-8">
-        Are you sure you want to delete Minahil Fatima from grade IV?
+        Are you sure you want to delete this?
       </div>
 
       <div className="flex flex-col gap-8">
