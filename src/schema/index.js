@@ -102,3 +102,13 @@ export const AddCourseSchema = Yup.object().shape({
   description: Yup.string().required("Description To is required"),
   credits: Yup.number().required("Credits is required"),
 });
+
+export const AddCampusSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+});
+
+export const AddSectionSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  grade: Yup.string().required("Grade is required"),
+  campus: Yup.string().required("Campus is required"),
+});

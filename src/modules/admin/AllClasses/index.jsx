@@ -4,7 +4,7 @@ import Dropdown from "@/components/common/Dropdown";
 import GradeBlock from "@/components/common/GradeBlock";
 import AddNewClass from "@/components/modals/AddNewClass";
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import garde1 from "../../../assets/common/grade1.png";
 import garde2 from "../../../assets/common/grade2.png";
@@ -17,10 +17,14 @@ import garde8 from "../../../assets/common/grade8.png";
 import garde9 from "../../../assets/common/grade9.png";
 import garde10 from "../../../assets/common/grade10.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addCampus, addSection } from "@/store/actions/commonActions";
+import toast from "react-hot-toast";
+import { fetchCompusListing } from "@/utils/common-api-helper";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
-const MOCK_GRADES = [
+export const MOCK_GRADES = [
   {
     id: 1,
     title: "Grade I",
@@ -101,6 +105,9 @@ const AllClasses = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { campusesData } = useSelector((s) => s.commonReducer);
 
   const handleModal = (key = "deleteModalIsOpen") => {
     console.log({ key }, [key], !state[key]);
@@ -110,6 +117,61 @@ const AllClasses = () => {
     }));
   };
 
+  const handleAddCampus = (formValues) => {
+    const payload = {
+      campusName: formValues.name,
+    };
+    dispatch(
+      addCampus({
+        payload: {
+          body: payload,
+        },
+        onSuccess: (resp) => {
+          handleModal("addNewModalIsOpen");
+          fetchCompusListing(dispatch);
+
+          toast.success("Campus added successfully!");
+        },
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  };
+
+  const handleAddSection = (formValues) => {
+    const campusId = campusesData.data.find(
+      (item) => item.campusName === formValues.campus
+    )?.id;
+
+    const payload = {
+      campusId: campusId,
+      grade: formValues?.grade,
+      sectionName: formValues.name,
+    };
+
+    dispatch(
+      addSection({
+        payload: {
+          query: {
+            campusId,
+          },
+          body: payload,
+        },
+        onSuccess: (resp) => {
+          // fetchListing();
+          handleModal("addNewModalIsOpen");
+          fetchCompusListing(dispatch);
+
+          toast.success("Section added successfully!");
+        },
+        onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  };
+
+  useEffect(() => {
+    fetchCompusListing(dispatch);
+  }, []);
+
   return (
     <div className="bg-white h-full">
       <Grid container spacing={4} className="px-12 py-12">
@@ -117,14 +179,14 @@ const AllClasses = () => {
           <Dropdown placeholder="Grade" options={options} />
         </Grid>
         <Grid item sm={3} md={3} lg={2}>
-          <Dropdown placeholder="Campus" options={options} />
+          <Dropdown
+            placeholder="Campus"
+            options={campusesData?.data?.map((item) => item?.campusName) ?? []}
+          />
         </Grid>
         <Grid item sm={3} md={2} lg={4} />
 
         <Grid item sm={3} md={4} lg={4} className="flex justify-end gap-8">
-          <Button variant="primary" size="large">
-            Search
-          </Button>
           <Button
             variant="secondary"
             size="large"
@@ -150,7 +212,12 @@ const AllClasses = () => {
       >
         <AddNewClass
           //   fields={AddStudentFields()}
+          handleAddCampus={handleAddCampus}
+          handleAddSection={handleAddSection}
           handleModal={() => handleModal("addNewModalIsOpen")}
+          campusesOptions={
+            campusesData?.data?.map((item) => item?.campusName) ?? []
+          }
         />
       </ModalTop>
     </div>

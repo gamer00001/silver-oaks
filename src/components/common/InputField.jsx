@@ -73,7 +73,9 @@ const InputField = ({
             } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}
           />
         )}
-        {error && <div className="text-red-600 text-left text-xl">{error}</div>}
+        {error && (
+          <div className="text-red-600 text-left text-xl py-4">{error}</div>
+        )}
       </div>
     </>
   );

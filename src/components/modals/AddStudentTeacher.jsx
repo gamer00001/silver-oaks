@@ -43,11 +43,17 @@ const AddStudentTeacher = ({
     },
   });
 
-  console.log({ values, editValues, errors });
-
   return (
     <div>
-      <h2 className="text-black text-6xl font-bold py-6">{title}</h2>
+      <div className="flex justify-between">
+        <h2 className="text-black text-6xl font-bold py-6">{title}</h2>
+        <img
+          className="cursor-pointer"
+          onClick={handleModal}
+          src="/close-icon.svg"
+          alt="close-icon"
+        />
+      </div>
 
       <h4 className="text-[#474747A6] text-3xl font-semibold py-6">
         {subtitle}
