@@ -1,3 +1,5 @@
+import { MOCK_GRADES } from "@/modules/admin/AllClasses";
+
 export const AddStudentFields = () => {
   return [
     {
@@ -316,18 +318,19 @@ export const AddCampusFields = () => {
       column: 12,
       icon: "/icon-1.svg",
       type: "text",
+      showLabel: true,
     },
-    {
-      name: "campusLocation",
-      placeholder: "Enter Campus Location",
-      column: 12,
-      icon: "/icon-5.svg",
-      type: "dropdown",
-    },
+    // {
+    //   name: "campusLocation",
+    //   placeholder: "Enter Campus Location",
+    //   column: 12,
+    //   icon: "/icon-5.svg",
+    //   type: "dropdown",
+    // },
   ];
 };
 
-export const AddSectionFields = () => {
+export const AddSectionFields = (campusesOptions = []) => {
   return [
     {
       name: "name",
@@ -335,21 +338,25 @@ export const AddSectionFields = () => {
       column: 12,
       icon: "/icon-1.svg",
       type: "text",
+      showLabel: true,
     },
     {
       name: "grade",
       placeholder: "Select Grade",
-      options: ["Grade 1", "Grade 2", "Grade 3"],
+      options: MOCK_GRADES.map((item) => item.title),
       column: 12,
       icon: "/icon-5.svg",
       type: "dropdown",
+      showLabel: true,
     },
     {
-      name: "maxStudents",
-      placeholder: "Enter Max Number of Students",
+      name: "campus",
+      placeholder: "Select Campus",
       column: 12,
       icon: "/icon-1.svg",
-      type: "number",
+      type: "dropdown",
+      options: campusesOptions,
+      showLabel: true,
     },
   ];
 };

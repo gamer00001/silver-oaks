@@ -73,7 +73,7 @@ const Dropdown = ({
         </svg>
       </button>
       {isOpen && (
-        <div className="absolute z-10 mt-2 bg-white shadow-md rounded-xl w-full">
+        <div className="absolute z-10 mt-2 bg-white shadow-md rounded-xl w-full max-h-60 overflow-auto scrollbar">
           {options.map((option) => (
             <div
               key={option}
@@ -85,7 +85,9 @@ const Dropdown = ({
           ))}
         </div>
       )}
-      {error && <div className="text-red-600 text-left text-xl">{error}</div>}
+      {error && (
+        <div className="text-red-600 text-left text-xl py-4">{error}</div>
+      )}
     </div>
   );
 };
