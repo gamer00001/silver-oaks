@@ -4,6 +4,7 @@ import CourseBlock from "@/components/common/CourseBlock";
 import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import { AddCourseFields } from "@/constants/forms";
 import { AddCourseSchema } from "@/schema";
+import { fetchSectionsByCampus } from "@/store/actions/commonActions";
 import {
   addCourse,
   deleteCourse,
@@ -20,19 +21,19 @@ const initialValues = {
   credits: "",
 };
 
-const GradePage = () => {
+const SectionPage = () => {
   const [state, setState] = useState({
     addNewModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
   });
 
-  const { gradeId, campusName, campusId, sectionName, sectionId } = useParams();
+  const { gradeId, campusId, campusName } = useParams();
   const dispatch = useDispatch();
 
   const {
-    coursesListing: { data, loading },
-  } = useSelector((s) => s.courseReducer);
+    sectionsData: { data, loading },
+  } = useSelector((s) => s.commonReducer);
 
   const handleModal = (key = "addNewModalIsOpen", selectedRecord) => {
     setState((prev) => ({
@@ -63,12 +64,13 @@ const GradePage = () => {
     );
   };
 
-  const fetchAllCoursesByGrade = () => {
+  const fetchAllSectionsByGrade = () => {
     dispatch(
-      getAllCoursesByGrade({
+      fetchSectionsByCampus({
         payload: {
           query: {
-            gradeId,
+            campusId,
+            grade: `Grade ${gradeId}`,
           },
           dispatch,
         },
@@ -86,14 +88,14 @@ const GradePage = () => {
           dispatch,
         },
         onSuccess: () => {
-          fetchAllCoursesByGrade();
+          fetchAllSectionsByGrade();
         },
       })
     );
   };
 
   useEffect(() => {
-    fetchAllCoursesByGrade();
+    fetchAllSectionsByGrade();
   }, [gradeId]);
 
   if (loading) {
@@ -104,24 +106,14 @@ const GradePage = () => {
     <div className="px-20">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-black font-semibold text-6xl">{`All Classes > Grade ${gradeId}`}</p>
-          <p className="text-black font-semibold text-3xl pt-4">All Subjects</p>
-        </div>
-
-        <div>
-          <Button
-            size="large"
-            variant="secondary"
-            onClick={() => handleModal("addNewModalIsOpen")}
-          >
-            Add New Course
-          </Button>
+          <p className="text-black font-semibold text-5xl">{`All Classes > Grade ${gradeId} > Campus ${campusName}`}</p>
+          <p className="text-black font-semibold text-3xl pt-8">All Sections</p>
         </div>
       </div>
 
       <div className="gap-12 pt-12 grid grid-cols-3 w-full">
-        {data?.courseList ? (
-          data?.courseList?.map((item, index) => (
+        {data?.length > 0 ? (
+          data?.map((item, index) => (
             <CourseBlock
               key={index}
               width="w-full"
@@ -129,19 +121,19 @@ const GradePage = () => {
               bookIcon="w-40"
               titleFontSize="text-5xl"
               headingFontSize="text-2xl"
-              title={item?.courseName}
-              showDeleteIcon={true}
-              heading={`Grade ${item?.grade}`}
+              title={item.sectionName}
+              showDeleteIcon={false}
+              heading={campusName}
               data={CoursesColors[index]}
               handleDeleteAction={() => handleDeleteCourse(item.courseId)}
-              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${sectionName}/${sectionId}/${item?.courseName}/${item?.courseId}/lectures`}
               bgColor={CoursesColors[index]?.backgroundColor}
               textColor={CoursesColors[index]?.textColor}
+              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
               {...item}
             />
           ))
         ) : (
-          <div className="font-semibold text-3xl pt-10">No Courses Found!</div>
+          <div className="font-semibold text-3xl pt-10">No Sections Found!</div>
         )}
       </div>
 
@@ -165,4 +157,4 @@ const GradePage = () => {
   );
 };
 
-export default GradePage;
+export default SectionPage;

@@ -56,6 +56,7 @@ import AdminExams from "./modules/admin/AllClasses/AdminExams";
 import AdminStudents from "./modules/admin/AllClasses/AdminStudents";
 import AdminReports from "./modules/admin/AllClasses/AdminReports";
 import SubmittedAssignments from "./modules/admin/AllClasses/AdminAssignments/SubmittedAssignments";
+import SectionPage from "./modules/admin/AllClasses/Sections";
 
 const Routes = () => {
   return (
@@ -155,7 +156,12 @@ const adminLayoutRoutes = [
     />
 
     <Route
-      path="/all-classes/grade/:gradeId"
+      path="/all-classes/grade/:gradeId/:campusName/:campusId"
+      element={<MyReactHelmet title="Section" element={<SectionPage />} />}
+    />
+
+    <Route
+      path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId"
       element={<MyReactHelmet title="Grade" element={<GradePage />} />}
     />
 
@@ -164,7 +170,7 @@ const adminLayoutRoutes = [
       element={<CourseLayout tabs={AdminCoursesTabs} />}
     >
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/lectures"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/lectures"
         element={<MyReactHelmet title="Grade" element={<LecturesPage />} />}
       />
       <Route

@@ -2,7 +2,7 @@ import CoursesIcon from "@/assets/Icons/CoursesIcon";
 import Desktop from "@/assets/Icons/Desktop";
 import Events from "@/assets/Icons/Events";
 
-export const panelSideBar = () => ({
+export const panelSideBar = (defaultCampus) => ({
   admin: [
     {
       to: "/",
@@ -17,52 +17,52 @@ export const panelSideBar = () => ({
         {
           id: "43657457",
           name: "Grade I",
-          route: "/all-classes/grade/I",
+          route: `/all-classes/grade/I/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43635654",
           name: "Grade II",
-          route: "/all-classes/grade/II",
+          route: `/all-classes/grade/II/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade III",
-          route: "/all-classes/grade/III",
+          route: `/all-classes/grade/III/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade IV",
-          route: "/all-classes/grade/IV",
+          route: `/all-classes/grade/IV/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade V",
-          route: "/all-classes/grade/V",
+          route: `/all-classes/grade/V/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade VI",
-          route: "all-classes/grade/VI",
+          route: `/all-classes/grade/VI/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade VII",
-          route: "/all-classes/grade/VII",
+          route: `/all-classes/grade/VII/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade VIII",
-          route: "/all-classes/grade/VIII",
+          route: `/all-classes/grade/VIII/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade IX",
-          route: "/all-classes/grade/IX",
+          route: `/all-classes/grade/IX/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
         {
           id: "43645776",
           name: "Grade X",
-          route: "/all-classes/grade/X",
+          route: `/all-classes/grade/X/${defaultCampus?.campusName}/${defaultCampus?.id}`,
         },
       ],
     },

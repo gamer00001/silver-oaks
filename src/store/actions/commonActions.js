@@ -26,3 +26,12 @@ export const addSection = asyncCatch(
       body
     )
 );
+
+export const fetchSectionsByCampus = asyncCatch(
+  "commonSlice/fetchSectionsByCampus",
+  async ({ query, config }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/${query.campusId}/${query.grade}`,
+      config
+    )
+);

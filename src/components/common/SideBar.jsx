@@ -11,11 +11,14 @@ import { useLocation } from "react-router-dom";
 import { getCourses } from "@/store/actions/coursesActions";
 import { panelSideBar } from "@/constants/sidebarMenus";
 import { currentLoggedInUserType } from "@/utils/helper";
+import { fetchCompusListing } from "@/utils/common-api-helper";
 
 const SideBar = () => {
   const {
     loginUserData: { user, userDetail },
   } = useSelector((s) => s.authReducer);
+
+  const { campusesData } = useSelector((s) => s.commonReducer);
 
   // const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -33,7 +36,13 @@ const SideBar = () => {
     );
   }, []);
 
-  const sidebarMenus = panelSideBar()[currentLoggedInUserType()];
+  useEffect(() => {
+    fetchCompusListing(dispatch);
+  }, []);
+
+  const sidebarMenus = panelSideBar(
+    campusesData?.data ? campusesData?.data[0] : {}
+  )[currentLoggedInUserType()];
 
   return (
     <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
