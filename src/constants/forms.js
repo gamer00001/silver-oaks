@@ -343,7 +343,7 @@ export const AddSectionFields = (campusesOptions = []) => {
     {
       name: "grade",
       placeholder: "Select Grade",
-      options: MOCK_GRADES.map((item) => item.title),
+      options: MOCK_GRADES().map((item) => item.title),
       column: 12,
       icon: "/icon-5.svg",
       type: "dropdown",

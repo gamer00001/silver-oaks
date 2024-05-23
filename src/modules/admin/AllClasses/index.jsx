@@ -24,77 +24,77 @@ import { fetchCompusListing } from "@/utils/common-api-helper";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
-export const MOCK_GRADES = [
+export const MOCK_GRADES = (campusName = "", campusId) => [
   {
     id: 1,
     title: "Grade I",
-    subtitle: "Campus 1_Faraz(Rawalpindi)",
+    subtitle: campusName,
     image: garde1,
-    route: "/all-classes/grade/I",
+    route: `/all-classes/grade/I/${campusName}/${campusId}`,
   },
   {
     id: 2,
     title: "Grade II",
-    subtitle: "Campus 2_Faraz(Rawalpindi)",
+    subtitle: campusName,
     image: garde2,
-    route: "/all-classes/grade/II",
+    route: `/all-classes/grade/II/${campusName}/${campusId}`,
   },
   {
     id: 3,
     title: "Grade III",
-    subtitle: "Campus 3_Faraz(Rawalpindi)",
+    subtitle: campusName,
     image: garde3,
-    route: "/all-classes/grade/III",
+    route: `/all-classes/grade/III/${campusName}/${campusId}`,
   },
   {
     id: 4,
     title: "Grade IV",
-    subtitle: "Campus 4_Faraz(Rawalpindi)",
+    subtitle: campusName,
     image: garde4,
-    route: "/all-classes/grade/IV",
+    route: `/all-classes/grade/IV/${campusName}/${campusId}`,
   },
   {
     id: 5,
     title: "Grade V",
     image: garde5,
-    subtitle: "Campus 5_Faraz(Rawalpindi)",
-    route: "/all-classes/grade/V",
+    subtitle: campusName,
+    route: `/all-classes/grade/V/${campusName}/${campusId}`,
   },
 
   {
     id: 6,
     title: "Grade VI",
     image: garde6,
-    subtitle: "Campus 1_Faraz(Rawalpindi)",
-    route: "/all-classes/grade/VI",
+    subtitle: campusName,
+    route: `/all-classes/grade/VI/${campusName}/${campusId}`,
   },
   {
     id: 7,
     title: "Grade VII",
     image: garde7,
-    subtitle: "Campus 2_Faraz(Rawalpindi)",
-    route: "/all-classes/grade/VII",
+    subtitle: campusName,
+    route: `/all-classes/grade/VII/${campusName}/${campusId}`,
   },
   {
     id: 8,
     title: "Grade VIII",
     image: garde8,
-    subtitle: "Campus 3_Faraz(Rawalpindi)",
-    route: "/all-classes/grade/VIII",
+    subtitle: campusName,
+    route: `/all-classes/grade/VIII/${campusName}/${campusId}`,
   },
   {
     id: 9,
     title: "Grade IX",
     image: garde9,
-    subtitle: "Campus 4_Faraz(Rawalpindi)",
-    route: "/all-classes/grade/IX",
+    subtitle: campusName,
+    route: `/all-classes/grade/IX/${campusName}/${campusId}`,
   },
   {
     id: 10,
     image: garde10,
     title: "Grade X",
-    subtitle: "Campus 5_Faraz(Rawalpindi)",
-    route: "/all-classes/grade/X",
+    subtitle: campusName,
+    route: `/all-classes/grade/X/${campusName}/${campusId}`,
   },
 ];
 
@@ -102,6 +102,7 @@ const AllClasses = () => {
   const [state, setState] = useState({
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
+    selectionCampus: null,
   });
 
   const navigate = useNavigate();
@@ -114,6 +115,24 @@ const AllClasses = () => {
     setState((prev) => ({
       ...prev,
       [key]: !prev[key],
+    }));
+  };
+
+  const fetchCampusValue = () =>
+    state?.selectionCampus ?? campusesData?.data
+      ? campusesData?.data[0]?.campusName
+      : "";
+
+  const fetchSelectCampusInfo = (selectedCampus = "") => {
+    return campusesData?.data?.find(
+      (item) => item.campusName === selectedCampus
+    );
+  };
+
+  const handleCampusDropdown = (selectionOption) => {
+    setState((prev) => ({
+      ...prev,
+      selectionCampus: selectionOption,
     }));
   };
 
@@ -172,6 +191,8 @@ const AllClasses = () => {
     fetchCompusListing(dispatch);
   }, []);
 
+  console.log({ state }, fetchCampusValue(), fetchSelectCampusInfo());
+
   return (
     <div className="bg-white h-full">
       <Grid container spacing={4} className="px-12 py-12">
@@ -181,6 +202,8 @@ const AllClasses = () => {
         <Grid item sm={3} md={3} lg={2}>
           <Dropdown
             placeholder="Campus"
+            onChange={handleCampusDropdown}
+            value={fetchCampusValue()}
             options={campusesData?.data?.map((item) => item?.campusName) ?? []}
           />
         </Grid>
@@ -198,7 +221,10 @@ const AllClasses = () => {
       </Grid>
 
       <Grid container spacing={6} className="p-12 flex">
-        {MOCK_GRADES.map((grade) => (
+        {MOCK_GRADES(
+          state.selectionCampus ?? fetchCampusValue(),
+          fetchSelectCampusInfo(state.selectionCampus ?? fetchCampusValue())?.id
+        ).map((grade) => (
           <Grid item lg={4} key={grade.id}>
             <GradeBlock onClick={() => navigate(grade.route)} {...grade} />
           </Grid>

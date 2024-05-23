@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCampuses } from "../actions/commonActions";
+import { fetchCampuses, fetchSectionsByCampus } from "../actions/commonActions";
 
 const initialState = {
   campusesData: {
+    loading: false,
+    data: null,
+  },
+
+  sectionsData: {
     loading: false,
     data: null,
   },
@@ -29,6 +34,26 @@ const commonSlice = createSlice({
     builder.addCase(fetchCampuses.rejected, (state) => {
       state.campusesData = {
         ...initialState.campusesData,
+        loading: false,
+      };
+    });
+
+    //get Sections
+    builder.addCase(fetchSectionsByCampus?.pending, (state) => {
+      state.sectionsData = {
+        ...initialState.sectionsData,
+        loading: true,
+      };
+    });
+    builder.addCase(fetchSectionsByCampus.fulfilled, (state, action) => {
+      state.sectionsData = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(fetchSectionsByCampus.rejected, (state) => {
+      state.sectionsData = {
+        ...initialState.sectionsData,
         loading: false,
       };
     });
