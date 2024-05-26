@@ -1,6 +1,6 @@
 import { MOCK_GRADES } from "@/modules/admin/AllClasses";
 
-export const AddStudentFields = () => {
+export const AddStudentFields = (campusOptions) => {
   return [
     {
       name: "studentName",
@@ -14,17 +14,18 @@ export const AddStudentFields = () => {
       name: "grade",
       placeholder: "Grade",
       column: 6,
-      options: [],
+      options: MOCK_GRADES().map((item) => item.title),
       icon: "/icon-2.svg",
       type: "dropdown",
       showLabel: true,
     },
     {
-      name: "rollNumber",
-      placeholder: "Roll No",
+      name: "campusName",
+      placeholder: "Campus",
+      options: campusOptions ?? [],
       column: 6,
-      icon: "/icon-3.svg",
-      type: "text",
+      icon: "/icon-5.svg",
+      type: "dropdown",
       showLabel: true,
     },
     {
@@ -36,13 +37,13 @@ export const AddStudentFields = () => {
       type: "dropdown",
       showLabel: true,
     },
+
     {
-      name: "campusName",
-      placeholder: "Campus",
-      options: [],
+      name: "rollNumber",
+      placeholder: "Roll No",
       column: 6,
-      icon: "/icon-5.svg",
-      type: "dropdown",
+      icon: "/icon-3.svg",
+      type: "text",
       showLabel: true,
     },
     {

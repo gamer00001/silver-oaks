@@ -1,11 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDashboardData, getTeacherId } from "../actions/dashboardActions";
+import {
+  getAdminDashboardData,
+  getDashboardData,
+  getTeacherId,
+} from "../actions/dashboardActions";
 
 const initialState = {
   dashboardData: {
     loading: false,
     data: null,
   },
+
+  adminDashboardData: {
+    loading: false,
+    data: null,
+  },
+
   teacherIdData: {
     loading: false,
     data: null,
@@ -52,6 +62,26 @@ const dashboardSlice = createSlice({
     builder.addCase(getTeacherId.rejected, (state) => {
       state.teacherIdData = {
         ...initialState.teacherIdData,
+        loading: false,
+      };
+    });
+
+    //get Admin dashboard data
+    builder.addCase(getAdminDashboardData.pending, (state) => {
+      state.adminDashboardData = {
+        ...initialState.adminDashboardData,
+        loading: true,
+      };
+    });
+    builder.addCase(getAdminDashboardData.fulfilled, (state, action) => {
+      state.adminDashboardData = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getAdminDashboardData.rejected, (state) => {
+      state.adminDashboardData = {
+        ...initialState.adminDashboardData,
         loading: false,
       };
     });

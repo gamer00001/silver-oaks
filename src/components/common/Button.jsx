@@ -7,6 +7,7 @@ const Button = ({
   size,
   fullWidth,
   onClick,
+  disabled = false,
 }) => {
   const getVariantClasses = () => {
     switch (variant) {
@@ -40,6 +41,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`${getVariantClasses()} ${fullWidthClass} ${getSizeClasses()}`}
     >
       {children}

@@ -1,6 +1,6 @@
 import Button from "../common/Button";
 
-const DeleteActionModal = ({ handleAction, handleModal }) => {
+const DeleteActionModal = ({ disabled, handleAction, handleModal }) => {
   return (
     <div className="p-10">
       <div className="text-custom-red font-bold text-center text-6xl">
@@ -12,11 +12,21 @@ const DeleteActionModal = ({ handleAction, handleModal }) => {
       </div>
 
       <div className="flex flex-col gap-8">
-        <Button variant="primary" size="large" onClick={handleAction}>
+        <Button
+          variant="primary"
+          disabled={disabled}
+          size="large"
+          onClick={handleAction}
+        >
           Yes, Delete
         </Button>
 
-        <Button variant="secondary" size="medium" onClick={handleModal}>
+        <Button
+          variant="secondary"
+          disabled={disabled}
+          size="medium"
+          onClick={handleModal}
+        >
           Cancel
         </Button>
       </div>
