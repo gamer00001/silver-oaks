@@ -18,11 +18,28 @@ export const addCampus = asyncCatch("courseSlice/addCampus", async ({ body }) =>
   axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses`, body)
 );
 
+export const editCampus = asyncCatch(
+  "courseSlice/editCampus",
+  async ({ query, body }) =>
+    axios.put(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/update-campus/${query.campusId}`,
+      body
+    )
+);
+
 export const addSection = asyncCatch(
   "courseSlice/addSection",
   async ({ query, body }) =>
     axios.post(
       `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/${query.campusId}/sections`,
+      body
+    )
+);
+export const editSection = asyncCatch(
+  "courseSlice/editSection",
+  async ({ query, body }) =>
+    axios.post(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/sections-update/${query.sectionId}`,
       body
     )
 );

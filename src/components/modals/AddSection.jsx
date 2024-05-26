@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "../common/Button";
 import {
   AddCampusFields,
@@ -13,8 +13,6 @@ const TYPES = ["Campus", "Section"];
 
 const AddNewClass = ({
   handleModal,
-  option,
-  editValues,
   title = "Add New",
   campusesOptions,
   handleAddCampus,
@@ -36,21 +34,17 @@ const AddNewClass = ({
     }));
   };
 
-  const handleSelect = (value) => {
+  const handleSelect = () => {
     const { selectionOption } = state;
 
-    switch (value ?? selectionOption) {
+    switch (selectionOption) {
       // case "Grade":
       //   return handleSelectedOption(selectionOption, AddGradeFields(), false);
       case "Campus":
-        return handleSelectedOption(
-          value ?? selectionOption,
-          AddCampusFields(),
-          false
-        );
+        return handleSelectedOption(selectionOption, AddCampusFields(), false);
       case "Section":
         return handleSelectedOption(
-          value ?? selectionOption,
+          selectionOption,
           AddSectionFields(campusesOptions),
           false
         );
@@ -60,11 +54,7 @@ const AddNewClass = ({
     }
   };
 
-  useEffect(() => {
-    option && handleSelect(option);
-  }, [option]);
-
-  console.log({ state, option, editValues });
+  console.log({ state });
 
   return (
     <div>
@@ -106,12 +96,9 @@ const AddNewClass = ({
                 fields={state.fields}
                 schema={AddCampusSchema}
                 handleAddCampus={handleAddCampus}
-                addCampus={true}
-                initialValues={
-                  editValues ?? {
-                    name: "",
-                  }
-                }
+                initialValues={{
+                  name: "",
+                }}
               />
             ) : (
               <>
@@ -121,13 +108,11 @@ const AddNewClass = ({
                   schema={AddSectionSchema}
                   handleAddCampus={handleAddSection}
                   handleAddSection={handleAddSection}
-                  initialValues={
-                    editValues ?? {
-                      name: "",
-                      grade: "",
-                      campus: "",
-                    }
-                  }
+                  initialValues={{
+                    name: "",
+                    grade: "",
+                    campus: "",
+                  }}
                 />
               </>
             )}
@@ -165,7 +150,6 @@ const AddNewCampus = ({
   const { handleSubmit, handleChange, handleBlur, values, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: schema,
-    enableReinitialize: true,
     onSubmit: (values) => {
       if (addCampus) {
         handleAddCampus(values);
@@ -174,8 +158,6 @@ const AddNewCampus = ({
       }
     },
   });
-
-  console.log({ errors });
 
   return (
     <form onSubmit={handleSubmit}>

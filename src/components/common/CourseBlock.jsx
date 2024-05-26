@@ -5,12 +5,14 @@ const CourseBlock = ({
   bgColor,
   data,
   showDeleteIcon = false,
+  showEditIcon = false,
   handleDeleteAction,
+  handleEditAction,
   width = "w-2/6",
   bookIcon = "w-36",
   title = "English",
   height = "h-auto",
-  heading = "Grade 1",
+  heading = "",
   textColor = "#131215",
   titleFontSize = "text-5xl",
   headingFontSize = "text-md",
@@ -22,7 +24,6 @@ const CourseBlock = ({
       className={`pt-12 rounded-3xl flex flex-col p-10 ${width} ${height} relative`}
     >
       <img className="absolute" src="/course-back-icon.svg" alt="course-icon" />
-
       <span
         className={`text-[${textColor}] ${headingFontSize} font-semibold`}
         style={{ color: textColor ?? "#000" }}
@@ -47,13 +48,19 @@ const CourseBlock = ({
           View Course
         </span>
       )}
-
       <img
         className={`absolute right-0 bottom-0 ${bookIcon}`}
         src="/books-icon.svg"
         alt="course-icon"
       />
-
+      {showEditIcon && (
+        <img
+          alt="delete-icon"
+          src="/edit-icon.png"
+          onClick={handleEditAction}
+          className="absolute w-10 cursor-pointer top-2 right-4"
+        />
+      )}
       {showDeleteIcon && (
         <img
           alt="delete-icon"

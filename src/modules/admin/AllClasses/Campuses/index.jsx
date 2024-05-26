@@ -1,32 +1,14 @@
 import { Loader, ModalTop } from "@/components/common";
-import Button from "@/components/common/Button";
 import CourseBlock from "@/components/common/CourseBlock";
 import AddNewClass from "@/components/modals/AddNewClass";
-import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
-import { AddCourseFields } from "@/constants/forms";
-import { AddCourseSchema } from "@/schema";
-import {
-  editSection,
-  fetchSectionsByCampus,
-} from "@/store/actions/commonActions";
-import {
-  addCourse,
-  deleteCourse,
-  getAllCoursesByGrade,
-} from "@/store/actions/coursesActions";
+import { editCampus } from "@/store/actions/commonActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import { CoursesColors } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const initialValues = {
-  name: "",
-  description: "",
-  credits: "",
-};
-
-const SectionPage = () => {
+const CampusesPage = () => {
   const [state, setState] = useState({
     editModalIsOpen: false,
     selectedRecord: {},
@@ -37,10 +19,8 @@ const SectionPage = () => {
   const dispatch = useDispatch();
 
   const {
-    sectionsData: { data, loading },
+    campusesData: { data, loading },
   } = useSelector((s) => s.commonReducer);
-
-  const { campusesData } = useSelector((s) => s.commonReducer);
 
   const handleModal = (key = "editModalIsOpen", selectedRecord) => {
     setState((prev) => ({
@@ -50,39 +30,21 @@ const SectionPage = () => {
     }));
   };
 
-  const fetchAllSectionsByGrade = () => {
-    dispatch(
-      fetchSectionsByCampus({
-        payload: {
-          query: {
-            campusId,
-            grade: `Grade ${gradeId}`,
-          },
-          dispatch,
-        },
-      })
-    );
-  };
-
-  const handleEditSection = (formValues) => {
-    const campusId = campusesData.data.find(
+  const handleEditCampus = (formValues) => {
+    const campusId = data.find(
       (item) => item.campusName === formValues.campus
     )?.id;
 
     const payload = {
       id: state.selectedRecord.id,
-      campusId: campusId,
-      grade: formValues?.grade,
-      sectionName: formValues.name,
+      campusName: formValues.name,
     };
 
-    console.log({ payload, formValues });
-
     dispatch(
-      editSection({
+      editCampus({
         payload: {
           query: {
-            sectionId: state.selectedRecord.id,
+            campusId: state.selectedRecord.id,
           },
           body: payload,
         },
@@ -99,7 +61,7 @@ const SectionPage = () => {
   };
 
   useEffect(() => {
-    fetchAllSectionsByGrade();
+    // fetchAllSectionsByGrade();
     fetchCompusListing(dispatch);
   }, [gradeId]);
 
@@ -107,14 +69,14 @@ const SectionPage = () => {
     return <Loader type="screen" />;
   }
 
-  console.log({ state, campusesData });
+  console.log({ state, data });
 
   return (
     <div className="px-20">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-black font-semibold text-5xl">{`All Classes > Grade ${gradeId} > Campus ${campusName}`}</p>
-          <p className="text-black font-semibold text-3xl pt-8">All Sections</p>
+          {/* <p className="text-black font-semibold text-5xl">{`All Classes > Grade ${gradeId} > Campus ${campusName}`}</p> */}
+          <p className="text-black font-semibold text-5xl pt-8">All Campuses</p>
         </div>
       </div>
 
@@ -128,20 +90,19 @@ const SectionPage = () => {
               bookIcon="w-40"
               titleFontSize="text-5xl"
               headingFontSize="text-2xl"
-              title={item.sectionName}
+              title={item.campusName}
               showDeleteIcon={false}
               showEditIcon={true}
-              heading={campusName}
               data={CoursesColors[index]}
               textColor={CoursesColors[index]?.textColor}
               bgColor={CoursesColors[index]?.backgroundColor}
               handleEditAction={() => handleModal("editModalIsOpen", item)}
-              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
+              //   link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
               {...item}
             />
           ))
         ) : (
-          <div className="font-semibold text-3xl pt-10">No Sections Found!</div>
+          <div className="font-semibold text-3xl pt-10">No Campuses Found!</div>
         )}
       </div>
 
@@ -152,25 +113,18 @@ const SectionPage = () => {
       >
         <AddNewClass
           title="Edit"
-          option="Section"
-          //   fields={AddStudentFields()}
-          //   handleAddCampus={handleAddCampus}
-          handleAddSection={handleEditSection}
+          option="Campus"
+          handleAddCampus={handleEditCampus}
           editValues={{
             ...state.selectedRecord,
-            name: state.selectedRecord?.sectionName,
-            campus: campusesData?.data?.find(
-              (item) => item?.id === state?.selectedRecord?.campusId
-            )?.campusName,
+            name: state.selectedRecord?.campusName,
           }}
           handleModal={() => handleModal("editModalIsOpen")}
-          campusesOptions={
-            campusesData?.data?.map((item) => item?.campusName) ?? []
-          }
+          campusesOptions={data?.map((item) => item?.campusName) ?? []}
         />
       </ModalTop>
     </div>
   );
 };
 
-export default SectionPage;
+export default CampusesPage;
