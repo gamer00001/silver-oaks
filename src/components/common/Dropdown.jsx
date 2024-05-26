@@ -47,8 +47,8 @@ const Dropdown = ({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
-          icon && "px-20"
+        className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-6 ${
+          icon ? "px-20" : ""
         }`}
       >
         <span>{selectedOption || placeholder || "Select an option"}</span>

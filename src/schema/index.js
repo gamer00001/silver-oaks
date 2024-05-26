@@ -112,3 +112,33 @@ export const AddSectionSchema = Yup.object().shape({
   grade: Yup.string().required("Grade is required"),
   campus: Yup.string().required("Campus is required"),
 });
+
+export const AddStudentSchema = Yup.object().shape({
+  studentName: Yup.string().required("Name is required"),
+  grade: Yup.string().required("Grade is required"),
+  campusName: Yup.string().required("Campus is required"),
+  rollNumber: Yup.string().required("Roll Number is required"),
+  // section: Yup.string().required("Section is required"),
+  gender: Yup.string().required("Gender is required"),
+  password: Yup.string().required("Password is required"),
+  dateOfBirth: Yup.string().required("Date of Birth is required"),
+  guardianName: Yup.string().required("Guardian Name is required"),
+  city: Yup.string().required("City is required"),
+  guardianEmail: Yup.string().required("Guardian Email is required"),
+  guardianPhoneNumber: Yup.string().required(
+    "Guardian Phone Number is required"
+  ),
+  address: Yup.string().required("Address is required"),
+});
+
+export const AddTeacherSchema = Yup.object().shape({
+  employeeName: Yup.string().required("Name is required"),
+  campusName: Yup.string().required("Campus is required"),
+  // section: Yup.string().required("Section is required"),
+  gender: Yup.string().required("Gender is required"),
+  password: Yup.string().required("Password is required"),
+  dateOfBirth: Yup.string().required("Date of Birth is required"),
+  joiningDate: Yup.string().required("Joining Date is required"),
+  phoneNumber: Yup.string().required("Phone Number is required"),
+  email: Yup.string().required("Email is required"),
+});

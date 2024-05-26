@@ -8,10 +8,8 @@ import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddTeacherFields } from "@/constants/forms";
 import { ManageTeachersColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
-import {
-  MockTeacherStudentsData,
-  parseTeachersListing,
-} from "@/parsers/student-parser";
+import { parseTeachersListing } from "@/parsers/student-parser";
+import { AddTeacherSchema } from "@/schema";
 import {
   addTeacher,
   deleteTeacher,
@@ -23,8 +21,20 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { MOCK_GRADES } from "../AllClasses";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+
+const initialValues = {
+  employeeName: "",
+  campusName: "",
+  gender: "",
+  password: "",
+  dateOfBirth: "",
+  joiningDate: "",
+  phoneNumber: "",
+  email: "",
+};
 
 const ManageTeachers = () => {
   const [state, setState] = useState({
@@ -153,7 +163,10 @@ const ManageTeachers = () => {
         </Grid>
 
         <Grid item md={3}>
-          <Dropdown placeholder="Select Grade" options={options} />
+          <Dropdown
+            placeholder="Select Grade"
+            options={MOCK_GRADES().map((item) => item.title)}
+          />
         </Grid>
         <Grid item md={3}>
           <Dropdown
@@ -176,12 +189,14 @@ const ManageTeachers = () => {
         onClose={() => handleModal("addNewModalIsOpen")}
       >
         <AddStudentTeacher
-          title={state.isEditMode ? "Edit Teacher" : "Add Teacher"}
+          schema={AddTeacherSchema}
           subtitle="Teacher Details"
-          fields={AddTeacherFields(campusesData?.data) ?? []}
+          initialValues={initialValues}
           handleAddUser={handleAddUser}
           editValues={state.selectedRecord}
+          fields={AddTeacherFields(campusesData?.data) ?? []}
           handleModal={() => handleModal("addNewModalIsOpen")}
+          title={state.isEditMode ? "Edit Teacher" : "Add Teacher"}
         />
       </ModalTop>
 

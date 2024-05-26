@@ -45,6 +45,20 @@ export const fetchStudentsListing = asyncCatch(
       })
 );
 
+export const fetchStudentsListingByFilterApi = asyncCatch(
+  "studentSlice/fetchStudentsListingByFilterApi",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students/${query.queryParams}`,
+        config
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const addStudent = asyncCatch(
   "studentSlice/addStudent",
   async ({ config, body, dispatch }) =>

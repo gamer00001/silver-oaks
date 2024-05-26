@@ -11,6 +11,15 @@ export const getDashboardData = asyncCatch(
     )
 );
 
+export const getAdminDashboardData = asyncCatch(
+  "dashboardDataSlice/getAdminDashboardData",
+  async ({ config }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/dashboard/data-stats`,
+      config
+    )
+);
+
 export const getTeacherId = asyncCatch(
   "teacherIdSlice/getTeacherIdData",
   async ({ config, query }) =>

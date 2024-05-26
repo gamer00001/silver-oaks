@@ -3,6 +3,7 @@ import {
   fetchStudentDashboardInfo,
   fetchStudentInfo,
   fetchStudentsListing,
+  fetchStudentsListingByFilterApi,
 } from "../actions/studentActions";
 
 const initialState = {
@@ -15,6 +16,10 @@ const initialState = {
     data: null,
   },
   studentsListing: {
+    loading: false,
+    data: null,
+  },
+  filteredStudentsListing: {
     loading: false,
     data: null,
   },
@@ -81,6 +86,29 @@ const studentSlice = createSlice({
     builder.addCase(fetchStudentsListing.rejected, (state) => {
       state.studentsListing = {
         ...initialState.studentsListing,
+        loading: false,
+      };
+    });
+
+    //Fetch All Students
+    builder.addCase(fetchStudentsListingByFilterApi.pending, (state) => {
+      state.filteredStudentsListing = {
+        ...initialState.filteredStudentsListing,
+        loading: true,
+      };
+    });
+    builder.addCase(
+      fetchStudentsListingByFilterApi.fulfilled,
+      (state, action) => {
+        state.filteredStudentsListing = {
+          loading: false,
+          data: action.payload,
+        };
+      }
+    );
+    builder.addCase(fetchStudentsListingByFilterApi.rejected, (state) => {
+      state.filteredStudentsListing = {
+        ...initialState.filteredStudentsListing,
         loading: false,
       };
     });

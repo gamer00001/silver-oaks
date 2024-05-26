@@ -17,26 +17,62 @@ import {
   deleteStudent,
   editStudent,
   fetchStudentsListing,
+  fetchStudentsListingByFilterApi,
 } from "@/store/actions/studentActions";
+import { fetchCompusListing } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { MOCK_GRADES } from "../AllClasses";
+import { AddStudentSchema } from "@/schema";
+import toast from "react-hot-toast";
+
+const initialValues = {
+  studentName: "",
+  grade: "",
+  campusName: "",
+  rollNumber: "",
+  section: "",
+  gender: "",
+  password: "",
+  dateOfBirth: "",
+  guardianName: "",
+  city: "",
+  guardianEmail: "",
+  guardianPhoneNumber: "",
+  address: "",
+};
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
 const ManageStudents = () => {
   const [state, setState] = useState({
+    isLoading: false,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
+    search: "",
+    selectedCampus: null,
+    selectedGrade: null,
+    selectedSection: null,
   });
 
   const dispatch = useDispatch();
 
   const {
     studentsListing: { data, loading },
+    filteredStudentsListing: { filteredStudents, filteredLoading },
   } = useSelector((s) => s.studentReducer);
+
+  const { campusesData } = useSelector((s) => s.commonReducer);
+
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
+  };
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -48,6 +84,27 @@ const ManageStudents = () => {
       [key]: !prev[key],
       isEditMode,
       selectedRecord: selectedRecord,
+    }));
+  };
+
+  const handleGrade = (selectedValue) => {
+    setState((prev) => ({
+      ...prev,
+      selectedGrade: selectedValue,
+    }));
+  };
+
+  const handleCampus = (selectedValue) => {
+    setState((prev) => ({
+      ...prev,
+      selectedCampus: selectedValue,
+    }));
+  };
+
+  const handleSection = (selectedValue) => {
+    setState((prev) => ({
+      ...prev,
+      selectedSection: selectedValue,
     }));
   };
 
@@ -82,6 +139,8 @@ const ManageStudents = () => {
   const handleDeleteUser = () => {
     const { selectedRecord } = state;
 
+    handleLoader(true);
+
     dispatch(
       deleteStudent({
         payload: {
@@ -92,6 +151,8 @@ const ManageStudents = () => {
         onSuccess: (resp) => {
           handleModal("deleteModalIsOpen");
           fetchListing();
+          handleLoader(false);
+          toast.success("Student Deleted Successfully!");
         },
         onError: () => navigate("/404", { replace: true }),
       })
@@ -112,11 +173,47 @@ const ManageStudents = () => {
     );
   };
 
+  const fetchStudentsListingByFilter = () => {
+    const { selectedGrade, selectedCampus } = state;
+    const queryParams = `${selectedCampus}?${
+      selectedGrade ? `grade=${selectedGrade}` : ""
+    }`;
+
+    console.log({ queryParams });
+
+    if (selectedGrade && selectedCampus) {
+      dispatch(
+        fetchStudentsListingByFilterApi({
+          payload: {
+            query: {
+              queryParams,
+            },
+            dispatch,
+          },
+        })
+      );
+    }
+  };
+
+  useEffect(() => {
+    fetchStudentsListingByFilter();
+  }, [state.selectedCampus, state.selectedGrade]);
+
   useEffect(() => {
     fetchListing();
+    fetchCompusListing(dispatch);
   }, []);
 
-  if (loading) {
+  useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      selectedCampus: campusesData?.data
+        ? campusesData?.data[0]?.campusName
+        : "",
+    }));
+  }, [campusesData]);
+
+  if (loading || filteredLoading) {
     return <Loader />;
   }
 
@@ -141,24 +238,48 @@ const ManageStudents = () => {
           <InputField />
         </Grid>
 
+        <Grid item sm={2} md={2} />
+
         <Grid item md={2}>
-          <Dropdown placeholder="Select Grade" options={options} />
+          <Dropdown
+            placeholder="Select Grade"
+            onChange={handleGrade}
+            value={state.selectedGrade}
+            options={MOCK_GRADES().map((item) => item.title)}
+          />
         </Grid>
         <Grid item md={2}>
-          <Dropdown placeholder="Campus" options={options} />
+          <Dropdown
+            placeholder="Campus"
+            value={state?.selectedCampus}
+            onChange={handleCampus}
+            options={
+              campusesData?.data
+                ? campusesData?.data?.map((item) => item?.campusName)
+                : []
+            }
+          />
         </Grid>
         <Grid item md={2}>
-          <Dropdown placeholder="Section" options={options} />
+          <Dropdown
+            placeholder="Section"
+            onChange={handleSection}
+            value={state.selectedSection}
+            options={state?.sectionsListing ?? []}
+          />
         </Grid>
-        <Grid item md={2}>
+        {/* <Grid item md={2}>
           <Dropdown placeholder="Year" options={options} />
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <div className="p-12">
         <CustomTable
           columns={ManageStudentsColumns}
-          rows={parseStudentListing(data?.studentList, handleModal)}
+          rows={parseStudentListing(
+            filteredStudents?.studentList ?? data?.studentList,
+            handleModal
+          )}
         />
       </div>
 
@@ -169,7 +290,13 @@ const ManageStudents = () => {
       >
         <AddStudentTeacher
           state={state}
-          fields={AddStudentFields()}
+          schema={AddStudentSchema}
+          initialValues={initialValues}
+          fields={AddStudentFields(
+            campusesData?.data
+              ? campusesData?.data?.map((item) => item?.campusName)
+              : []
+          )}
           handleAddUser={handleAddUser}
           editValues={state.selectedRecord}
           handleModal={() => handleModal("addNewModalIsOpen")}
@@ -183,6 +310,7 @@ const ManageStudents = () => {
         onClose={() => handleModal("deleteModalIsOpen")}
       >
         <DeleteActionModal
+          disabled={state.isLoading}
           handleAction={handleDeleteUser}
           handleModal={() => handleModal("deleteModalIsOpen")}
         />

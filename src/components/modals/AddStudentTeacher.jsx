@@ -38,8 +38,8 @@ const AddStudentTeacher = ({
     validationSchema: schema,
     onSubmit: (values) => {
       console.log({ values });
-      handleModal();
       handleAddUser(values);
+      handleModal();
     },
   });
 
