@@ -1,17 +1,17 @@
 export const parseAddStudentData = (data) => {
   return {
     address: data?.address,
-    // campusName: data,
+    campusName: data.campusName,
     city: data?.city,
     dateOfBirth: data?.dateOfBirth,
     gender: data?.gender,
-    // grade: data,
+    grade: data.grade,
     guardianEmail: data?.guardianEmail,
     guardianName: data.guardianName,
     guardianPhoneNumber: data?.guardianPhoneNumber,
     password: data?.password,
     rollNumber: data?.rollNumber,
-    // sectionName: data,
+    sectionName: data.sectionName,
     studentName: data?.studentName,
   };
 };
@@ -27,7 +27,15 @@ export const parseAddTeacherData = (data) => {
     joiningDate: data.joiningDate,
     password: data.password,
     phoneNumber: data.phoneNumber,
-    teacherSectionList: [],
+    // grade: data.grade,
+    // sectionName: data.sectionName,
+    // section: data.section,
+    teacherSectionList: [
+      {
+        grade: data.grade,
+        section: data.section,
+      },
+    ],
     // teacherSectionList: [
     //   {
     //     grade: data,

@@ -1,6 +1,9 @@
 import { Loader } from "@/components/common";
+import LineChart from "@/components/common/LineChart";
+import PieGraph from "@/components/common/PieGraph";
 import StatsCard from "@/components/common/StatsCard";
 import { getAdminDashboardData } from "@/store/actions/dashboardActions";
+import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -53,6 +56,16 @@ const AdminDashboard = () => {
           subtitle={data?.data?.numberOfStudents ?? 0}
         />
       </div>
+
+      <Grid container className="pt-10" spacing={4}>
+        <Grid item xs={12} sm={12} md={12} lg={7}>
+          <LineChart />
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12} lg={5}>
+          <PieGraph />
+        </Grid>
+      </Grid>
     </div>
   );
 };
