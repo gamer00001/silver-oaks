@@ -7,6 +7,7 @@ const Dropdown = ({
   placeholder,
   showLabel = false,
   options = [],
+  onClick,
   onChange = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,11 @@ const Dropdown = ({
   }, [value]);
 
   return (
-    <div className="relative inline-block w-full" ref={dropdownRef}>
+    <div
+      className="relative inline-block w-full"
+      ref={dropdownRef}
+      onClick={onClick}
+    >
       {showLabel && (
         <div className="text-[#7a7a7a] text-2xl font-semibold mb-4">
           {placeholder}

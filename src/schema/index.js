@@ -118,7 +118,7 @@ export const AddStudentSchema = Yup.object().shape({
   grade: Yup.string().required("Grade is required"),
   campusName: Yup.string().required("Campus is required"),
   rollNumber: Yup.string().required("Roll Number is required"),
-  // section: Yup.string().required("Section is required"),
+  section: Yup.string().required("Section is required"),
   gender: Yup.string().required("Gender is required"),
   password: Yup.string().required("Password is required"),
   dateOfBirth: Yup.string().required("Date of Birth is required"),
@@ -133,8 +133,10 @@ export const AddStudentSchema = Yup.object().shape({
 
 export const AddTeacherSchema = Yup.object().shape({
   employeeName: Yup.string().required("Name is required"),
+  grade: Yup.string().required("Grade is required"),
   campusName: Yup.string().required("Campus is required"),
-  // section: Yup.string().required("Section is required"),
+  campusName: Yup.string().required("Campus is required"),
+  section: Yup.string().required("Section is required"),
   gender: Yup.string().required("Gender is required"),
   password: Yup.string().required("Password is required"),
   dateOfBirth: Yup.string().required("Date of Birth is required"),

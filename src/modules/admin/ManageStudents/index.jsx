@@ -128,7 +128,7 @@ const ManageStudents = () => {
           body: parseData,
         },
         onSuccess: (resp) => {
-          console.log({ resp });
+          toast.success("Student added successfully!");
           fetchListing();
         },
         onError: () => navigate("/404", { replace: true }),
@@ -178,8 +178,6 @@ const ManageStudents = () => {
     const queryParams = `${selectedCampus}?${
       selectedGrade ? `grade=${selectedGrade}` : ""
     }`;
-
-    console.log({ queryParams });
 
     if (selectedGrade && selectedCampus) {
       dispatch(
@@ -292,6 +290,7 @@ const ManageStudents = () => {
           state={state}
           schema={AddStudentSchema}
           initialValues={initialValues}
+          campusesData={campusesData?.data ?? []}
           fields={AddStudentFields(
             campusesData?.data
               ? campusesData?.data?.map((item) => item?.campusName)

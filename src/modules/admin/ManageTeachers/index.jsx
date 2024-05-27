@@ -23,12 +23,12 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { MOCK_GRADES } from "../AllClasses";
 
-const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
-
 const initialValues = {
   employeeName: "",
   campusName: "",
   gender: "",
+  grade: "",
+  section: "",
   password: "",
   dateOfBirth: "",
   joiningDate: "",
@@ -193,6 +193,7 @@ const ManageTeachers = () => {
           subtitle="Teacher Details"
           initialValues={initialValues}
           handleAddUser={handleAddUser}
+          campusesData={campusesData?.data ?? []}
           editValues={state.selectedRecord}
           fields={AddTeacherFields(campusesData?.data) ?? []}
           handleModal={() => handleModal("addNewModalIsOpen")}
