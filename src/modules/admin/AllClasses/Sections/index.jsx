@@ -17,6 +17,7 @@ import {
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import { CoursesColors } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -76,8 +77,6 @@ const SectionPage = () => {
       sectionName: formValues.name,
     };
 
-    console.log({ payload, formValues });
-
     dispatch(
       editSection({
         payload: {
@@ -87,11 +86,9 @@ const SectionPage = () => {
           body: payload,
         },
         onSuccess: (resp) => {
-          // fetchListing();
-          handleModal("addNewModalIsOpen");
-          fetchCompusListing(dispatch);
-
-          toast.success("Section added successfully!");
+          handleModal("editModalIsOpen");
+          fetchAllSectionsByGrade();
+          toast.success("Section updated successfully!");
         },
         onError: () => navigate("/404", { replace: true }),
       })
@@ -106,8 +103,6 @@ const SectionPage = () => {
   if (loading) {
     return <Loader type="screen" />;
   }
-
-  console.log({ state, campusesData });
 
   return (
     <div className="px-20">
