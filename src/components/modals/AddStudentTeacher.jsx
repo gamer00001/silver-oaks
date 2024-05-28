@@ -1,6 +1,7 @@
 import { fetchSectonsListing } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
+import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -36,7 +37,11 @@ const AddStudentTeacher = ({
   title = "Add Student",
   subtitle = "Student Details",
 }) => {
-  const [formFields, setFormFields] = useState([]);
+  const [state, setState] = useState({
+    formFields: [],
+    formValues: editValues ?? initialValues,
+  });
+
   const dispatch = useDispatch();
 
   const { sectionsData } = useSelector((s) => s.commonReducer);
@@ -57,8 +62,6 @@ const AddStudentTeacher = ({
         (item) => item.sectionName
       );
 
-      // sectionsOptions?.length === 0 &&
-      //   toast.error("No Sections found against selected grade or campus!");
       return {
         ...field,
         options: sectionsOptions,
@@ -70,20 +73,38 @@ const AddStudentTeacher = ({
 
   useEffect(() => {
     if (
-      values.grade?.length > 0 &&
-      values.campusName?.length > 0 &&
-      sectionsData?.data === null
+      (state?.formValues["grade"] !== values["grade"] ||
+        state?.formValues["campusName"] !== values["campusName"]) &&
+      !isEmpty(values.campusName) &&
+      !isEmpty(values.grade)
     ) {
       fetchSectonsListing(
         dispatch,
-        campusesData.find((item) => item.campusName === values.campusName).id,
+        campusesData.find((item) => item.campusName === values.campusName)?.id,
         values.grade
       );
+
+      const event = {
+        target: {
+          name: "section",
+          value: "",
+        },
+      };
+
+      handleChange(event);
+
+      setState((prev) => ({
+        ...prev,
+        formValues: values,
+      }));
     }
   }, [values]);
 
   useEffect(() => {
-    setFormFields(fields);
+    setState((prev) => ({
+      ...prev,
+      formFields: fields,
+    }));
   }, [fields]);
 
   return (
@@ -103,12 +124,13 @@ const AddStudentTeacher = ({
       </h4>
       <form onSubmit={handleSubmit}>
         <Grid className="pb-8" container spacing={4}>
-          {formFields?.map((field, key) => (
+          {state?.formFields?.map((field, key) => (
             <Grid item sm={field.column} key={key}>
               <DynamicField
                 field={getField(field)}
                 error={errors[field.name]}
                 value={values[field.name]}
+                disabled={field.isDisabled}
                 onChange={(value) => {
                   const event = {
                     target: {

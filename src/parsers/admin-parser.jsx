@@ -11,7 +11,7 @@ export const parseAddStudentData = (data) => {
     guardianPhoneNumber: data?.guardianPhoneNumber,
     password: data?.password,
     rollNumber: data?.rollNumber,
-    sectionName: data.sectionName,
+    sectionName: data.section,
     studentName: data?.studentName,
   };
 };

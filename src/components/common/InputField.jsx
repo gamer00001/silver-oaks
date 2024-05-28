@@ -7,6 +7,7 @@ const InputField = ({
   icon,
   error,
   value,
+  disabled = false,
   label = "",
   showLabel = false,
   placeholder = "Search...",
@@ -63,6 +64,7 @@ const InputField = ({
           <input
             name={name}
             type={type}
+            disabled={disabled}
             value={searchQuery}
             placeholder={placeholder}
             onChange={handleSearchChange}

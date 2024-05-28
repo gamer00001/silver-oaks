@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 
 const Dropdown = ({
@@ -8,6 +9,7 @@ const Dropdown = ({
   showLabel = false,
   options = [],
   onClick,
+  disabled = false,
   onChange = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,6 +53,7 @@ const Dropdown = ({
       )}
       <button
         type="button"
+        disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
         className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-6 ${
           icon ? "px-20" : ""
@@ -79,15 +82,19 @@ const Dropdown = ({
       </button>
       {isOpen && (
         <div className="absolute z-10 mt-2 bg-white shadow-md rounded-xl w-full max-h-60 overflow-auto scrollbar">
-          {options.map((option) => (
-            <div
-              key={option}
-              onClick={() => handleOptionClick(option)}
-              className="py-4 px-6 text-2xl cursor-pointer hover:bg-gray-100"
-            >
-              {option}
-            </div>
-          ))}
+          {isEmpty(options) ? (
+            <h2 className="text-xl p-5">No Options!</h2>
+          ) : (
+            options.map((option) => (
+              <div
+                key={option}
+                onClick={() => handleOptionClick(option)}
+                className="py-4 px-6 text-2xl cursor-pointer hover:bg-gray-100"
+              >
+                {option}
+              </div>
+            ))
+          )}
         </div>
       )}
       {error && (

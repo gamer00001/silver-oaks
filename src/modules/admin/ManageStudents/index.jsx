@@ -24,7 +24,7 @@ import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MOCK_GRADES } from "../AllClasses";
-import { AddStudentSchema } from "@/schema";
+import { AddStudentSchema, EditStudentSchema } from "@/schema";
 import toast from "react-hot-toast";
 
 const initialValues = {
@@ -115,6 +115,7 @@ const ManageStudents = () => {
 
     if (isEditMode) {
       parseData = {
+        ...selectedRecord,
         ...parseData,
         studentId: selectedRecord.studentId,
       };
@@ -266,9 +267,6 @@ const ManageStudents = () => {
             options={state?.sectionsListing ?? []}
           />
         </Grid>
-        {/* <Grid item md={2}>
-          <Dropdown placeholder="Year" options={options} />
-        </Grid> */}
       </Grid>
 
       <div className="p-12">
@@ -288,18 +286,27 @@ const ManageStudents = () => {
       >
         <AddStudentTeacher
           state={state}
-          schema={AddStudentSchema}
+          schema={state.isEditMode ? EditStudentSchema : AddStudentSchema}
           initialValues={initialValues}
           campusesData={campusesData?.data ?? []}
-          fields={AddStudentFields(
-            campusesData?.data
-              ? campusesData?.data?.map((item) => item?.campusName)
-              : []
-          )}
           handleAddUser={handleAddUser}
           editValues={state.selectedRecord}
           handleModal={() => handleModal("addNewModalIsOpen")}
           title={state.isEditMode ? "Edit Student" : "Add Student"}
+          fields={
+            state.isEditMode
+              ? AddStudentFields(
+                  campusesData?.data
+                    ? campusesData?.data?.map((item) => item?.campusName)
+                    : [],
+                  state.isEditMode
+                ).filter((field) => field.name !== "password")
+              : AddStudentFields(
+                  campusesData?.data
+                    ? campusesData?.data?.map((item) => item?.campusName)
+                    : []
+                )
+          }
         />
       </ModalTop>
 
