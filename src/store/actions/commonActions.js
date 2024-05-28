@@ -38,7 +38,7 @@ export const addSection = asyncCatch(
 export const editSection = asyncCatch(
   "courseSlice/editSection",
   async ({ query, body }) =>
-    axios.post(
+    axios.put(
       `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/sections-update/${query.sectionId}`,
       body
     )
