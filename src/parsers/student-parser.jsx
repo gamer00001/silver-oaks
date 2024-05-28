@@ -146,6 +146,7 @@ export const MockManageStudentsData = (handleModal) => {
 export const parseStudentListing = (data = [], handleModal) => {
   return data?.map((studentData) => ({
     ...studentData,
+    section: studentData?.sectionName ?? "N/A",
     name: studentData?.studentName ?? "N/A",
     rollNumber: studentData?.rollNumber ?? "N/A",
     grade: studentData?.grade ?? "N/A",
@@ -162,8 +163,12 @@ export const parseStudentListing = (data = [], handleModal) => {
           alt="edit"
           title="Edit"
           onClick={() => {
-            const { password, ...otherInfo } = studentData;
-            handleModal("addNewModalIsOpen", otherInfo, true);
+            // const { password, ...otherInfo } = studentData;
+            handleModal(
+              "addNewModalIsOpen",
+              { ...studentData, section: studentData?.sectionName },
+              true
+            );
           }}
         />
         <img
@@ -172,8 +177,8 @@ export const parseStudentListing = (data = [], handleModal) => {
           alt="delete"
           title="Delete"
           onClick={() => {
-            const { password, ...otherInfo } = studentData;
-            handleModal("deleteModalIsOpen", otherInfo);
+            // const { password, ...otherInfo } = studentData;
+            handleModal("deleteModalIsOpen", studentData);
           }}
         />
       </div>
@@ -960,8 +965,8 @@ export const parseTeachersListing = (data = [], handleModal) => {
           alt="edit"
           title="Edit"
           onClick={() => {
-            const { password, ...otherInfo } = teachersData;
-            handleModal("addNewModalIsOpen", otherInfo, true);
+            // const { password, ...otherInfo } = teachersData;
+            handleModal("addNewModalIsOpen", teachersData, true);
           }}
         />
         <img
@@ -970,8 +975,8 @@ export const parseTeachersListing = (data = [], handleModal) => {
           alt="delete"
           title="Delete"
           onClick={() => {
-            const { password, ...otherInfo } = teachersData;
-            handleModal("deleteModalIsOpen", otherInfo);
+            // const { password, ...otherInfo } = teachersData;
+            handleModal("deleteModalIsOpen", teachersData);
           }}
         />
       </div>

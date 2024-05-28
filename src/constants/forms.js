@@ -1,6 +1,6 @@
 import { MOCK_GRADES } from "@/modules/admin/AllClasses";
 
-export const AddStudentFields = (campusOptions) => {
+export const AddStudentFields = (campusOptions, isEditMode = false) => {
   return [
     {
       name: "studentName",
@@ -8,15 +8,6 @@ export const AddStudentFields = (campusOptions) => {
       column: 6,
       icon: "/icon-1.svg",
       type: "text",
-      showLabel: true,
-    },
-    {
-      name: "grade",
-      placeholder: "Grade",
-      column: 6,
-      options: MOCK_GRADES().map((item) => item.title),
-      icon: "/icon-2.svg",
-      type: "dropdown",
       showLabel: true,
     },
     {
@@ -28,6 +19,16 @@ export const AddStudentFields = (campusOptions) => {
       type: "dropdown",
       showLabel: true,
     },
+    {
+      name: "grade",
+      placeholder: "Grade",
+      column: 6,
+      options: MOCK_GRADES().map((item) => item.title),
+      icon: "/icon-2.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+
     {
       name: "section",
       placeholder: "Section",
@@ -44,6 +45,7 @@ export const AddStudentFields = (campusOptions) => {
       column: 6,
       icon: "/icon-3.svg",
       type: "text",
+      isDisabled: isEditMode,
       showLabel: true,
     },
     {

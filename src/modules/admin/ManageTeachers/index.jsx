@@ -9,7 +9,7 @@ import { AddTeacherFields } from "@/constants/forms";
 import { ManageTeachersColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
 import { parseTeachersListing } from "@/parsers/student-parser";
-import { AddTeacherSchema } from "@/schema";
+import { AddTeacherSchema, EditTeacherSchema } from "@/schema";
 import {
   addTeacher,
   deleteTeacher,
@@ -189,13 +189,19 @@ const ManageTeachers = () => {
         onClose={() => handleModal("addNewModalIsOpen")}
       >
         <AddStudentTeacher
-          schema={AddTeacherSchema}
+          schema={state.isEditMode ? EditTeacherSchema : AddTeacherSchema}
           subtitle="Teacher Details"
           initialValues={initialValues}
           handleAddUser={handleAddUser}
           campusesData={campusesData?.data ?? []}
           editValues={state.selectedRecord}
-          fields={AddTeacherFields(campusesData?.data) ?? []}
+          fields={
+            state.isEditMode
+              ? AddTeacherFields(campusesData?.data).filter(
+                  (field) => field.name !== "password"
+                )
+              : AddTeacherFields(campusesData?.data) ?? []
+          }
           handleModal={() => handleModal("addNewModalIsOpen")}
           title={state.isEditMode ? "Edit Teacher" : "Add Teacher"}
         />
