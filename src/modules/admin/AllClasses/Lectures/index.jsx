@@ -3,16 +3,19 @@ import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
 import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
+import AddNewLecture from "@/components/modals/AddNewLecture";
 import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
-import { AddTeacherFields } from "@/constants/forms";
+import { AddLectureFields, AddTeacherFields } from "@/constants/forms";
 import { LecturesColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
 import {
   MockLecturesData,
   MockTeacherStudentsData,
+  parseLectureListing,
   parseTeachersListing,
 } from "@/parsers/student-parser";
+import { addLecture, getLectures } from "@/store/actions/lecturesActions";
 import {
   addTeacher,
   deleteTeacher,
@@ -24,6 +27,7 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
@@ -33,17 +37,22 @@ const LecturesPage = () => {
     deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
+    isLoading: false,
   });
 
   const dispatch = useDispatch();
+  const { courseId } = useParams();
 
-  const {
-    teachersListing: { data, loading },
-  } = useSelector((s) => s.teacherReducer);
+  const { lecturesData } = useSelector((s) => s.lectureReducer);
 
   const { campusesData } = useSelector((s) => s.commonReducer);
 
-  console.log({ campusesData });
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
+  };
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -58,38 +67,8 @@ const LecturesPage = () => {
     }));
   };
 
-  const handleAddUser = (formData) => {
-    const { isEditMode, selectedRecord } = state;
-
-    let parseData = parseAddTeacherData(formData);
-
-    if (isEditMode) {
-      parseData = {
-        ...parseData,
-        teacherId: selectedRecord.teacherId,
-      };
-    }
-
-    const apiToCall = isEditMode ? editTeacher : addTeacher;
-
-    dispatch(
-      apiToCall({
-        payload: {
-          body: parseData,
-        },
-        onSuccess: (resp) => {
-          console.log({ resp });
-          fetchListing();
-        },
-        onError: () => navigate("/404", { replace: true }),
-      })
-    );
-  };
-
   const handleDeleteUser = () => {
     const { selectedRecord } = state;
-
-    console.log({ selectedRecord }, selectedRecord?.selectedRecord?.teacherId);
 
     dispatch(
       deleteTeacher({
@@ -110,12 +89,47 @@ const LecturesPage = () => {
 
   const fetchListing = () => {
     dispatch(
-      fetchTeachersListing({
+      getLectures({
+        onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
-            page: 0,
-            size: 500,
+            courseId,
           },
+          dispatch,
+        },
+      })
+    );
+  };
+
+  const handleAddLecture = (formValues) => {
+    handleLoader(true);
+
+    const formData = new FormData();
+
+    const apiPayload = {
+      courseId,
+      description: formValues.description,
+      lectureTitle: formValues.lectureTitle,
+      file: formValues.file[0],
+      visible: true,
+    };
+
+    Object.entries(apiPayload).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    dispatch(
+      addLecture({
+        onSuccess: () => {
+          handleLoader(false);
+          handleModal("addNewModalIsOpen");
+          fetchListing();
+        },
+        onError: () => {
+          handleLoader(false);
+        },
+        payload: {
+          body: formData,
           dispatch,
         },
       })
@@ -128,7 +142,7 @@ const LecturesPage = () => {
     // fetchCompusListing(dispatch);
   }, []);
 
-  if (loading) {
+  if (lecturesData.loading || state.isLoading) {
     return <Loader />;
   }
 
@@ -158,7 +172,10 @@ const LecturesPage = () => {
       <div className="p-12">
         <CustomTable
           columns={LecturesColumns}
-          rows={MockLecturesData(handleModal)}
+          rows={parseLectureListing(
+            lecturesData?.data?.lectureList ?? [],
+            handleModal
+          )}
         />
       </div>
 
@@ -167,11 +184,11 @@ const LecturesPage = () => {
         open={state.addNewModalIsOpen}
         onClose={() => handleModal("addNewModalIsOpen")}
       >
-        <AddStudentTeacher
-          title={state.isEditMode ? "Edit Teacher" : "Add Teacher"}
-          subtitle="Teacher Details"
-          fields={AddTeacherFields(campusesData?.data) ?? []}
-          handleAddUser={handleAddUser}
+        <AddNewLecture
+          title={state.isEditMode ? "Edit Lecture" : "Add Lecture"}
+          subtitle="Lecture Details"
+          fields={AddLectureFields()}
+          handleAddLecture={handleAddLecture}
           editValues={state.selectedRecord}
           handleModal={() => handleModal("addNewModalIsOpen")}
         />

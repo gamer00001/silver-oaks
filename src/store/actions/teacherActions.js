@@ -42,6 +42,20 @@ export const editTeacher = asyncCatch(
       })
 );
 
+export const uploadBulkTeachers = asyncCatch(
+  "studentSlice/uploadBulkTeachers",
+  async ({ config, body, dispatch }) =>
+    axios
+      .post(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/v1/teachers/upload-teacher-excel-data`,
+        body
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const deleteTeacher = asyncCatch(
   "studentSlice/deleteTeacher",
   async ({ config, query, dispatch }) =>

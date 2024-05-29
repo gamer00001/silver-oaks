@@ -18,14 +18,16 @@ import {
   editStudent,
   fetchStudentsListing,
   fetchStudentsListingByFilterApi,
+  uploadBulkStudents,
 } from "@/store/actions/studentActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MOCK_GRADES } from "../AllClasses";
 import { AddStudentSchema, EditStudentSchema } from "@/schema";
 import toast from "react-hot-toast";
+import { UploadAssignmnet } from "@/modules/Assignment";
 
 const initialValues = {
   studentName: "",
@@ -48,6 +50,7 @@ const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 const ManageStudents = () => {
   const [state, setState] = useState({
     isLoading: false,
+    uploadModalIsOpen: false,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
@@ -59,6 +62,7 @@ const ManageStudents = () => {
   });
 
   const dispatch = useDispatch();
+  const inputFileRef = useRef(null);
 
   const {
     studentsListing: { data, loading },
@@ -83,6 +87,7 @@ const ManageStudents = () => {
       ...prev,
       [key]: !prev[key],
       isEditMode,
+      uploadedFile: "",
       selectedRecord: selectedRecord,
     }));
   };
@@ -194,6 +199,44 @@ const ManageStudents = () => {
     }
   };
 
+  const uploadFile = (e) => {
+    const file = e.target.files[0];
+    setState((prev) => ({
+      ...prev,
+      uploadedFile: file,
+    }));
+  };
+
+  const handleUploadAssignment = () => {
+    handleLoader(true);
+
+    const formData = new FormData();
+
+    formData.append("file", state.uploadedFile);
+
+    dispatch(
+      uploadBulkStudents({
+        onSuccess: () => {
+          handleLoader(false);
+          handleModal("uploadModalIsOpen");
+          fetchListing();
+        },
+        onError: (error) => {
+          handleLoader(false);
+          handleModal("uploadModalIsOpen");
+          handleError(error);
+        },
+        payload: {
+          query: {
+            queryParams: "",
+          },
+          body: formData,
+          dispatch,
+        },
+      })
+    );
+  };
+
   useEffect(() => {
     fetchStudentsListingByFilter();
   }, [state.selectedCampus, state.selectedGrade]);
@@ -212,14 +255,18 @@ const ManageStudents = () => {
     }));
   }, [campusesData]);
 
-  if (loading || filteredLoading) {
+  if (loading || filteredLoading || state.isLoading) {
     return <Loader />;
   }
 
   return (
     <div className="bg-white h-full">
       <div className="flex justify-end gap-12 pr-12">
-        <Button variant="primary" size="large">
+        <Button
+          size="large"
+          variant="primary"
+          onClick={() => handleModal("uploadModalIsOpen")}
+        >
           Upload CSV
         </Button>
 
@@ -278,6 +325,25 @@ const ManageStudents = () => {
           )}
         />
       </div>
+
+      <ModalTop
+        className="!rounded-[2.4rem] !max-w-[95.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
+        open={state.uploadModalIsOpen}
+        onClose={() => handleModal("uploadModalIsOpen")}
+      >
+        <UploadAssignmnet
+          state={state}
+          title="Upload File"
+          acceptedFiles=".xlsx"
+          uploadFile={uploadFile}
+          inputFileRef={inputFileRef}
+          handleUploadAssignment={handleUploadAssignment}
+          fileTypeText={"Excel File xlsx, file size no more than 10MB"}
+          onClose={() => {
+            handleModal("uploadModalIsOpen");
+          }}
+        />
+      </ModalTop>
 
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[75.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"

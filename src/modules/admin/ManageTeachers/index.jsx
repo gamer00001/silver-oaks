@@ -15,13 +15,15 @@ import {
   deleteTeacher,
   editTeacher,
   fetchTeachersListing,
+  uploadBulkTeachers,
 } from "@/store/actions/teacherActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { MOCK_GRADES } from "../AllClasses";
+import { UploadAssignmnet } from "@/modules/Assignment";
 
 const initialValues = {
   employeeName: "",
@@ -42,9 +44,11 @@ const ManageTeachers = () => {
     deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
+    isLoading: false,
   });
 
   const dispatch = useDispatch();
+  const inputFileRef = useRef(null);
 
   const {
     teachersListing: { data, loading },
@@ -52,7 +56,12 @@ const ManageTeachers = () => {
 
   const { campusesData } = useSelector((s) => s.commonReducer);
 
-  console.log({ campusesData });
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
+  };
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -63,6 +72,7 @@ const ManageTeachers = () => {
       ...prev,
       [key]: !prev[key],
       isEditMode,
+      uploadedFile: "",
       selectedRecord: selectedRecord,
     }));
   };
@@ -87,7 +97,6 @@ const ManageTeachers = () => {
           body: parseData,
         },
         onSuccess: (resp) => {
-          console.log({ resp });
           fetchListing();
         },
         onError: () => navigate("/404", { replace: true }),
@@ -97,8 +106,6 @@ const ManageTeachers = () => {
 
   const handleDeleteUser = () => {
     const { selectedRecord } = state;
-
-    console.log({ selectedRecord }, selectedRecord?.selectedRecord?.teacherId);
 
     dispatch(
       deleteTeacher({
@@ -113,6 +120,44 @@ const ManageTeachers = () => {
           fetchListing();
         },
         onError: () => navigate("/404", { replace: true }),
+      })
+    );
+  };
+
+  const uploadFile = (e) => {
+    const file = e.target.files[0];
+    setState((prev) => ({
+      ...prev,
+      uploadedFile: file,
+    }));
+  };
+
+  const handleUploadAssignment = () => {
+    handleLoader(true);
+
+    const formData = new FormData();
+
+    formData.append("file", state.uploadedFile);
+
+    dispatch(
+      uploadBulkTeachers({
+        onSuccess: () => {
+          handleLoader(false);
+          handleModal("uploadModalIsOpen");
+          fetchListing();
+        },
+        onError: (error) => {
+          handleLoader(false);
+          handleModal("uploadModalIsOpen");
+          handleError(error);
+        },
+        payload: {
+          query: {
+            queryParams: "",
+          },
+          body: formData,
+          dispatch,
+        },
       })
     );
   };
@@ -137,14 +182,18 @@ const ManageTeachers = () => {
     fetchCompusListing(dispatch);
   }, []);
 
-  if (loading) {
+  if (loading || state.isLoading) {
     return <Loader />;
   }
 
   return (
     <div className="bg-white h-full">
       <div className="flex justify-end gap-12 pr-12">
-        <Button variant="primary" size="large">
+        <Button
+          variant="primary"
+          size="large"
+          onClick={() => handleModal("uploadModalIsOpen")}
+        >
           Upload CSV
         </Button>
 
@@ -182,6 +231,25 @@ const ManageTeachers = () => {
           rows={parseTeachersListing(data?.teacherList, handleModal)}
         />
       </div>
+
+      <ModalTop
+        className="!rounded-[2.4rem] !max-w-[95.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
+        open={state.uploadModalIsOpen}
+        onClose={() => handleModal("uploadModalIsOpen")}
+      >
+        <UploadAssignmnet
+          state={state}
+          title="Upload File"
+          acceptedFiles=".xlsx"
+          uploadFile={uploadFile}
+          inputFileRef={inputFileRef}
+          handleUploadAssignment={handleUploadAssignment}
+          fileTypeText={"Excel File xlsx, file size no more than 10MB"}
+          onClose={() => {
+            handleModal("uploadModalIsOpen");
+          }}
+        />
+      </ModalTop>
 
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[75.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"

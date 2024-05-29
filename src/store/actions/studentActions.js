@@ -73,6 +73,20 @@ export const addStudent = asyncCatch(
       })
 );
 
+export const uploadBulkStudents = asyncCatch(
+  "studentSlice/uploadBulkStudents",
+  async ({ config, body, dispatch }) =>
+    axios
+      .post(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/upload-student-excel-data`,
+        body
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const editStudent = asyncCatch(
   "studentSlice/editStudent",
   async ({ config, body, dispatch }) =>

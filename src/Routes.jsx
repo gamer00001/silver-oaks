@@ -174,13 +174,13 @@ const adminLayoutRoutes = [
         element={<MyReactHelmet title="Grade" element={<LecturesPage />} />}
       />
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/assignments"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/assignments"
         element={
           <MyReactHelmet title="Assignment" element={<AdminAssignments />} />
         }
       />
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/assignments/:assignmentId"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/assignments/:assignmentId"
         element={
           <MyReactHelmet
             title="Assignment"
@@ -189,19 +189,19 @@ const adminLayoutRoutes = [
         }
       />
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/quizzes"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/quizzes"
         element={<MyReactHelmet title="Quizzes" element={<AdminQuizzes />} />}
       />
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/exams"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams"
         element={<MyReactHelmet title="Exams" element={<AdminExams />} />}
       />
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/students"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/students"
         element={<MyReactHelmet title="Students" element={<AdminStudents />} />}
       />
       <Route
-        path="/all-classes/grade/:gradeId/:courseName/:courseId/reports"
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/reports"
         element={<MyReactHelmet title="Reports" element={<AdminReports />} />}
       />
     </Route>

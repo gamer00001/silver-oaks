@@ -381,3 +381,32 @@ export const AddSectionFields = (campusesOptions = []) => {
     },
   ];
 };
+
+export const AddLectureFields = () => {
+  return [
+    {
+      name: "lectureTitle",
+      placeholder: "Enter Lecture Title",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "description",
+      placeholder: "Enter Description",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "file",
+      placeholder: "Select File",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "file",
+      showLabel: true,
+    },
+  ];
+};
