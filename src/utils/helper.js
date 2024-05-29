@@ -33,6 +33,6 @@ export const manipulateCourseTabsForAdmin = (tabs = [], params) => {
   return tabs?.map((item) => ({
     ...item,
     isAdminRoute: true,
-    baseRoute: `grade/${params?.gradeId}/${params?.courseName}/${params?.courseId}/${item.baseRoute}`,
+    baseRoute: `grade/${params?.gradeId}/${params.campusName}/${params.campusId}/${params.sectionName}/${params.sectionId}/${params?.courseName}/${params?.courseId}/${item.baseRoute}`,
   }));
 };

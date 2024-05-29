@@ -186,6 +186,47 @@ export const parseStudentListing = (data = [], handleModal) => {
   }));
 };
 
+export const parseLectureListing = (data = [], handleModal) => {
+  return data?.map((lectureData) => ({
+    ...lectureData,
+    title: lectureData?.lectureTitle ?? "N/A",
+    publishedDate: "N/A",
+    lastLoggedIn: (
+      <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
+        N/A
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            // const { password, ...otherInfo } = lectureData;
+            handleModal(
+              "addNewModalIsOpen",
+              { ...lectureData, section: lectureData?.sectionName },
+              true
+            );
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            // const { password, ...otherInfo } = lectureData;
+            handleModal("deleteModalIsOpen", lectureData);
+          }}
+        />
+      </div>
+    ),
+  }));
+};
+
 export const MockTeacherStudentsData = (handleModal) => {
   return [
     {

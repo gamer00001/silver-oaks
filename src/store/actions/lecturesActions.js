@@ -36,3 +36,9 @@ export const changeLectureStatus = asyncCatch(
       config
     )
 );
+
+export const addLecture = asyncCatch(
+  "lectureSlice/addLecture",
+  async ({ config, query, body }) =>
+    axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures`, body)
+);

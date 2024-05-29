@@ -254,71 +254,77 @@ const SingleAssignmentView = ({
   );
 };
 
-const UploadAssignmnet = ({
+export const UploadAssignmnet = ({
+  title = "Upload Assignment",
   state,
   inputFileRef,
   uploadFile,
   onClose,
+  acceptedFiles = ".pdf,.docx,.png,.jpg",
+  fileTypeText = "JPG, PNG or PDF, file size no more than 10MB",
   handleUploadAssignment,
 }) => {
   return (
-    <div className="p-52">
-      <div className="border-2 border-dashed border-black border-opacity-58 rounded-2xl flex items-center p-10 flex-col">
-        <img
-          className="w-40"
-          src="/upload-file-icon.svg"
-          alt="upload-file-icon"
-        />
+    <>
+      <h1 className="text-5xl font-semibold pt-20">{title}</h1>
+      <div className="px-52">
+        <div className="border-2 border-dashed border-black border-opacity-58 rounded-2xl flex items-center p-10 flex-col">
+          <img
+            className="w-40"
+            src="/upload-file-icon.svg"
+            alt="upload-file-icon"
+          />
 
-        <span className="italic text-xl text-black">
-          Select a file or drag and drop here
-        </span>
-
-        <span className="text-[#00000066] italic text-xl mt-3">
-          JPG, PNG or PDF, file size no more than 10MB
-        </span>
-
-        <button
-          className="mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-[#0F91D2] text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-[#0F91D2B2] border-opacity-58 "
-          onClick={() => inputFileRef.current.click()}
-        >
-          Select File
-        </button>
-
-        {state?.uploadedFile && (
-          <span className="text-[#00000066] text-xl italic mt-10">
-            {state.uploadedFile.name}
+          <span className="italic text-xl text-black">
+            Select a file or drag and drop here
           </span>
-        )}
 
-        <input
-          id="fileInput"
-          name="fileInput"
-          hidden
-          ref={inputFileRef}
-          type="file"
-          accept=".pdf,.docx,.png,.jpg"
-          onChange={uploadFile}
-        />
-      </div>
+          <span className="text-[#00000066] italic text-xl mt-3">
+            {fileTypeText}
+          </span>
 
-      <div className="flex justify-end gap-5">
-        <button
-          className="mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-black text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-black border-opacity-58"
-          onClick={onClose}
-        >
-          Cancel
-        </button>
-        <button
-          className={`mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-[#0F91D2] text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-[#0F91D2B2] border-opacity-58 ${
-            !state?.uploadedFile && "border-[#00000029] text-[#00000029]"
-          }`}
-          onClick={handleUploadAssignment}
-          disabled={state?.uploadedFile ? false : true}
-        >
-          Upload
-        </button>
+          <button
+            className="mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-[#0F91D2] text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-[#0F91D2B2] border-opacity-58 "
+            onClick={() => inputFileRef.current.click()}
+          >
+            Select File
+          </button>
+
+          {state?.uploadedFile && (
+            <span className="text-[#00000066] text-xl italic mt-10">
+              {state.uploadedFile.name}
+            </span>
+          )}
+
+          <input
+            id="fileInput"
+            name="fileInput"
+            hidden
+            ref={inputFileRef}
+            type="file"
+            accept={acceptedFiles}
+            onChange={uploadFile}
+          />
+        </div>
+
+        <div className="flex justify-end gap-5">
+          <button
+            className="mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-black text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-black border-opacity-58"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className={`mt-10 bg-white rounded-[1rem] pl-8 pr-8 pt-4 pb-4 text-[#0F91D2] text-[2rem] enabled:hover:opacity-70 transition-opacity border-2 border-[#0F91D2B2] border-opacity-58 ${
+              !state?.uploadedFile && "border-[#00000029] text-[#00000029]"
+            }`}
+            onClick={handleUploadAssignment}
+            disabled={state?.uploadedFile ? false : true}
+          >
+            Upload
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

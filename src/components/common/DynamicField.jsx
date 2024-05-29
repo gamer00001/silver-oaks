@@ -1,6 +1,7 @@
 import React from "react";
 import InputField from "./InputField";
 import Dropdown from "./Dropdown";
+import FileUpload from "./FileUpload";
 
 const DynamicField = (props) => {
   const renderField = () => {
@@ -16,6 +17,10 @@ const DynamicField = (props) => {
 
       case "dropdown": {
         return <Dropdown {...props.field} {...props} />;
+      }
+
+      case "file": {
+        return <FileUpload {...props.field} {...props} />;
       }
 
       default:
