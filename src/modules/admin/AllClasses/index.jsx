@@ -3,10 +3,16 @@ import Button from "@/components/common/Button";
 import Dropdown from "@/components/common/Dropdown";
 import GradeBlock from "@/components/common/GradeBlock";
 import AddNewClass from "@/components/modals/AddNewClass";
+import { addCampus, addSection } from "@/store/actions/commonActions";
+import { fetchCompusListing } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import garde1 from "../../../assets/common/grade1.png";
+import garde10 from "../../../assets/common/grade10.png";
 import garde2 from "../../../assets/common/grade2.png";
 import garde3 from "../../../assets/common/grade3.png";
 import garde4 from "../../../assets/common/grade4.png";
@@ -15,14 +21,8 @@ import garde6 from "../../../assets/common/grade6.png";
 import garde7 from "../../../assets/common/grade7.png";
 import garde8 from "../../../assets/common/grade8.png";
 import garde9 from "../../../assets/common/grade9.png";
-import garde10 from "../../../assets/common/grade10.png";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addCampus, addSection } from "@/store/actions/commonActions";
-import toast from "react-hot-toast";
-import { fetchCompusListing } from "@/utils/common-api-helper";
-import TabsComponent from "./TabView";
 import CampusesPage from "./Campuses";
+import TabsComponent from "./TabView";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
@@ -150,10 +150,12 @@ const AllClasses = () => {
         onSuccess: (resp) => {
           handleModal("addNewModalIsOpen");
           fetchCompusListing(dispatch);
-
           toast.success("Campus added successfully!");
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: () => {
+          handleModal("addNewModalIsOpen");
+          toast.error("Some Error Occured!");
+        },
       })
     );
   };
@@ -184,7 +186,10 @@ const AllClasses = () => {
 
           toast.success("Section added successfully!");
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: () => {
+          handleModal("addNewModalIsOpen");
+          toast.error("Some Error Occured!");
+        },
       })
     );
   };
@@ -193,9 +198,9 @@ const AllClasses = () => {
     return (
       <>
         <Grid container spacing={4} className="px-12 py-12">
-          <Grid item sm={3} md={3} lg={2}>
+          {/* <Grid item sm={3} md={3} lg={2}>
             <Dropdown placeholder="Grade" options={options} />
-          </Grid>
+          </Grid> */}
           <Grid item sm={3} md={3} lg={2}>
             <Dropdown
               placeholder="Campus"
@@ -229,21 +234,6 @@ const AllClasses = () => {
             </Grid>
           ))}
         </Grid>
-        <ModalTop
-          className="!rounded-[2.4rem] !max-w-[75.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
-          open={state.addNewModalIsOpen}
-          onClose={() => handleModal("addNewModalIsOpen")}
-        >
-          <AddNewClass
-            //   fields={AddStudentFields()}
-            handleAddCampus={handleAddCampus}
-            handleAddSection={handleAddSection}
-            handleModal={() => handleModal("addNewModalIsOpen")}
-            campusesOptions={
-              campusesData?.data?.map((item) => item?.campusName) ?? []
-            }
-          />
-        </ModalTop>
       </>
     );
   };
@@ -280,6 +270,22 @@ const AllClasses = () => {
           },
         ]}
       />
+
+      <ModalTop
+        className="!rounded-[2.4rem] !max-w-[75.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
+        open={state.addNewModalIsOpen}
+        onClose={() => handleModal("addNewModalIsOpen")}
+      >
+        <AddNewClass
+          // fields={AddStudentFields()}
+          handleAddCampus={handleAddCampus}
+          handleAddSection={handleAddSection}
+          handleModal={() => handleModal("addNewModalIsOpen")}
+          campusesOptions={
+            campusesData?.data?.map((item) => item?.campusName) ?? []
+          }
+        />
+      </ModalTop>
     </div>
   );
 };

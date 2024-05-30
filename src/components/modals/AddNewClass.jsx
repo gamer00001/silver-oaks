@@ -94,7 +94,7 @@ const AddNewClass = ({
               variant="primary"
               size={"large"}
               fullWidth={true}
-              onClick={handleSelect}
+              onClick={() => handleSelect()}
             >
               {`Continue`}
             </Button>
