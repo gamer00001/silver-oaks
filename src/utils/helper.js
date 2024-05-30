@@ -36,3 +36,19 @@ export const manipulateCourseTabsForAdmin = (tabs = [], params) => {
     baseRoute: `grade/${params?.gradeId}/${params.campusName}/${params.campusId}/${params.sectionName}/${params.sectionId}/${params?.courseName}/${params?.courseId}/${item.baseRoute}`,
   }));
 };
+
+export const prepareLineChartData = (list = []) => {
+  let categories = [],
+    marksSeriesData = [],
+    populationSeriesData = [];
+
+  categories = list.map((item) => item.grade).filter((item) => item !== null);
+  marksSeriesData = list.map((item) => item.percent);
+  populationSeriesData = list.map((item) => item.population);
+
+  return {
+    categories,
+    marksSeriesData,
+    populationSeriesData,
+  };
+};

@@ -8,6 +8,8 @@ import { Provider as StoreProvider } from "react-redux";
 import { store, persistedStore } from "@/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { CheckTokenSession, Loader } from "@/components/common";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
@@ -19,7 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         >
           {/* <CheckTokenSession> */}
           <GlobalContextProvider>
-            <App />
+            <ThemeProvider theme={theme}>
+              <App />
+            </ThemeProvider>
           </GlobalContextProvider>
           {/* </CheckTokenSession> */}
         </PersistGate>
