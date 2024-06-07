@@ -56,8 +56,6 @@ const PieGraph = ({ categories, populationSeriesData }) => {
     setSeries(populationSeriesData);
   }, [categories, populationSeriesData]);
 
-  console.log("PP", { categories, series });
-
   if (!isEmpty(series))
     return (
       <div className="bg-[#FAFAFA] rounded-xl p-5">
@@ -67,15 +65,9 @@ const PieGraph = ({ categories, populationSeriesData }) => {
               Student Stats
             </h2>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <Dropdown
-              placeholder="Campus"
-              options={MOCK_GRADES().map((item) => item.title)}
-            />
-          </Grid>
         </Grid>
         <div>
-          <h1 className="text-black text-5xl font-bold pb-10">
+          <h1 className="text-black text-5xl font-bold pb-10 pt-5">
             Student Population
           </h1>
         </div>

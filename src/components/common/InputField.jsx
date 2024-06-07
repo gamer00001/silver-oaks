@@ -7,6 +7,7 @@ const InputField = ({
   icon,
   error,
   value,
+  touched,
   disabled = false,
   label = "",
   showLabel = false,
@@ -73,7 +74,7 @@ const InputField = ({
             } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}
           />
         )}
-        {error && (
+        {touched && error && (
           <div className="text-red-600 text-left text-xl py-4">{error}</div>
         )}
       </div>

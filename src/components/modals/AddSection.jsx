@@ -54,8 +54,6 @@ const AddNewClass = ({
     }
   };
 
-  console.log({ state });
-
   return (
     <div>
       <div className="flex justify-between">
@@ -147,17 +145,18 @@ const AddNewCampus = ({
   handleAddCampus,
   handleAddSection,
 }) => {
-  const { handleSubmit, handleChange, handleBlur, values, errors } = useFormik({
-    initialValues: initialValues,
-    validationSchema: schema,
-    onSubmit: (values) => {
-      if (addCampus) {
-        handleAddCampus(values);
-      } else {
-        handleAddSection(values);
-      }
-    },
-  });
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: schema,
+      onSubmit: (values) => {
+        if (addCampus) {
+          handleAddCampus(values);
+        } else {
+          handleAddSection(values);
+        }
+      },
+    });
 
   return (
     <form onSubmit={handleSubmit}>
@@ -167,6 +166,7 @@ const AddNewCampus = ({
             // key={key}
             field={field}
             error={errors[field.name]}
+            touched={touched[field.name]}
             value={values[field.name]}
             onChange={(value) => {
               const event = {

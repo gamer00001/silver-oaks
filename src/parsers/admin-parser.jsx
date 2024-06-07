@@ -46,3 +46,66 @@ export const parseAddTeacherData = (data) => {
     // ],
   };
 };
+
+export const parseAddQuizDataForApi = (formValues, params) => {
+  return {
+    courseId: params.courseId,
+    // description: "string",
+    dueDate: formValues.dueDate,
+    quizTitle: formValues.quizTitle,
+    term: formValues.term,
+    time: formValues.time,
+    totalMarks: formValues.totalMarks,
+    visibility: true,
+    quizQuestions: formValues?.questions.map((item) => ({
+      question: item.title,
+      optionFour: item.options[3],
+      optionOne: item.options[0],
+      optionThree: item.options[2],
+      optionTwo: item.options[1],
+      answer: item.options[item?.correctOption],
+    })),
+  };
+};
+
+export const parseAddExamDataForApi = (formValues, params) => {
+  return {
+    courseId: params.courseId,
+    // description: "string",
+    dueDate: formValues.dueDate,
+    examTitle: formValues.examTitle,
+    term: formValues.term,
+    time: formValues.time,
+    totalMarks: formValues.totalMarks,
+    visibility: true,
+    examQuestions: formValues?.questions.map((item) => ({
+      question: item.title,
+      optionFour: item.options[3],
+      optionOne: item.options[0],
+      optionThree: item.options[2],
+      optionTwo: item.options[1],
+      answer: item.options[item?.correctOption],
+    })),
+  };
+};
+
+export const parseAddOgaDataForApi = (formValues, params) => {
+  return {
+    courseId: params.courseId,
+    // description: "string",
+    dueDate: formValues.dueDate,
+    ogaTitle: formValues.ogaTitle,
+    term: formValues.term,
+    time: formValues.time,
+    totalMarks: formValues.totalMarks,
+    visibility: true,
+    ogaQuestions: formValues?.questions.map((item) => ({
+      question: item.title,
+      optionFour: item.options[3],
+      optionOne: item.options[0],
+      optionThree: item.options[2],
+      optionTwo: item.options[1],
+      answer: item.options[item?.correctOption],
+    })),
+  };
+};

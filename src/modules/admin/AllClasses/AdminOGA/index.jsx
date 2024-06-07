@@ -18,7 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
-const AdminExams = () => {
+const AdminOGA = () => {
   const [state, setState] = useState({
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
@@ -35,8 +35,6 @@ const AdminExams = () => {
   } = useSelector((s) => s.commonReducer);
 
   const { campusesData } = useSelector((s) => s.commonReducer);
-
-  console.log({ campusesData, data });
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -103,7 +101,7 @@ const AdminExams = () => {
           variant="secondary"
           onClick={() => navigate("add-new")}
         >
-          Add New Exam
+          Add New OGA
         </Button>
       </div>
 
@@ -136,4 +134,4 @@ const AdminExams = () => {
   );
 };
 
-export default AdminExams;
+export default AdminOGA;

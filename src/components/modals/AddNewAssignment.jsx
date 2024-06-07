@@ -1,41 +1,29 @@
-import { fetchSectonsListing } from "@/utils/common-api-helper";
+import { assignmentSchema } from "@/schema";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { Loader } from "../common";
 import Button from "../common/Button";
 import DynamicField from "../common/DynamicField";
 
 const defaultValues = {
-  name: "",
-  studentName: "",
-  grade: "",
-  roleNumber: "",
-  section: "",
-  campusName: "",
-  gender: "",
-  password: "",
-  dateOfBirth: "",
-  guardianName: "",
-  city: "",
-  guardianEmail: "",
-  guardianPhoneNumber: "",
-  address: "",
+  lectureTitle: "",
+  description: "",
+  file: "",
+  totalMarks: null,
+  teacher: "",
 };
 
-const AddStudentTeacher = ({
-  schema,
-  campusesData,
-  handleAddUser,
+const AddNewAssignment = ({
+  handleAdd,
   initialValues,
   editValues,
   fields = [],
   handleModal,
-  title = "Add Student",
-  subtitle = "Student Details",
+  teachersList,
+  title = "Add New Assignment",
+  subtitle = "Assignment Details",
 }) => {
   const [state, setState] = useState({
     formFields: [],
@@ -44,69 +32,29 @@ const AddStudentTeacher = ({
 
   const dispatch = useDispatch();
 
-  const { sectionsData } = useSelector((s) => s.commonReducer);
-
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
     useFormik({
       initialValues: editValues ?? initialValues ?? defaultValues,
       // enableReinitialize: true,
-      validationSchema: schema,
+      validationSchema: assignmentSchema,
       onSubmit: (values) => {
-        handleAddUser(values);
         handleModal();
+        handleAdd(values);
       },
     });
 
   const getField = (field) => {
-    if (field.name === "section") {
-      const sectionsOptions = sectionsData?.data?.map(
-        (item) => item.sectionName
-      );
-
+    if (field.name === "teacher") {
       return {
         ...field,
-        options: sectionsOptions,
+        options: teachersList,
       };
     } else {
-      return field;
+      return {
+        ...field,
+      };
     }
   };
-
-  useEffect(() => {
-    if (
-      (state?.formValues["grade"] !== values["grade"] ||
-        state?.formValues["campusName"] !== values["campusName"]) &&
-      !isEmpty(values.campusName) &&
-      !isEmpty(values.grade)
-    ) {
-      fetchSectonsListing(
-        dispatch,
-        campusesData.find((item) => item.campusName === values.campusName)?.id,
-        values.grade
-      );
-
-      const event = {
-        target: {
-          name: "section",
-          value: "",
-        },
-      };
-
-      handleChange(event);
-
-      setState((prev) => ({
-        ...prev,
-        formValues: values,
-      }));
-    }
-  }, [values]);
-
-  useEffect(() => {
-    setState((prev) => ({
-      ...prev,
-      formFields: fields,
-    }));
-  }, [fields]);
 
   return (
     <div>
@@ -125,7 +73,7 @@ const AddStudentTeacher = ({
       </h4>
       <form onSubmit={handleSubmit}>
         <Grid className="pb-8" container spacing={4}>
-          {state?.formFields?.map((field, key) => (
+          {fields?.map((field, key) => (
             <Grid item sm={field.column} key={key}>
               <DynamicField
                 field={getField(field)}
@@ -151,10 +99,8 @@ const AddStudentTeacher = ({
           Submit
         </Button>
       </form>
-
-      {sectionsData.loading && <Loader type="screen" />}
     </div>
   );
 };
 
-export default AddStudentTeacher;
+export default AddNewAssignment;

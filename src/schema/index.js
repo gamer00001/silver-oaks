@@ -180,3 +180,63 @@ export const lectureSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
   file: Yup.array().optional(),
 });
+
+export const assignmentSchema = Yup.object().shape({
+  assignmentTitle: Yup.string().required("Assignment Title is required"),
+  description: Yup.string().required("Description is required"),
+  totalMarks: Yup.number().required("Marks is required"),
+  term: Yup.string().required("Term is required"),
+  teacher: Yup.string().required("Teacher is required"),
+  file: Yup.array().optional(),
+});
+
+export const addQuizValidationSchema = Yup.object({
+  quizTitle: Yup.string().required("Quiz title is required"),
+  totalMarks: Yup.number().required("Total Marks are required"),
+  time: Yup.number().required("Quiz Time is required"),
+  dueDate: Yup.string().required("Due Date is required"),
+  term: Yup.string().required("Term is required"),
+  questions: Yup.array().of(
+    Yup.object({
+      title: Yup.string().required("Question title is required"),
+      options: Yup.array().of(Yup.string().required("Option is required")),
+      correctOption: Yup.number()
+        .nullable()
+        .required("Correct option is required"),
+    })
+  ),
+});
+
+export const addExamValidationSchema = Yup.object({
+  examTitle: Yup.string().required("Exam title is required"),
+  totalMarks: Yup.number().required("Total Marks are required"),
+  time: Yup.number().required("Time is required"),
+  dueDate: Yup.string().required("Due Date is required"),
+  term: Yup.string().required("Term is required"),
+  questions: Yup.array().of(
+    Yup.object({
+      title: Yup.string().required("Question title is required"),
+      options: Yup.array().of(Yup.string().required("Option is required")),
+      correctOption: Yup.number()
+        .nullable()
+        .required("Correct option is required"),
+    })
+  ),
+});
+
+export const addOgaValidationSchema = Yup.object({
+  ogaTitle: Yup.string().required("OGA title is required"),
+  totalMarks: Yup.number().required("Total Marks are required"),
+  time: Yup.number().required("Time is required"),
+  dueDate: Yup.string().required("Due Date is required"),
+  term: Yup.string().required("Term is required"),
+  questions: Yup.array().of(
+    Yup.object({
+      title: Yup.string().required("Question title is required"),
+      options: Yup.array().of(Yup.string().required("Option is required")),
+      correctOption: Yup.number()
+        .nullable()
+        .required("Correct option is required"),
+    })
+  ),
+});

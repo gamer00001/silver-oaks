@@ -42,3 +42,11 @@ export const addLecture = asyncCatch(
   async ({ config, query, body }) =>
     axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures`, body)
 );
+
+export const deleteLecture = asyncCatch(
+  "lectureSlice/deleteLecture",
+  async ({ config, query, body }) =>
+    axios.delete(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures/${query.lectureId}`
+    )
+);

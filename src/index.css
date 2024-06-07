@@ -194,3 +194,25 @@ input[type="number"] {
     }
   }
 }
+
+/* Custom radio button styles */
+.radio-container {
+  @apply flex items-center relative;
+}
+
+.radio-container input[type="radio"] {
+  @apply opacity-0 absolute;
+}
+
+.radio-custom {
+  @apply h-8 w-8 bg-white border-2 border-custom-red rounded-full flex justify-center items-center cursor-pointer;
+}
+
+.radio-custom:after {
+  content: "";
+  @apply h-3.5 w-3.5 bg-custom-red rounded-full hidden;
+}
+
+.radio-container input[type="radio"]:checked ~ .radio-custom:after {
+  @apply block;
+}

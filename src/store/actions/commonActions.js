@@ -52,3 +52,27 @@ export const fetchSectionsByCampus = asyncCatch(
       config
     )
 );
+
+export const addNewExamByAdmin = asyncCatch(
+  "quizSlice/addNewExamByAdmin",
+  async ({ config, body }) =>
+    axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/exams`, body, config)
+);
+
+export const deleteExamApi = asyncCatch(
+  "quizSlice/deleteExamApi",
+  async ({ config, query }) =>
+    axios.delete(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/${query.examId}`,
+      config
+    )
+);
+
+export const fetchExamsListing = asyncCatch(
+  "commonSlice/fetchExamsListing",
+  async ({ query, config }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/course/${query.courseId}`,
+      config
+    )
+);

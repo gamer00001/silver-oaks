@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const MockManageStudentsData = (handleModal) => {
   return [
     {
@@ -1018,6 +1020,42 @@ export const parseTeachersListing = (data = [], handleModal) => {
           onClick={() => {
             // const { password, ...otherInfo } = teachersData;
             handleModal("deleteModalIsOpen", teachersData);
+          }}
+        />
+      </div>
+    ),
+  }));
+};
+
+export const parseQuizzesListing = (data = [], handleModal) => {
+  return data?.map((quizData) => ({
+    ...quizData,
+    title: quizData?.quizTitle ?? "N/A",
+    publishedDate: (
+      <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+        {moment(quizData.dueDate).format("DD-MM-YYYY")}
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            // const { password, ...otherInfo } = quizData;
+            handleModal("addNewModalIsOpen", quizData, true);
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            // const { password, ...otherInfo } = quizData;
+            handleModal("deleteModalIsOpen", quizData);
           }}
         />
       </div>

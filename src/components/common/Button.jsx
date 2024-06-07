@@ -27,7 +27,7 @@ const Button = ({
   const getSizeClasses = () => {
     switch (size) {
       case "small":
-        return "px-2 py-1 text-xl";
+        return "px-6 py-4 text-md";
       case "large":
         return "px-10 py-6";
       default:

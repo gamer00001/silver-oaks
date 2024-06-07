@@ -36,7 +36,7 @@ export const fetchStudentsListing = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-all-students?page=${query.page}&size=${query.size}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students/${query.campus}?page=${query.page}&size=${query.size}`,
         config
       )
       .then((response) => response)
@@ -50,7 +50,7 @@ export const fetchStudentsListingByFilterApi = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students/${query.queryParams}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students${query.queryParams}`,
         config
       )
       .then((response) => response)

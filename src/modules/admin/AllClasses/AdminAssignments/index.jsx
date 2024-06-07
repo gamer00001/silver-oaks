@@ -3,12 +3,16 @@ import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
 import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
-import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
+import AddNewAssignment from "@/components/modals/AddNewAssignment";
 import DeleteActionModal from "@/components/modals/DeleteAction";
-import { AddTeacherFields } from "@/constants/forms";
+import { AddAssignmentFields } from "@/constants/forms";
 import { AssignmentsColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
 import { MockAssignmentData } from "@/parsers/student-parser";
+import {
+  createAssignment,
+  getAssignmentsByCourseId,
+} from "@/store/actions/assignmentsActions";
 import {
   addTeacher,
   deleteTeacher,
@@ -23,15 +27,25 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
+const initialValues = {
+  assignmentTitle: "",
+  description: "",
+  section: "",
+  term: "",
+  totalMarks: null,
+  teacher: "",
+};
+
 const AdminAssignments = () => {
   const [state, setState] = useState({
+    isLoading: false,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
   });
 
-  const { courseName, courseId, gradeId } = useParams();
+  const { courseName, courseId, gradeId, sectionId, sectionName } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,9 +53,16 @@ const AdminAssignments = () => {
     teachersListing: { data, loading },
   } = useSelector((s) => s.teacherReducer);
 
+  const { assignmentsData } = useSelector((s) => s.assignmentReducer);
+
   const { campusesData } = useSelector((s) => s.commonReducer);
 
-  console.log({ campusesData });
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
+  };
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -56,38 +77,83 @@ const AdminAssignments = () => {
     }));
   };
 
-  const handleAddUser = (formData) => {
+  const handleAdd = (formData) => {
     const { isEditMode, selectedRecord } = state;
 
-    let parseData = parseAddTeacherData(formData);
+    handleLoader(true);
+
+    let parseData = {
+      courseId,
+      section: sectionId,
+      // section: sectionName,
+      term: formData?.term,
+      totalMarks: formData.totalMarks,
+      file: formData.file[0],
+      // file: formData.file[0],
+      teacherId: data.teacherList.find(
+        (item) => item.employeeName === formData.teacher
+      )?.teacherId,
+      visibility: true,
+      assignmentTitle: formData.assignmentTitle,
+    };
 
     if (isEditMode) {
       parseData = {
         ...parseData,
-        teacherId: selectedRecord.teacherId,
+        assignmentId: selectedRecord.assignmentId,
       };
     }
 
-    const apiToCall = isEditMode ? editTeacher : addTeacher;
-
     dispatch(
-      apiToCall({
+      createAssignment({
         payload: {
           body: parseData,
         },
-        onSuccess: (resp) => {
-          console.log({ resp });
-          fetchListing();
+        onError: () => {
+          toast.error("Something went wrong");
+          handleLoader(false);
         },
-        onError: () => navigate("/404", { replace: true }),
+        onSuccess: () => {
+          fetchListing();
+          handleLoader(false);
+          handleModal("addNewModalIsOpen");
+          toast.success("Assignment Created Successfully!");
+        },
+      })
+    );
+
+    // const apiToCall = isEditMode ? editTeacher : addTeacher;
+
+    // dispatch(
+    //   apiToCall({
+    //     payload: {
+    //       body: parseData,
+    //     },
+    //     onSuccess: (resp) => {
+    //       console.log({ resp });
+    //       fetchListing();
+    //     },
+    //     onError: () => navigate("/404", { replace: true }),
+    //   })
+    // );
+  };
+
+  const fetchListingForTeacher = () => {
+    dispatch(
+      fetchTeachersListing({
+        payload: {
+          query: {
+            page: 0,
+            size: 500,
+          },
+          dispatch,
+        },
       })
     );
   };
 
   const handleDeleteUser = () => {
     const { selectedRecord } = state;
-
-    console.log({ selectedRecord }, selectedRecord?.selectedRecord?.teacherId);
 
     dispatch(
       deleteTeacher({
@@ -108,11 +174,15 @@ const AdminAssignments = () => {
 
   const fetchListing = () => {
     dispatch(
-      fetchTeachersListing({
+      getAssignmentsByCourseId({
+        onError: (error) => {
+          console.log({ error });
+          // toast.error("Some Error Occured!");
+        },
         payload: {
           query: {
-            page: 0,
-            size: 500,
+            courseId,
+            section: sectionId,
           },
           dispatch,
         },
@@ -126,12 +196,13 @@ const AdminAssignments = () => {
 
   useEffect(() => {
     fetchListing();
+    fetchListingForTeacher();
 
     // fetchCompusListing(dispatch);
   }, []);
 
-  if (loading) {
-    return <Loader />;
+  if (assignmentsData.loading || state.isLoading) {
+    return <Loader type={"screen"} />;
   }
 
   return (
@@ -142,7 +213,7 @@ const AdminAssignments = () => {
           variant="secondary"
           onClick={() => handleModal("addNewModalIsOpen")}
         >
-          Add New Lecture
+          Add New Assignment
         </Button>
       </div>
 
@@ -169,11 +240,13 @@ const AdminAssignments = () => {
         open={state.addNewModalIsOpen}
         onClose={() => handleModal("addNewModalIsOpen")}
       >
-        <AddStudentTeacher
-          title={state.isEditMode ? "Edit Teacher" : "Add Teacher"}
-          subtitle="Teacher Details"
-          fields={AddTeacherFields(campusesData?.data) ?? []}
-          handleAddUser={handleAddUser}
+        <AddNewAssignment
+          title={state.isEditMode ? "Edit Assignment" : "Add Assignment"}
+          subtitle="Assignment Details"
+          initialValues={initialValues}
+          teachersList={data?.teacherList.map((item) => item.employeeName)}
+          fields={AddAssignmentFields(campusesData?.data) ?? []}
+          handleAdd={handleAdd}
           editValues={state.selectedRecord}
           handleModal={() => handleModal("addNewModalIsOpen")}
         />
