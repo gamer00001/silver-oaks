@@ -3,27 +3,18 @@ import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
 import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
-import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
-import { AddTeacherFields } from "@/constants/forms";
 import { QuizzColumns } from "@/constants/table-constants";
-import { parseAddTeacherData } from "@/parsers/admin-parser";
+import { parseQuizzesListing } from "@/parsers/student-parser";
 import {
-  MockQuizzesData,
-  MockTeacherStudentsData,
-  parseTeachersListing,
-} from "@/parsers/student-parser";
-import {
-  addTeacher,
-  deleteTeacher,
-  editTeacher,
-  fetchTeachersListing,
-} from "@/store/actions/teacherActions";
-import { fetchCompusListing } from "@/utils/common-api-helper";
+  deleteQuizApi,
+  getQuizzesByCourseId,
+} from "@/store/actions/quizzesActions";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
@@ -33,17 +24,18 @@ const AdminQuizzes = () => {
     deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
+    isLoading: false,
   });
 
   const dispatch = useDispatch();
+  const { courseId } = useParams();
+  const navigate = useNavigate();
 
   const {
-    teachersListing: { data, loading },
-  } = useSelector((s) => s.teacherReducer);
+    quizzesDataByCourse: { data, loading },
+  } = useSelector((s) => s.quizReducer);
 
   const { campusesData } = useSelector((s) => s.commonReducer);
-
-  console.log({ campusesData });
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -58,68 +50,56 @@ const AdminQuizzes = () => {
     }));
   };
 
-  const handleAddUser = (formData) => {
-    const { isEditMode, selectedRecord } = state;
-
-    let parseData = parseAddTeacherData(formData);
-
-    if (isEditMode) {
-      parseData = {
-        ...parseData,
-        teacherId: selectedRecord.teacherId,
-      };
-    }
-
-    const apiToCall = isEditMode ? editTeacher : addTeacher;
-
-    dispatch(
-      apiToCall({
-        payload: {
-          body: parseData,
-        },
-        onSuccess: (resp) => {
-          console.log({ resp });
-          fetchListing();
-        },
-        onError: () => navigate("/404", { replace: true }),
-      })
-    );
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
   };
 
-  const handleDeleteUser = () => {
+  const handleDelete = () => {
     const { selectedRecord } = state;
 
-    console.log({ selectedRecord }, selectedRecord?.selectedRecord?.teacherId);
+    handleLoader(true);
 
     dispatch(
-      deleteTeacher({
+      deleteQuizApi({
         payload: {
           query: {
-            teacherId: selectedRecord?.teacherId,
+            quizId: selectedRecord?.quizId,
           },
         },
         onSuccess: (resp) => {
           handleModal("deleteModalIsOpen");
           toast.success("Deleted Successfully!");
           fetchListing();
+          handleLoader(false);
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: () => {
+          handleLoader(false);
+          toast.error("Some Error Occured!");
+        },
       })
     );
   };
 
   const fetchListing = () => {
     dispatch(
-      fetchTeachersListing({
+      getQuizzesByCourseId({
         payload: {
           query: {
             page: 0,
             size: 500,
+            courseId,
           },
           dispatch,
         },
       })
     );
+  };
+
+  const handleAddNewQuiz = () => {
+    navigate("add-new");
   };
 
   useEffect(() => {
@@ -128,18 +108,14 @@ const AdminQuizzes = () => {
     // fetchCompusListing(dispatch);
   }, []);
 
-  if (loading) {
+  if (loading || state.isLoading) {
     return <Loader />;
   }
 
   return (
     <div className="bg-white h-full">
       <div className="flex justify-end gap-12 pr-12">
-        <Button
-          size="large"
-          variant="secondary"
-          onClick={() => handleModal("addNewModalIsOpen")}
-        >
+        <Button size="large" variant="secondary" onClick={handleAddNewQuiz}>
           Add New Quiz
         </Button>
       </div>
@@ -158,24 +134,9 @@ const AdminQuizzes = () => {
       <div className="p-12">
         <CustomTable
           columns={QuizzColumns}
-          rows={MockQuizzesData(handleModal)}
+          rows={parseQuizzesListing(data?.quizList, handleModal)}
         />
       </div>
-
-      <ModalTop
-        className="!rounded-[2.4rem] !max-w-[75.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
-        open={state.addNewModalIsOpen}
-        onClose={() => handleModal("addNewModalIsOpen")}
-      >
-        <AddStudentTeacher
-          title={state.isEditMode ? "Edit Teacher" : "Add Teacher"}
-          subtitle="Teacher Details"
-          fields={AddTeacherFields(campusesData?.data) ?? []}
-          handleAddUser={handleAddUser}
-          editValues={state.selectedRecord}
-          handleModal={() => handleModal("addNewModalIsOpen")}
-        />
-      </ModalTop>
 
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[45.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
@@ -183,7 +144,7 @@ const AdminQuizzes = () => {
         onClose={() => handleModal("deleteModalIsOpen")}
       >
         <DeleteActionModal
-          handleAction={handleDeleteUser}
+          handleAction={handleDelete}
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>

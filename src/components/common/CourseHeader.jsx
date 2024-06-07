@@ -32,7 +32,6 @@ const CourseHeader = ({ courseTabs, forStudent = false }) => {
 
     if (isAdmin) {
       tabs = manipulateCourseTabsForAdmin(tabs, params);
-      console.log({ tabs });
     }
 
     setState((prev) => ({

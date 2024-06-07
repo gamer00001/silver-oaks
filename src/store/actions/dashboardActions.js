@@ -13,9 +13,9 @@ export const getDashboardData = asyncCatch(
 
 export const getAdminDashboardData = asyncCatch(
   "dashboardDataSlice/getAdminDashboardData",
-  async ({ config }) =>
+  async ({ config, query }) =>
     axios.get(
-      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/dashboard/data-stats`,
+      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/dashboard/data-stats${query.queryParams}`,
       config
     )
 );

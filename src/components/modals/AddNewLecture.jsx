@@ -29,17 +29,16 @@ const AddNewLecture = ({
 
   const dispatch = useDispatch();
 
-  const { handleSubmit, handleChange, handleBlur, values, errors } = useFormik({
-    initialValues: editValues ?? initialValues ?? defaultValues,
-    // enableReinitialize: true,
-    validationSchema: lectureSchema,
-    onSubmit: (values) => {
-      handleAddLecture(values);
-      handleModal();
-    },
-  });
-
-  console.log({ errors, values });
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
+    useFormik({
+      initialValues: editValues ?? initialValues ?? defaultValues,
+      // enableReinitialize: true,
+      validationSchema: lectureSchema,
+      onSubmit: (values) => {
+        handleAddLecture(values);
+        handleModal();
+      },
+    });
 
   return (
     <div>
@@ -64,6 +63,7 @@ const AddNewLecture = ({
                 field={field}
                 error={errors[field.name]}
                 value={values[field.name]}
+                touched={touched[field.name]}
                 disabled={field.isDisabled}
                 onChange={(value) => {
                   const event = {

@@ -9,6 +9,7 @@ const Dropdown = ({
   showLabel = false,
   options = [],
   onClick,
+  touched,
   disabled = false,
   onChange = () => {},
 }) => {
@@ -55,7 +56,7 @@ const Dropdown = ({
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-6 ${
+        className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
           icon ? "px-20" : ""
         }`}
       >
@@ -97,7 +98,7 @@ const Dropdown = ({
           )}
         </div>
       )}
-      {error && (
+      {touched && error && (
         <div className="text-red-600 text-left text-xl py-4">{error}</div>
       )}
     </div>

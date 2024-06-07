@@ -36,3 +36,18 @@ export const submitOgaByStudent = asyncCatch(
   async ({ config, body }) =>
     axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/submit`, body, config)
 );
+
+export const addNewOGAByAdmin = asyncCatch(
+  "quizSlice/addNewOGAByAdmin",
+  async ({ config, body }) =>
+    axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/create`, body, config)
+);
+
+export const deleteOGAFromApi = asyncCatch(
+  "quizSlice/deleteOGAApi",
+  async ({ config, query }) =>
+    axios.delete(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/delete/${query.ogaId}`,
+      config
+    )
+);

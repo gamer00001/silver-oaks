@@ -46,6 +46,7 @@ const AddAnnouncement = ({
                 field={field}
                 onChange={handleChange}
                 error={errors[field.name]}
+                touched={touched[field.name]}
               />
             </Grid>
           ))}

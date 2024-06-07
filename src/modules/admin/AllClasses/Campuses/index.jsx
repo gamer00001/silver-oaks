@@ -69,8 +69,6 @@ const CampusesPage = () => {
     return <Loader type="screen" />;
   }
 
-  console.log({ state, data });
-
   return (
     <div className="px-20">
       <div className="flex items-center justify-between">

@@ -80,8 +80,6 @@ const LineChart = ({ categories, marksSeriesData }) => {
     ]);
   }, [categories, marksSeriesData]);
 
-  console.log({ series, options });
-
   if (!isEmpty(series[0].data))
     return (
       <div className="bg-[#FAFAFA] rounded-xl p-5">
@@ -91,24 +89,10 @@ const LineChart = ({ categories, marksSeriesData }) => {
               Student Stats
             </h2>
           </Grid>
-
-          <Grid item xs={12} sm={4}>
-            <Dropdown
-              placeholder="Campus"
-              // value={state?.selectedCampus}
-              //   onChange={handleCampus}
-              options={MOCK_GRADES().map((item) => item.title)}
-              //   options={
-              //     campusesData?.data
-              //       ? campusesData?.data?.map((item) => item?.campusName)
-              //       : []
-              //   }
-            />
-          </Grid>
         </Grid>
 
         <div>
-          <h1 className="text-black text-5xl font-bold">Marks Average</h1>
+          <h1 className="text-black text-5xl font-bold pt-5">Marks Average</h1>
         </div>
 
         <div className="flex justify-center">

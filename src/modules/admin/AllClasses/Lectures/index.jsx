@@ -4,25 +4,15 @@ import CustomTable from "@/components/common/CustomTable";
 import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
 import AddNewLecture from "@/components/modals/AddNewLecture";
-import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
-import { AddLectureFields, AddTeacherFields } from "@/constants/forms";
+import { AddLectureFields } from "@/constants/forms";
 import { LecturesColumns } from "@/constants/table-constants";
-import { parseAddTeacherData } from "@/parsers/admin-parser";
+import { parseLectureListing } from "@/parsers/student-parser";
 import {
-  MockLecturesData,
-  MockTeacherStudentsData,
-  parseLectureListing,
-  parseTeachersListing,
-} from "@/parsers/student-parser";
-import { addLecture, getLectures } from "@/store/actions/lecturesActions";
-import {
-  addTeacher,
-  deleteTeacher,
-  editTeacher,
-  fetchTeachersListing,
-} from "@/store/actions/teacherActions";
-import { fetchCompusListing } from "@/utils/common-api-helper";
+  addLecture,
+  deleteLecture,
+  getLectures,
+} from "@/store/actions/lecturesActions";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -67,14 +57,14 @@ const LecturesPage = () => {
     }));
   };
 
-  const handleDeleteUser = () => {
+  const handleDelete = () => {
     const { selectedRecord } = state;
 
     dispatch(
-      deleteTeacher({
+      deleteLecture({
         payload: {
           query: {
-            teacherId: selectedRecord?.teacherId,
+            lectureId: selectedRecord?.lectureId,
           },
         },
         onSuccess: (resp) => {
@@ -122,7 +112,7 @@ const LecturesPage = () => {
       addLecture({
         onSuccess: () => {
           handleLoader(false);
-          handleModal("addNewModalIsOpen");
+          // handleModal("addNewModalIsOpen");
           fetchListing();
         },
         onError: () => {
@@ -200,7 +190,7 @@ const LecturesPage = () => {
         onClose={() => handleModal("deleteModalIsOpen")}
       >
         <DeleteActionModal
-          handleAction={handleDeleteUser}
+          handleAction={handleDelete}
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>

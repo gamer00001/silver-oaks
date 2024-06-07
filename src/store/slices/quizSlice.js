@@ -3,6 +3,7 @@ import {
   getQuizById,
   getQuizSubmissions,
   getQuizzes,
+  getQuizzesByCourseId,
 } from "../actions/quizzesActions";
 
 const initialState = {
@@ -17,6 +18,10 @@ const initialState = {
   quizSubmissionsData: {
     loading: false,
     data: null,
+  },
+  quizzesDataByCourse: {
+    data: null,
+    loading: false,
   },
 };
 
@@ -79,6 +84,26 @@ const quizSlice = createSlice({
     builder.addCase(getQuizSubmissions.rejected, (state) => {
       state.quizSubmissionsData = {
         ...initialState.quizSubmissionsData,
+        loading: false,
+      };
+    });
+
+    //Get Quizzes By Course ID
+    builder.addCase(getQuizzesByCourseId.pending, (state) => {
+      state.quizzesDataByCourse = {
+        ...initialState.quizzesDataByCourse,
+        loading: true,
+      };
+    });
+    builder.addCase(getQuizzesByCourseId.fulfilled, (state, action) => {
+      state.quizzesDataByCourse = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getQuizzesByCourseId.rejected, (state) => {
+      state.quizzesDataByCourse = {
+        ...initialState.quizzesDataByCourse,
         loading: false,
       };
     });

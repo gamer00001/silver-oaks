@@ -20,7 +20,10 @@ import {
   fetchStudentsListingByFilterApi,
   uploadBulkStudents,
 } from "@/store/actions/studentActions";
-import { fetchCompusListing } from "@/utils/common-api-helper";
+import {
+  fetchCompusListing,
+  fetchSectonsListing,
+} from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +72,7 @@ const ManageStudents = () => {
     filteredStudentsListing: { filteredStudents, filteredLoading },
   } = useSelector((s) => s.studentReducer);
 
-  const { campusesData } = useSelector((s) => s.commonReducer);
+  const { campusesData, sectionsData } = useSelector((s) => s.commonReducer);
 
   const handleLoader = (loading) => {
     setState((prev) => ({
@@ -171,7 +174,8 @@ const ManageStudents = () => {
         payload: {
           query: {
             page: 0,
-            size: 500,
+            size: 10,
+            campus: state?.selectedCampus ?? "",
           },
           dispatch,
         },
@@ -180,17 +184,18 @@ const ManageStudents = () => {
   };
 
   const fetchStudentsListingByFilter = () => {
-    const { selectedGrade, selectedCampus } = state;
-    const queryParams = `${selectedCampus}?${
-      selectedGrade ? `grade=${selectedGrade}` : ""
-    }`;
+    const { selectedGrade, selectedCampus, selectedSection } = state;
 
-    if (selectedGrade && selectedCampus) {
+    const queryParams = `${selectedCampus}?course=ICT${
+      selectedGrade ? `&grade=${selectedGrade}` : ""
+    }${selectedSection ? `&section=${selectedSection}` : ""}`;
+
+    if (selectedCampus) {
       dispatch(
         fetchStudentsListingByFilterApi({
           payload: {
             query: {
-              queryParams,
+              queryParams: "",
             },
             dispatch,
           },
@@ -238,11 +243,21 @@ const ManageStudents = () => {
   };
 
   useEffect(() => {
+    const { selectedCampus, selectedGrade } = state;
+
     fetchStudentsListingByFilter();
-  }, [state.selectedCampus, state.selectedGrade]);
+    if (selectedCampus && selectedGrade) {
+      fetchSectonsListing(
+        dispatch,
+        campusesData?.data?.find((item) => item.campusName === selectedCampus)
+          ?.id,
+        selectedGrade
+      );
+    }
+  }, [state.selectedCampus, state.selectedGrade, state.selectedSection]);
 
   useEffect(() => {
-    fetchListing();
+    // fetchListing();
     fetchCompusListing(dispatch);
   }, []);
 
@@ -311,7 +326,9 @@ const ManageStudents = () => {
             placeholder="Section"
             onChange={handleSection}
             value={state.selectedSection}
-            options={state?.sectionsListing ?? []}
+            options={
+              sectionsData?.data?.map((section) => section.sectionName) ?? []
+            }
           />
         </Grid>
       </Grid>

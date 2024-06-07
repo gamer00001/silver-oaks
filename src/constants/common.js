@@ -89,6 +89,12 @@ export const AdminCoursesTabs = [
   },
 
   {
+    title: "OGA",
+    to: "./oga",
+    baseRoute: "oga",
+  },
+
+  {
     title: "Students",
     to: "./students",
     baseRoute: "students",

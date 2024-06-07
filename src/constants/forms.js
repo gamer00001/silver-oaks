@@ -401,11 +401,219 @@ export const AddLectureFields = () => {
       showLabel: true,
     },
     {
+      name: "videoUrl",
+      placeholder: "Enter Video URL",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
       name: "file",
       placeholder: "Select File",
       column: 12,
+      acceptedFiles: "/pdf",
       icon: "/icon-1.svg",
       type: "file",
+      showLabel: true,
+    },
+  ];
+};
+
+export const AddAssignmentFields = () => {
+  return [
+    {
+      name: "assignmentTitle",
+      placeholder: "Enter Title",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "description",
+      placeholder: "Enter Description",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "term",
+      placeholder: "Select Term",
+      options: ["Term 1", "Term 2", "Term 3"],
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+
+    {
+      name: "teacher",
+      placeholder: "Select Teacher",
+      options: [],
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+
+    {
+      name: "totalMarks",
+      placeholder: "Enter Marks",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "file",
+      placeholder: "Select File",
+      column: 12,
+      acceptedFiles: "/pdf",
+      icon: "/icon-1.svg",
+      type: "file",
+      showLabel: true,
+    },
+  ];
+};
+
+export const AddQuizFields = () => {
+  return [
+    {
+      name: "quizTitle",
+      placeholder: "Quiz Title",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "time",
+      placeholder: "Quiz Time",
+      column: 6,
+      icon: "/icon-1.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "totalMarks",
+      placeholder: "Total Marks",
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "term",
+      placeholder: "Select Term",
+      options: ["Term 1", "Term 2", "Term 3"],
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+
+    {
+      name: "dueDate",
+      placeholder: "Due Date",
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "date",
+      showLabel: true,
+    },
+  ];
+};
+
+export const AddExamFields = () => {
+  return [
+    {
+      name: "examTitle",
+      placeholder: "Exam Title",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "time",
+      placeholder: "Exam Time",
+      column: 6,
+      icon: "/icon-1.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "totalMarks",
+      placeholder: "Total Marks",
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "term",
+      placeholder: "Select Term",
+      options: ["Term 1", "Term 2", "Term 3"],
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+
+    {
+      name: "dueDate",
+      placeholder: "Due Date",
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "date",
+      showLabel: true,
+    },
+  ];
+};
+
+export const AddOGAFields = () => {
+  return [
+    {
+      name: "ogaTitle",
+      placeholder: "OGA Title",
+      column: 12,
+      icon: "/icon-1.svg",
+      type: "text",
+      showLabel: true,
+    },
+    {
+      name: "time",
+      placeholder: "Time",
+      column: 6,
+      icon: "/icon-1.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "totalMarks",
+      placeholder: "Total Marks",
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "number",
+      showLabel: true,
+    },
+    {
+      name: "term",
+      placeholder: "Select Term",
+      options: ["Term 1", "Term 2", "Term 3"],
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+
+    {
+      name: "dueDate",
+      placeholder: "Due Date",
+      column: 6,
+      icon: "/icon-5.svg",
+      type: "date",
       showLabel: true,
     },
   ];

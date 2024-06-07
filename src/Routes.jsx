@@ -57,6 +57,10 @@ import AdminStudents from "./modules/admin/AllClasses/AdminStudents";
 import AdminReports from "./modules/admin/AllClasses/AdminReports";
 import SubmittedAssignments from "./modules/admin/AllClasses/AdminAssignments/SubmittedAssignments";
 import SectionPage from "./modules/admin/AllClasses/Sections";
+import AddNewQuiz from "./modules/admin/AllClasses/AdminQuizzes/AddNewQuiz";
+import AddNewExam from "./modules/admin/AllClasses/AdminExams/AddNewExam";
+import AdminOGA from "./modules/admin/AllClasses/AdminOGA";
+import AddNewOGA from "./modules/admin/AllClasses/AdminOGA/AddNewOGA";
 
 const Routes = () => {
   return (
@@ -193,8 +197,30 @@ const adminLayoutRoutes = [
         element={<MyReactHelmet title="Quizzes" element={<AdminQuizzes />} />}
       />
       <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/quizzes/add-new"
+        element={<MyReactHelmet title="Quizzes" element={<AddNewQuiz />} />}
+      />
+      <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams"
         element={<MyReactHelmet title="Exams" element={<AdminExams />} />}
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams/add-new"
+        element={
+          <MyReactHelmet title="Add New Exams" element={<AddNewExam />} />
+        }
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga"
+        element={
+          <MyReactHelmet title="On-Going Assessments" element={<AdminOGA />} />
+        }
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga/add-new"
+        element={
+          <MyReactHelmet title="On-Going Assessments" element={<AddNewOGA />} />
+        }
       />
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/students"
