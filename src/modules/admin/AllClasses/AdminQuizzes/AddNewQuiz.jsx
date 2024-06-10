@@ -1,12 +1,19 @@
 import { Loader } from "@/components/common";
 import QuizCreator from "@/components/common/QuizCreator";
 import { AddQuizFields } from "@/constants/forms";
-import { parseAddQuizDataForApi } from "@/parsers/admin-parser";
+import {
+  parseAddQuizDataForApi,
+  prepareParseInitialValues,
+} from "@/parsers/admin-parser";
 import { addQuizValidationSchema } from "@/schema";
-import { addNewQuizByAdmin } from "@/store/actions/quizzesActions";
-import React, { useState } from "react";
+import {
+  addNewQuizByAdmin,
+  getQuizById,
+  updateQuizByAdmin,
+} from "@/store/actions/quizzesActions";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const initialValues = {
@@ -20,12 +27,16 @@ const initialValues = {
 
 const AddNewQuiz = () => {
   const [state, setState] = useState({
-    isLoading: false,
+    isLoading: true,
   });
   const navigate = useNavigate();
 
   const params = useParams();
   const dispatch = useDispatch();
+
+  const {
+    singleQuizData: { data, loading },
+  } = useSelector((s) => s.quizReducer);
 
   const handleLoader = (loading) => {
     setState((prev) => ({
@@ -37,13 +48,24 @@ const AddNewQuiz = () => {
   const addNewQuiz = (formValues) => {
     handleLoader(true);
 
-    const apiPayload = parseAddQuizDataForApi(formValues, params);
+    let apiPayload = parseAddQuizDataForApi(formValues, params);
+
+    if (params.quizId) {
+      apiPayload = {
+        ...apiPayload,
+        quizId: params.quizId,
+      };
+    }
+
+    const apiToCall = params.quizId ? updateQuizByAdmin : addNewQuizByAdmin;
 
     dispatch(
-      addNewQuizByAdmin({
+      apiToCall({
         onSuccess: () => {
           handleLoader(false);
-          toast.success("Quiz created successfully!");
+          toast.success(
+            `Quiz ${params.quizId ? "updated" : "created"} successfully!`
+          );
           navigate(-1);
         },
         onError: (error) => {
@@ -58,7 +80,30 @@ const AddNewQuiz = () => {
     );
   };
 
-  if (state.isLoading) {
+  const fetchQuizById = () => {
+    dispatch(
+      getQuizById({
+        onError: (error) => {
+          handleLoader(false);
+          handleError(error);
+        },
+        payload: {
+          query: {
+            quizId: params.quizId,
+          },
+          dispatch,
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    params.quizId && fetchQuizById();
+
+    handleLoader(false);
+  }, []);
+
+  if (state.isLoading || loading) {
     return <Loader type={"screen"} />;
   }
 
@@ -69,7 +114,9 @@ const AddNewQuiz = () => {
       <QuizCreator
         addNewQuiz={addNewQuiz}
         fields={AddQuizFields()}
-        initialValues={initialValues}
+        initialValues={
+          params?.quizId ? prepareParseInitialValues(data) : initialValues
+        }
         schema={addQuizValidationSchema}
       />
     </div>

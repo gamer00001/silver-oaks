@@ -134,7 +134,7 @@ const AdminQuizzes = () => {
       <div className="p-12">
         <CustomTable
           columns={QuizzColumns}
-          rows={parseQuizzesListing(data?.quizList, handleModal)}
+          rows={parseQuizzesListing(data?.quizList, handleModal, navigate)}
         />
       </div>
 

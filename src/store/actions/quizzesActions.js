@@ -58,6 +58,16 @@ export const addNewQuizByAdmin = asyncCatch(
     )
 );
 
+export const updateQuizByAdmin = asyncCatch(
+  "quizSlice/updateQuizByAdmin",
+  async ({ config, body }) =>
+    axios.put(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/quizzes/update`,
+      body,
+      config
+    )
+);
+
 export const getQuizSubmissions = asyncCatch(
   "quizSlice/submitQuizByStudent",
   async ({ config, query }) =>

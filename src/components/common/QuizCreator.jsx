@@ -9,6 +9,8 @@ const QuizCreator = ({ fields = [], initialValues, schema, addNewQuiz }) => {
     addNewQuiz(values);
   };
 
+  console.log({ initialValues });
+
   return (
     <div className="p-8  min-h-screen">
       <Formik

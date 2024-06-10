@@ -1,4 +1,4 @@
-import { ModalTop } from "@/components/common";
+import { Loader, ModalTop } from "@/components/common";
 import Button from "@/components/common/Button";
 import Dropdown from "@/components/common/Dropdown";
 import GradeBlock from "@/components/common/GradeBlock";
@@ -242,7 +242,16 @@ const AllClasses = () => {
     fetchCompusListing(dispatch);
   }, []);
 
-  console.log({ state }, fetchCampusValue(), fetchSelectCampusInfo());
+  console.log(
+    { state },
+    fetchCampusValue(),
+    fetchSelectCampusInfo(),
+    campusesData
+  );
+
+  if (campusesData?.loading) {
+    return <Loader type={"screen"} />;
+  }
 
   return (
     <div className="bg-white h-full">

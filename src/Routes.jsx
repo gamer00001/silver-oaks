@@ -201,6 +201,10 @@ const adminLayoutRoutes = [
         element={<MyReactHelmet title="Quizzes" element={<AddNewQuiz />} />}
       />
       <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/quizzes/edit/:quizId"
+        element={<MyReactHelmet title="Quizzes" element={<AddNewQuiz />} />}
+      />
+      <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams"
         element={<MyReactHelmet title="Exams" element={<AdminExams />} />}
       />
