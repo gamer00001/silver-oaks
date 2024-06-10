@@ -195,7 +195,7 @@ const ManageStudents = () => {
         fetchStudentsListingByFilterApi({
           payload: {
             query: {
-              queryParams: "",
+              queryParams,
             },
             dispatch,
           },
@@ -246,6 +246,7 @@ const ManageStudents = () => {
     const { selectedCampus, selectedGrade } = state;
 
     fetchStudentsListingByFilter();
+
     if (selectedCampus && selectedGrade) {
       fetchSectonsListing(
         dispatch,

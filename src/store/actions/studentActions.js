@@ -50,7 +50,7 @@ export const fetchStudentsListingByFilterApi = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students${query.queryParams}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students/${query.queryParams}`,
         config
       )
       .then((response) => response)

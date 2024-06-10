@@ -1027,7 +1027,7 @@ export const parseTeachersListing = (data = [], handleModal) => {
   }));
 };
 
-export const parseQuizzesListing = (data = [], handleModal) => {
+export const parseQuizzesListing = (data = [], handleModal, navigate) => {
   return data?.map((quizData) => ({
     ...quizData,
     title: quizData?.quizTitle ?? "N/A",
@@ -1044,8 +1044,7 @@ export const parseQuizzesListing = (data = [], handleModal) => {
           alt="edit"
           title="Edit"
           onClick={() => {
-            // const { password, ...otherInfo } = quizData;
-            handleModal("addNewModalIsOpen", quizData, true);
+            navigate(`edit/${quizData?.quizId}`);
           }}
         />
         <img

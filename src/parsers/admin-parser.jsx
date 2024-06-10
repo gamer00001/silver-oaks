@@ -109,3 +109,31 @@ export const parseAddOgaDataForApi = (formValues, params) => {
     })),
   };
 };
+
+export const prepareParseInitialValues = (quizData) => {
+  if (quizData) {
+    return {
+      dueDate: quizData?.dueDate,
+      quizTitle: quizData?.quizTitle,
+      term: quizData?.term,
+      time: quizData?.time,
+      totalMarks: quizData?.totalMarks,
+      visibility: true,
+      questions: quizData?.quizQuestions?.map((item) => {
+        const options = [
+          item.optionOne,
+          item.optionTwo,
+          item.optionThree,
+          item.optionFour,
+        ];
+        return {
+          title: item?.question,
+          options,
+          correctOption: options.findIndex((option) => option === item.answer),
+        };
+      }),
+    };
+  } else {
+    return {};
+  }
+};
