@@ -45,6 +45,11 @@ const ManageTeachers = () => {
     selectedRecord: {},
     isEditMode: false,
     isLoading: false,
+    search: "",
+    page: 0,
+    size: 10,
+    selectedCampus: null,
+    selectedGrade: null,
   });
 
   const dispatch = useDispatch();
@@ -60,6 +65,20 @@ const ManageTeachers = () => {
     setState((prev) => ({
       ...prev,
       isLoading: loading ?? !prev.isLoading,
+    }));
+  };
+
+  const handleGrade = (selectedValue) => {
+    setState((prev) => ({
+      ...prev,
+      selectedGrade: selectedValue,
+    }));
+  };
+
+  const handleCampus = (selectedValue) => {
+    setState((prev) => ({
+      ...prev,
+      selectedCampus: selectedValue,
     }));
   };
 
@@ -163,22 +182,40 @@ const ManageTeachers = () => {
   };
 
   const fetchListing = () => {
-    dispatch(
-      fetchTeachersListing({
-        payload: {
-          query: {
-            page: 0,
-            size: 500,
+    const { page, size, selectedGrade, selectedCampus } = state;
+
+    const queryParams = `${selectedCampus}?course=ICT${
+      selectedGrade ? `&grade=${selectedGrade}` : ""
+    }&page=${page}&size=${size}`;
+
+    if (selectedCampus) {
+      dispatch(
+        fetchTeachersListing({
+          payload: {
+            query: {
+              queryParams,
+            },
+            dispatch,
           },
-          dispatch,
-        },
-      })
-    );
+        })
+      );
+    }
   };
 
   useEffect(() => {
     fetchListing();
+  }, [state.selectedCampus, state.selectedGrade]);
 
+  useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      selectedCampus: campusesData?.data
+        ? campusesData?.data[0]?.campusName
+        : "",
+    }));
+  }, [campusesData]);
+
+  useEffect(() => {
     fetchCompusListing(dispatch);
   }, []);
 
@@ -214,13 +251,21 @@ const ManageTeachers = () => {
         <Grid item md={3}>
           <Dropdown
             placeholder="Select Grade"
+            onChange={handleGrade}
+            value={state.selectedGrade}
             options={MOCK_GRADES().map((item) => item.title)}
           />
         </Grid>
         <Grid item md={3}>
           <Dropdown
             placeholder="Campus"
-            options={campusesData?.data?.map((item) => item?.campusName)}
+            value={state?.selectedCampus}
+            onChange={handleCampus}
+            options={
+              campusesData?.data
+                ? campusesData?.data?.map((item) => item?.campusName)
+                : []
+            }
           />
         </Grid>
       </Grid>

@@ -8,7 +8,7 @@ export const fetchTeachersListing = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/v1/teachers?page=${query.page}&size=${query.size}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/v1/teachers/get-teachers/${query?.queryParams}`,
         config
       )
       .then((response) => response)
