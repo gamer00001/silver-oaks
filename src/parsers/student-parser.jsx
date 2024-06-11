@@ -993,7 +993,7 @@ export const MockExamData = (handleModal) => {
 export const parseTeachersListing = (data = [], handleModal) => {
   return data?.map((teachersData) => ({
     ...teachersData,
-    name: teachersData?.employeeName ?? "N/A",
+    name: teachersData?.employee_Name ?? "N/A",
     gradeAssigned: teachersData?.gradeAssigned ?? "N/A",
     lastLoggedIn: (
       <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">

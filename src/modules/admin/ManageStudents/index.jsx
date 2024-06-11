@@ -59,6 +59,8 @@ const ManageStudents = () => {
     selectedRecord: {},
     isEditMode: false,
     search: "",
+    page: 0,
+    size: 10,
     selectedCampus: null,
     selectedGrade: null,
     selectedSection: null,
@@ -69,7 +71,10 @@ const ManageStudents = () => {
 
   const {
     studentsListing: { data, loading },
-    filteredStudentsListing: { filteredStudents, filteredLoading },
+    filteredStudentsListing: {
+      data: filteredStudents,
+      loading: filteredLoading,
+    },
   } = useSelector((s) => s.studentReducer);
 
   const { campusesData, sectionsData } = useSelector((s) => s.commonReducer);
@@ -184,11 +189,14 @@ const ManageStudents = () => {
   };
 
   const fetchStudentsListingByFilter = () => {
-    const { selectedGrade, selectedCampus, selectedSection } = state;
+    const { page, size, selectedGrade, selectedCampus, selectedSection } =
+      state;
 
-    const queryParams = `${selectedCampus}?course=ICT${
-      selectedGrade ? `&grade=${selectedGrade}` : ""
-    }${selectedSection ? `&section=${selectedSection}` : ""}`;
+    const queryParams = `${selectedCampus}?${
+      selectedGrade ? `grade=${selectedGrade}&` : ""
+    }${
+      selectedSection ? `section=${selectedSection}&` : ""
+    }page=${page}&size=${size}`;
 
     if (selectedCampus) {
       dispatch(
@@ -271,7 +279,7 @@ const ManageStudents = () => {
     }));
   }, [campusesData]);
 
-  if (loading || filteredLoading || state.isLoading) {
+  if (loading || filteredLoading || state.isLoading || campusesData.loading) {
     return <Loader />;
   }
 

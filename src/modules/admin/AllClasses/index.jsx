@@ -105,6 +105,7 @@ const AllClasses = () => {
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectionCampus: null,
+    currentTab: 0,
   });
 
   const navigate = useNavigate();
@@ -117,6 +118,13 @@ const AllClasses = () => {
     setState((prev) => ({
       ...prev,
       [key]: !prev[key],
+    }));
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setState((prev) => ({
+      ...prev,
+      currentTab: newValue,
     }));
   };
 
@@ -238,20 +246,17 @@ const AllClasses = () => {
     );
   };
 
+  const CampusTabView = () => {
+    return <CampusesPage />;
+  };
+
   useEffect(() => {
     fetchCompusListing(dispatch);
   }, []);
 
-  console.log(
-    { state },
-    fetchCampusValue(),
-    fetchSelectCampusInfo(),
-    campusesData
-  );
-
-  if (campusesData?.loading) {
-    return <Loader type={"screen"} />;
-  }
+  // if (campusesData?.loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <div className="bg-white h-full">
@@ -268,6 +273,8 @@ const AllClasses = () => {
         </Grid>
       </Grid>
       <TabsComponent
+        currentTab={state.currentTab}
+        handleTabChange={handleTabChange}
         tabs={[
           {
             label: "Grades",
@@ -275,7 +282,7 @@ const AllClasses = () => {
           },
           {
             label: "Campuses",
-            content: <CampusesPage />,
+            content: CampusTabView(),
           },
         ]}
       />
@@ -295,6 +302,8 @@ const AllClasses = () => {
           }
         />
       </ModalTop>
+
+      {campusesData.loading && <Loader type={"screen"} />}
     </div>
   );
 };

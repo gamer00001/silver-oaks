@@ -184,9 +184,9 @@ const ManageTeachers = () => {
   const fetchListing = () => {
     const { page, size, selectedGrade, selectedCampus } = state;
 
-    const queryParams = `${selectedCampus}?course=ICT${
-      selectedGrade ? `&grade=${selectedGrade}` : ""
-    }&page=${page}&size=${size}`;
+    const queryParams = `${selectedCampus}?${
+      selectedGrade ? `grade=${selectedGrade}&` : ""
+    }page=${page}&size=${size}`;
 
     if (selectedCampus) {
       dispatch(
@@ -219,7 +219,7 @@ const ManageTeachers = () => {
     fetchCompusListing(dispatch);
   }, []);
 
-  if (loading || state.isLoading) {
+  if (loading || state.isLoading || campusesData.loading) {
     return <Loader />;
   }
 
@@ -273,7 +273,7 @@ const ManageTeachers = () => {
       <div className="p-12">
         <CustomTable
           columns={ManageTeachersColumns}
-          rows={parseTeachersListing(data?.teacherList, handleModal)}
+          rows={parseTeachersListing(data?.teacherJoinData, handleModal)}
         />
       </div>
 

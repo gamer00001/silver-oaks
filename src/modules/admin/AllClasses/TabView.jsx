@@ -22,19 +22,13 @@ function TabPanel(props) {
   );
 }
 
-function TabsComponent({ tabs }) {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
+const TabsComponent = ({ currentTab, handleTabChange, tabs }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={currentTab}
+          onChange={handleTabChange}
           aria-label="basic tabs example"
           classes={{
             indicator: "bg-[#7A1315]", // Custom color for the indicator (tab line)
@@ -47,7 +41,7 @@ function TabsComponent({ tabs }) {
               className={clsx(
                 "text-[#7A1315]",
                 "hover:text-[#7A1315]", // Custom hover color
-                value === index && "text-[#7A1315]",
+                currentTab === index && "text-[#7A1315]",
                 "text-xl"
               )} //
             />
@@ -55,12 +49,12 @@ function TabsComponent({ tabs }) {
         </Tabs>
       </Box>
       {tabs.map((tab, index) => (
-        <TabPanel value={value} index={index} key={index}>
+        <TabPanel value={currentTab} index={index} key={index}>
           {tab.content}
         </TabPanel>
       ))}
     </Box>
   );
-}
+};
 
-export default TabsComponent;
+export default React.memo(TabsComponent);

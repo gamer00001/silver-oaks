@@ -15,7 +15,7 @@ const CampusesPage = () => {
     isEditMode: false,
   });
 
-  const { gradeId, campusId, campusName } = useParams();
+  // const { gradeId, campusId, campusName } = useParams();
   const dispatch = useDispatch();
 
   const {
@@ -31,9 +31,9 @@ const CampusesPage = () => {
   };
 
   const handleEditCampus = (formValues) => {
-    const campusId = data.find(
-      (item) => item.campusName === formValues.campus
-    )?.id;
+    // const campusId = data.find(
+    //   (item) => item.campusName === formValues.campus
+    // )?.id;
 
     const payload = {
       id: state.selectedRecord.id,
@@ -63,11 +63,7 @@ const CampusesPage = () => {
   useEffect(() => {
     // fetchAllSectionsByGrade();
     fetchCompusListing(dispatch);
-  }, [gradeId]);
-
-  if (loading) {
-    return <Loader type="screen" />;
-  }
+  }, []);
 
   return (
     <div className="px-20">
@@ -125,4 +121,4 @@ const CampusesPage = () => {
   );
 };
 
-export default CampusesPage;
+export default React.memo(CampusesPage);
