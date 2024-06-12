@@ -7,11 +7,10 @@ import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddStudentFields } from "@/constants/forms";
 import { ManageStudentsColumns } from "@/constants/table-constants";
+import { UploadAssignmnet } from "@/modules/Assignment";
 import { parseAddStudentData } from "@/parsers/admin-parser";
-import {
-  MockManageStudentsData,
-  parseStudentListing,
-} from "@/parsers/student-parser";
+import { parseStudentListing } from "@/parsers/student-parser";
+import { AddStudentSchema, EditStudentSchema } from "@/schema";
 import {
   addStudent,
   deleteStudent,
@@ -26,11 +25,11 @@ import {
 } from "@/utils/common-api-helper";
 import { Grid } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { MOCK_GRADES } from "../AllClasses";
-import { AddStudentSchema, EditStudentSchema } from "@/schema";
 import toast from "react-hot-toast";
-import { UploadAssignmnet } from "@/modules/Assignment";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+
+import { MOCK_GRADES } from "../AllClasses";
 
 const initialValues = {
   studentName: "",
@@ -61,13 +60,18 @@ const ManageStudents = () => {
     search: "",
     page: 0,
     size: 10,
+    totalPages: 1,
     selectedCampus: null,
     selectedGrade: null,
     selectedSection: null,
   });
 
   const dispatch = useDispatch();
+
+  const { search } = useLocation();
   const inputFileRef = useRef(null);
+
+  console.log({ search });
 
   const {
     studentsListing: { data, loading },
@@ -192,11 +196,13 @@ const ManageStudents = () => {
     const { page, size, selectedGrade, selectedCampus, selectedSection } =
       state;
 
+    const queryPage = search.split("=")[1];
+
     const queryParams = `${selectedCampus}?${
       selectedGrade ? `grade=${selectedGrade}&` : ""
-    }${
-      selectedSection ? `section=${selectedSection}&` : ""
-    }page=${page}&size=${size}`;
+    }${selectedSection ? `section=${selectedSection}&` : ""}page=${
+      queryPage ? queryPage - 1 : page
+    }&size=${size}`;
 
     if (selectedCampus) {
       dispatch(
@@ -206,6 +212,13 @@ const ManageStudents = () => {
               queryParams,
             },
             dispatch,
+          },
+          onSuccess: (res) => {
+            setState((prev) => ({
+              ...prev,
+              page: res.studentPage?.number,
+              totalPages: res.studentPage?.totalPages,
+            }));
           },
         })
       );
@@ -263,7 +276,12 @@ const ManageStudents = () => {
         selectedGrade
       );
     }
-  }, [state.selectedCampus, state.selectedGrade, state.selectedSection]);
+  }, [
+    search,
+    state.selectedCampus,
+    state.selectedGrade,
+    state.selectedSection,
+  ]);
 
   useEffect(() => {
     // fetchListing();
@@ -344,9 +362,13 @@ const ManageStudents = () => {
 
       <div className="p-12">
         <CustomTable
+          page={state.page + 1}
+          totalPages={state.totalPages}
           columns={ManageStudentsColumns}
           rows={parseStudentListing(
-            filteredStudents?.studentList ?? data?.studentList,
+            filteredStudents?.studentPage?.content ??
+              data?.studentPage?.content ??
+              [],
             handleModal
           )}
         />
@@ -360,7 +382,7 @@ const ManageStudents = () => {
         <UploadAssignmnet
           state={state}
           title="Upload File"
-          acceptedFiles=".xlsx"
+          acceptedFiles=".csv"
           uploadFile={uploadFile}
           inputFileRef={inputFileRef}
           handleUploadAssignment={handleUploadAssignment}

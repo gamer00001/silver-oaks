@@ -1,6 +1,6 @@
 import { MyPagination } from ".";
 
-const CustomTable = ({ columns = [], rows = [], page = 1 }) => {
+const CustomTable = ({ columns = [], rows = [], page = 0, totalPages = 1 }) => {
   return (
     <>
       <div className="overflow-x-auto">
@@ -28,7 +28,7 @@ const CustomTable = ({ columns = [], rows = [], page = 1 }) => {
         </table>
 
         <div className="pt-12 float-right">
-          <MyPagination />
+          <MyPagination page={page} totalPages={totalPages} />
         </div>
       </div>
     </>

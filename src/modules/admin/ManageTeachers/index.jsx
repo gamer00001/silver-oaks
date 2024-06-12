@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { MOCK_GRADES } from "../AllClasses";
 import { UploadAssignmnet } from "@/modules/Assignment";
+import { useLocation } from "react-router-dom";
 
 const initialValues = {
   employeeName: "",
@@ -48,12 +49,14 @@ const ManageTeachers = () => {
     search: "",
     page: 0,
     size: 10,
+    totalPages: 1,
     selectedCampus: null,
     selectedGrade: null,
   });
 
   const dispatch = useDispatch();
   const inputFileRef = useRef(null);
+  const { search } = useLocation();
 
   const {
     teachersListing: { data, loading },
@@ -184,9 +187,11 @@ const ManageTeachers = () => {
   const fetchListing = () => {
     const { page, size, selectedGrade, selectedCampus } = state;
 
+    const queryPage = search.split("=")[1];
+
     const queryParams = `${selectedCampus}?${
       selectedGrade ? `grade=${selectedGrade}&` : ""
-    }page=${page}&size=${size}`;
+    }page=${queryPage ? queryPage - 1 : page}&size=${size}`;
 
     if (selectedCampus) {
       dispatch(
@@ -197,6 +202,13 @@ const ManageTeachers = () => {
             },
             dispatch,
           },
+          onSuccess: (res) => {
+            setState((prev) => ({
+              ...prev,
+              page: res?.teacherJoinDataPage?.number,
+              totalPages: res?.teacherJoinDataPage?.totalPages,
+            }));
+          },
         })
       );
     }
@@ -204,7 +216,7 @@ const ManageTeachers = () => {
 
   useEffect(() => {
     fetchListing();
-  }, [state.selectedCampus, state.selectedGrade]);
+  }, [state.selectedCampus, state.selectedGrade, search]);
 
   useEffect(() => {
     setState((prev) => ({
@@ -272,8 +284,13 @@ const ManageTeachers = () => {
 
       <div className="p-12">
         <CustomTable
+          page={state.page + 1}
+          totalPages={state.totalPages}
           columns={ManageTeachersColumns}
-          rows={parseTeachersListing(data?.teacherJoinData, handleModal)}
+          rows={parseTeachersListing(
+            data?.teacherJoinDataPage?.content ?? [],
+            handleModal
+          )}
         />
       </div>
 
@@ -285,7 +302,7 @@ const ManageTeachers = () => {
         <UploadAssignmnet
           state={state}
           title="Upload File"
-          acceptedFiles=".xlsx"
+          acceptedFiles=".csv"
           uploadFile={uploadFile}
           inputFileRef={inputFileRef}
           handleUploadAssignment={handleUploadAssignment}

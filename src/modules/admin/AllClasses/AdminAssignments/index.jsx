@@ -7,17 +7,14 @@ import AddNewAssignment from "@/components/modals/AddNewAssignment";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddAssignmentFields } from "@/constants/forms";
 import { AssignmentsColumns } from "@/constants/table-constants";
-import { parseAddTeacherData } from "@/parsers/admin-parser";
 import { MockAssignmentData } from "@/parsers/student-parser";
 import {
   createAssignment,
   getAssignmentsByCourseId,
 } from "@/store/actions/assignmentsActions";
 import {
-  addTeacher,
   deleteTeacher,
-  editTeacher,
-  fetchTeachersListing,
+  fetchAllTeachers,
 } from "@/store/actions/teacherActions";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -50,7 +47,7 @@ const AdminAssignments = () => {
   const navigate = useNavigate();
 
   const {
-    teachersListing: { data, loading },
+    allTeachersListing: { data, loading },
   } = useSelector((s) => s.teacherReducer);
 
   const { assignmentsData } = useSelector((s) => s.assignmentReducer);
@@ -140,7 +137,7 @@ const AdminAssignments = () => {
 
   const fetchListingForTeacher = () => {
     dispatch(
-      fetchTeachersListing({
+      fetchAllTeachers({
         payload: {
           query: {
             page: 0,
@@ -152,7 +149,7 @@ const AdminAssignments = () => {
     );
   };
 
-  const handleDeleteUser = () => {
+  const handleDelete = () => {
     const { selectedRecord } = state;
 
     dispatch(
@@ -244,7 +241,7 @@ const AdminAssignments = () => {
           title={state.isEditMode ? "Edit Assignment" : "Add Assignment"}
           subtitle="Assignment Details"
           initialValues={initialValues}
-          teachersList={data?.teacherList.map((item) => item.employeeName)}
+          teachersList={data?.teacherList?.map((item) => item?.employeeName)}
           fields={AddAssignmentFields(campusesData?.data) ?? []}
           handleAdd={handleAdd}
           editValues={state.selectedRecord}
@@ -258,7 +255,7 @@ const AdminAssignments = () => {
         onClose={() => handleModal("deleteModalIsOpen")}
       >
         <DeleteActionModal
-          handleAction={handleDeleteUser}
+          handleAction={handleDelete}
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>

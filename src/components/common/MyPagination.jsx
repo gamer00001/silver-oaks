@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const MyPagination = ({ page, totalPages }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const queryParams = useQueryParams({ page: 1 });
+  const queryParams = useQueryParams({ page: 0 });
   const { items } = usePagination({
     count: totalPages,
     page: Number(page),

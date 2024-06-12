@@ -17,6 +17,17 @@ export const fetchTeachersListing = asyncCatch(
       })
 );
 
+export const fetchAllTeachers = asyncCatch(
+  "teacherSlice/fetchAllTeachers",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/teachers`, config)
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const addTeacher = asyncCatch(
   "studentSlice/addTeacher",
   async ({ config, body, dispatch }) =>
