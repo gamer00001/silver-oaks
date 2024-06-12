@@ -90,12 +90,22 @@ const ManageTeachers = () => {
     selectedRecord,
     isEditMode = false
   ) => {
+    console.log({ selectedRecord });
     setState((prev) => ({
       ...prev,
       [key]: !prev[key],
       isEditMode,
       uploadedFile: "",
-      selectedRecord: selectedRecord,
+      selectedRecord: {
+        ...selectedRecord,
+        employeeName: selectedRecord?.employee_Name,
+        campusName: selectedRecord?.campus_Name,
+        // grade: "",
+        // section: "",
+        dateOfBirth: selectedRecord?.date_Of_Birth,
+        joiningDate: selectedRecord?.joining_date,
+        phoneNumber: selectedRecord?.phone_number,
+      },
     }));
   };
 
@@ -107,7 +117,7 @@ const ManageTeachers = () => {
     if (isEditMode) {
       parseData = {
         ...parseData,
-        teacherId: selectedRecord.teacherId,
+        teacherId: selectedRecord.teacher_id,
       };
     }
 
@@ -120,8 +130,15 @@ const ManageTeachers = () => {
         },
         onSuccess: (resp) => {
           fetchListing();
+          handleModal("addNewModalIsOpen");
+          toast.success(
+            `Teacher ${isEditMode ? "updated" : "created"} successfully!`
+          );
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: (error) => {
+          handleModal("addNewModalIsOpen");
+          handleError(error);
+        },
       })
     );
   };
@@ -166,11 +183,13 @@ const ManageTeachers = () => {
         onSuccess: () => {
           handleLoader(false);
           handleModal("uploadModalIsOpen");
+          toast.success("File Uploaded Successfully!");
           fetchListing();
         },
         onError: (error) => {
           handleLoader(false);
           handleModal("uploadModalIsOpen");
+          toast.error("Some Error Occured!");
           handleError(error);
         },
         payload: {
@@ -230,10 +249,6 @@ const ManageTeachers = () => {
   useEffect(() => {
     fetchCompusListing(dispatch);
   }, []);
-
-  if (loading || state.isLoading || campusesData.loading) {
-    return <Loader />;
-  }
 
   return (
     <div className="bg-white h-full">
@@ -347,6 +362,9 @@ const ManageTeachers = () => {
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>
+      {(loading || state.isLoading || campusesData.loading) && (
+        <Loader type={"screen"} />
+      )}
     </div>
   );
 };

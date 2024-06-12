@@ -148,8 +148,12 @@ const ManageStudents = () => {
         onSuccess: (resp) => {
           toast.success("Student added successfully!");
           fetchListing();
+          handleModal("addNewModalIsOpen");
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: (error) => {
+          handleModal("addNewModalIsOpen");
+          handleError(error);
+        },
       })
     );
   };
@@ -245,11 +249,13 @@ const ManageStudents = () => {
         onSuccess: () => {
           handleLoader(false);
           handleModal("uploadModalIsOpen");
+          toast.success("File Uploaded Successfully!");
           fetchListing();
         },
         onError: (error) => {
           handleLoader(false);
           handleModal("uploadModalIsOpen");
+          toast.error("Some Error Occured!");
           handleError(error);
         },
         payload: {
@@ -297,9 +303,9 @@ const ManageStudents = () => {
     }));
   }, [campusesData]);
 
-  if (loading || filteredLoading || state.isLoading || campusesData.loading) {
-    return <Loader />;
-  }
+  // if (loading || filteredLoading || state.isLoading || campusesData.loading) {
+  //   return <Loader type={"screen"} />;
+  // }
 
   return (
     <div className="bg-white h-full">
@@ -435,6 +441,10 @@ const ManageStudents = () => {
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>
+      {(loading ||
+        filteredLoading ||
+        state.isLoading ||
+        campusesData.loading) && <Loader type={"screen"} />}
     </div>
   );
 };
