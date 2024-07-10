@@ -180,3 +180,26 @@ export const ExamColumns = [
     key: "actions",
   },
 ];
+
+export const StudentByCourseColumns = [
+  {
+    header: "Name",
+    key: "name",
+  },
+  {
+    header: "Roll No",
+    key: "rollNumber",
+  },
+  {
+    header: "Campus",
+    key: "campusName",
+  },
+  {
+    header: "Grade",
+    key: "grade",
+  },
+  {
+    header: "Section",
+    key: "section",
+  },
+];

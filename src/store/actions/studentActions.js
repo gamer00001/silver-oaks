@@ -36,7 +36,9 @@ export const fetchStudentsListing = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students/${query.campus}?page=${query.page}&size=${query.size}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/get-students/${
+          query.campus
+        }?page=${query.page}&size=${query.size}${query.queryParams ?? ""}`,
         config
       )
       .then((response) => response)

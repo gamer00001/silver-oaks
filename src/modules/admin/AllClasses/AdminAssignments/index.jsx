@@ -7,7 +7,7 @@ import AddNewAssignment from "@/components/modals/AddNewAssignment";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddAssignmentFields } from "@/constants/forms";
 import { AssignmentsColumns } from "@/constants/table-constants";
-import { MockAssignmentData } from "@/parsers/student-parser";
+import { parseAssignmentListing } from "@/parsers/student-parser";
 import {
   createAssignment,
   getAssignmentsByCourseId,
@@ -16,7 +16,9 @@ import {
   deleteTeacher,
   fetchAllTeachers,
 } from "@/store/actions/teacherActions";
+import { removeEmptyValues } from "@/utils/helper";
 import { Grid } from "@mui/material";
+import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +31,7 @@ const initialValues = {
   description: "",
   section: "",
   term: "",
+  dueDate: null,
   totalMarks: null,
   teacher: "",
 };
@@ -85,7 +88,8 @@ const AdminAssignments = () => {
       // section: sectionName,
       term: formData?.term,
       totalMarks: formData.totalMarks,
-      file: formData.file[0],
+      dueDate: formData?.dueDate,
+      file: !isEmpty(formData?.file) ? formData?.file[0] : "",
       // file: formData.file[0],
       teacherId: data.teacherList.find(
         (item) => item.employeeName === formData.teacher
@@ -101,10 +105,12 @@ const AdminAssignments = () => {
       };
     }
 
+    console.log({ parseData }, removeEmptyValues(parseData));
+
     dispatch(
       createAssignment({
         payload: {
-          body: parseData,
+          body: removeEmptyValues(parseData),
         },
         onError: () => {
           toast.error("Something went wrong");
@@ -113,7 +119,7 @@ const AdminAssignments = () => {
         onSuccess: () => {
           fetchListing();
           handleLoader(false);
-          handleModal("addNewModalIsOpen");
+          // handleModal("addNewModalIsOpen");
           toast.success("Assignment Created Successfully!");
         },
       })
@@ -198,6 +204,8 @@ const AdminAssignments = () => {
     // fetchCompusListing(dispatch);
   }, []);
 
+  console.log({ assignmentsData });
+
   if (assignmentsData.loading || state.isLoading) {
     return <Loader type={"screen"} />;
   }
@@ -228,7 +236,11 @@ const AdminAssignments = () => {
       <div className="p-12">
         <CustomTable
           columns={AssignmentsColumns}
-          rows={MockAssignmentData(handleModal, handleViewSubmission)}
+          rows={parseAssignmentListing(
+            assignmentsData?.data?.assignmentList,
+            handleModal,
+            handleViewSubmission
+          )}
         />
       </div>
 

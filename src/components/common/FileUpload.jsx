@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const FileUpload = ({ onChange }) => {
+const FileUpload = ({ onChange, touched, error }) => {
   const [state, setState] = useState({
     file: null,
   });
@@ -20,6 +20,8 @@ const FileUpload = ({ onChange }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
   });
+
+  console.log({ touched, error });
 
   return (
     <>
@@ -43,6 +45,9 @@ const FileUpload = ({ onChange }) => {
 
       {state.file && (
         <p className="mt-5 text-xl font-semibold">{state.file[0]?.name}</p>
+      )}
+      {error && (
+        <div className="text-red-600 text-left text-xl py-4">{error}</div>
       )}
     </>
   );

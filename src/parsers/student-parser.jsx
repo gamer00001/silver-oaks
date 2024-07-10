@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import moment from "moment";
 
 export const MockManageStudentsData = (handleModal) => {
@@ -655,6 +656,57 @@ export const MockAssignmentData = (handleModal, handleViewSubmission) => {
   ];
 };
 
+export const parseAssignmentListing = (
+  data = [],
+  handleModal,
+  handleViewSubmission
+) => {
+  return data?.map((assignmentData) => ({
+    ...assignmentData,
+    marks: assignmentData.totalMarks,
+    title: assignmentData?.assignmentTitle ?? "N/A",
+    dueDate: (
+      <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+        12-02-2024
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            // const { password, ...otherInfo } = studentData;
+            handleModal(
+              "addNewModalIsOpen",
+              { ...studentData, section: studentData?.sectionName },
+              true
+            );
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            // const { password, ...otherInfo } = studentData;
+            handleModal("deleteModalIsOpen", studentData);
+          }}
+        />
+        <span
+          onClick={handleViewSubmission}
+          className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+        >
+          View Submissions
+        </span>
+      </div>
+    ),
+  }));
+};
+
 export const MockSubmittedAssignmentData = () => {
   return [
     {
@@ -1060,4 +1112,15 @@ export const parseQuizzesListing = (data = [], handleModal, navigate) => {
       </div>
     ),
   }));
+};
+
+export const studentByCourseListingParser = (data = []) => {
+  return !isEmpty(data)
+    ? data?.map((item) => ({
+        ...item,
+        section: item.sectionName,
+        name: item.studentName,
+        campus: item.campusName,
+      }))
+    : [];
 };

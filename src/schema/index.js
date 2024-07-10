@@ -186,8 +186,9 @@ export const assignmentSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
   totalMarks: Yup.number().required("Marks is required"),
   term: Yup.string().required("Term is required"),
-  teacher: Yup.string().required("Teacher is required"),
-  file: Yup.array().optional(),
+  dueDate: Yup.string().required("Due Date is required"),
+  teacher: Yup.string().optional(),
+  file: Yup.array().required("File is required"),
 });
 
 export const addQuizValidationSchema = Yup.object({

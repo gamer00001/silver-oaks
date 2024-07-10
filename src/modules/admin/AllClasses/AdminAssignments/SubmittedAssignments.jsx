@@ -10,6 +10,10 @@ import { SubmittedAssignmentColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
 import { MockSubmittedAssignmentData } from "@/parsers/student-parser";
 import {
+  getAssignmentById,
+  getAssignmentSubmissions,
+} from "@/store/actions/assignmentsActions";
+import {
   addTeacher,
   deleteTeacher,
   editTeacher,
@@ -28,12 +32,16 @@ const SubmittedAssignments = () => {
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
+    assignmentDetails: {},
     isEditMode: false,
+    submittedAssignments: [],
   });
 
-  //   const { courseName, courseId, gradeId } = useParams();
+  const { assignmentId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { assignmentSubmissionsData } = useSelector((s) => s.assignmentReducer);
 
   const {
     teachersListing: { data, loading },
@@ -84,7 +92,7 @@ const SubmittedAssignments = () => {
     );
   };
 
-  const handleDeleteUser = () => {
+  const handleDelete = () => {
     const { selectedRecord } = state;
 
     console.log({ selectedRecord }, selectedRecord?.selectedRecord?.teacherId);
@@ -108,11 +116,39 @@ const SubmittedAssignments = () => {
 
   const fetchListing = () => {
     dispatch(
-      fetchTeachersListing({
+      getAssignmentSubmissions({
         payload: {
           query: {
+            assigmentId: assignmentId,
             page: 0,
             size: 500,
+          },
+          dispatch,
+        },
+        onSuccess: (resp) => {
+          setState((prev) => ({
+            ...prev,
+            submittedAssignments: resp?.assignmentSubmissionResponseList,
+          }));
+        },
+      })
+    );
+  };
+
+  const fetchAssignmentById = () => {
+    dispatch(
+      getAssignmentById({
+        onSuccess: (resp) => {
+          console.log("fetchAssignmentById", resp);
+          setState((prev) => ({
+            ...prev,
+            assignmentDetails: resp,
+          }));
+        },
+        onError: () => navigate("/404", { replace: true }),
+        payload: {
+          query: {
+            assignmentId: assignmentId,
           },
           dispatch,
         },
@@ -126,12 +162,15 @@ const SubmittedAssignments = () => {
 
   useEffect(() => {
     fetchListing();
+    fetchAssignmentById();
 
     // fetchCompusListing(dispatch);
   }, []);
 
-  if (loading) {
-    return <Loader />;
+  console.log({ assignmentSubmissionsData, state });
+
+  if (assignmentSubmissionsData.loading) {
+    return <Loader type="screen" />;
   }
 
   return (
@@ -144,13 +183,17 @@ const SubmittedAssignments = () => {
             alt="back-icon"
             onClick={() => navigate(-1)}
           />
-          <span className="text-5xl font-semibold">Assignment 1: &nbsp;</span>
+          <span className="text-5xl font-semibold">
+            Assignment {state.assignmentDetails?.assignmentId ?? "N/A"} &nbsp;
+          </span>
           <span className="text-[#161736A3] text-5xl font-semibold">
-            ICT and Emerging Technologies
+            {state.assignmentDetails?.assignmentTitle ?? "N/A"}
           </span>
         </div>
 
-        <div className="italic pt-6 text-2xl pl-16">Total Marks: 20</div>
+        <div className="italic pt-6 text-2xl pl-16">{`Total Marks: ${
+          state.assignmentDetails?.totalMarks ?? "N/A"
+        }`}</div>
       </div>
 
       <div className="p-12">
@@ -181,7 +224,7 @@ const SubmittedAssignments = () => {
         onClose={() => handleModal("deleteModalIsOpen")}
       >
         <DeleteActionModal
-          handleAction={handleDeleteUser}
+          handleAction={handleDelete}
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>

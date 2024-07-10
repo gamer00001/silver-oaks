@@ -467,6 +467,14 @@ export const AddAssignmentFields = () => {
       showLabel: true,
     },
     {
+      name: "dueDate",
+      placeholder: "Enter Due Date",
+      column: 12,
+      icon: "/icon-5.svg",
+      type: "date",
+      showLabel: true,
+    },
+    {
       name: "file",
       placeholder: "Select File",
       column: 12,

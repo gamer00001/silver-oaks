@@ -52,3 +52,21 @@ export const prepareLineChartData = (list = []) => {
     populationSeriesData,
   };
 };
+
+export function removeEmptyValues(obj) {
+  // Create a new object to hold the filtered properties
+  const newObj = {};
+
+  // Iterate over each key in the original object
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key];
+      // Only add properties to the new object if they are not null, undefined, or an empty string
+      if (value !== null && value !== undefined && value !== "") {
+        newObj[key] = value;
+      }
+    }
+  }
+
+  return newObj;
+}
