@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchCampuses,
+  fetchExamDetailsById,
   fetchExamsListing,
   fetchSectionsByCampus,
 } from "../actions/commonActions";
@@ -17,6 +18,11 @@ const initialState = {
   },
 
   examsData: {
+    loading: false,
+    data: null,
+  },
+
+  examByIdData: {
     loading: false,
     data: null,
   },
@@ -83,6 +89,26 @@ const commonSlice = createSlice({
     builder.addCase(fetchExamsListing.rejected, (state) => {
       state.examsData = {
         ...initialState.examsData,
+        loading: false,
+      };
+    });
+
+    //get Exam By ID
+    builder.addCase(fetchExamDetailsById?.pending, (state) => {
+      state.examByIdData = {
+        ...initialState.examByIdData,
+        loading: true,
+      };
+    });
+    builder.addCase(fetchExamDetailsById.fulfilled, (state, action) => {
+      state.examByIdData = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(fetchExamDetailsById.rejected, (state) => {
+      state.examByIdData = {
+        ...initialState.examByIdData,
         loading: false,
       };
     });

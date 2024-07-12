@@ -1,12 +1,19 @@
 import { Loader } from "@/components/common";
 import QuizCreator from "@/components/common/QuizCreator";
 import { AddExamFields } from "@/constants/forms";
-import { parseAddExamDataForApi } from "@/parsers/admin-parser";
+import {
+  parseAddExamDataForApi,
+  prepareParseInitialValuesForExam,
+} from "@/parsers/admin-parser";
 import { addExamValidationSchema } from "@/schema";
-import { addNewExamByAdmin } from "@/store/actions/commonActions";
-import React, { useState } from "react";
+import {
+  addNewExamByAdmin,
+  fetchExamDetailsById,
+  updateExamByAdmin,
+} from "@/store/actions/commonActions";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const initialValues = {
@@ -20,12 +27,16 @@ const initialValues = {
 
 const AddNewExam = () => {
   const [state, setState] = useState({
-    isLoading: false,
+    isLoading: true,
   });
   const navigate = useNavigate();
 
   const params = useParams();
   const dispatch = useDispatch();
+
+  const {
+    examByIdData: { data, loading },
+  } = useSelector((s) => s.commonReducer);
 
   const handleLoader = (loading) => {
     setState((prev) => ({
@@ -37,13 +48,24 @@ const AddNewExam = () => {
   const addNewExam = (formValues) => {
     handleLoader(true);
 
-    const apiPayload = parseAddExamDataForApi(formValues, params);
+    let apiPayload = parseAddExamDataForApi(formValues, params);
+
+    if (params.examId) {
+      apiPayload = {
+        ...apiPayload,
+        examId: params.examId,
+      };
+    }
+
+    const apiToCall = params.examId ? updateExamByAdmin : addNewExamByAdmin;
 
     dispatch(
-      addNewExamByAdmin({
+      apiToCall({
         onSuccess: () => {
           handleLoader(false);
-          toast.success("Exam created successfully!");
+          toast.success(
+            `Exam ${params.examId ? "updated" : "created"} successfully!`
+          );
           navigate(-1);
         },
         onError: (error) => {
@@ -58,18 +80,45 @@ const AddNewExam = () => {
     );
   };
 
-  if (state.isLoading) {
+  const fetchExamById = () => {
+    dispatch(
+      fetchExamDetailsById({
+        onError: (error) => {
+          handleLoader(false);
+          handleError(error);
+        },
+        payload: {
+          query: {
+            examId: params.examId,
+          },
+          dispatch,
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    params.examId && fetchExamById();
+
+    handleLoader(false);
+  }, []);
+
+  if (state.isLoading || loading) {
     return <Loader type={"screen"} />;
   }
-
   return (
     <div className="pl-10">
-      <h1 className="text-5xl font-bold">Add New Exam</h1>
+      <h1 className="text-5xl font-bold">{`${
+        params.examId ? "Edit" : "Add New"
+      } Exam`}</h1>
 
       <QuizCreator
+        type="Exam"
         addNewQuiz={addNewExam}
         fields={AddExamFields()}
-        initialValues={initialValues}
+        initialValues={
+          params.ogaId ? prepareParseInitialValuesForExam(data) : initialValues
+        }
         schema={addExamValidationSchema}
       />
     </div>

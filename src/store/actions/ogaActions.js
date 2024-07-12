@@ -17,6 +17,20 @@ export const getOnGoingAssignmentsListing = asyncCatch(
       })
 );
 
+export const getOnGoingAssignmentsByCourseListing = asyncCatch(
+  "ogaSlice/getOnGoingAssignmentsByCourseListing",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/get-oga/${query.courseId}${query.queryParams}`,
+        config
+      )
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const getOnGoingAssigmentById = asyncCatch(
   "ogaSlice/getOnGoingAssigmentById",
   async ({ config, query, dispatch }) =>
@@ -41,6 +55,12 @@ export const addNewOGAByAdmin = asyncCatch(
   "quizSlice/addNewOGAByAdmin",
   async ({ config, body }) =>
     axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/create`, body, config)
+);
+
+export const updateOGAByAdmin = asyncCatch(
+  "quizSlice/updateOGAByAdmin",
+  async ({ config, body }) =>
+    axios.put(`${CONSTANTS.VITE_BACKEND_API_URL}/api/oga/update`, body, config)
 );
 
 export const deleteOGAFromApi = asyncCatch(

@@ -3,7 +3,13 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import DynamicField from "./DynamicField";
 import Button from "./Button";
 
-const QuizCreator = ({ fields = [], initialValues, schema, addNewQuiz }) => {
+const QuizCreator = ({
+  type = "Quiz",
+  fields = [],
+  initialValues,
+  schema,
+  addNewQuiz,
+}) => {
   const handleSubmit = (values) => {
     console.log(values);
     addNewQuiz(values);
@@ -165,7 +171,7 @@ const QuizCreator = ({ fields = [], initialValues, schema, addNewQuiz }) => {
                 variant="primary"
                 //   onClick={() => handleModal("uploadModalIsOpen")}
               >
-                Submit Quiz
+                {`Submit ${type}`}
               </Button>
             </div>
           </Form>

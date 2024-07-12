@@ -1,11 +1,10 @@
 import { Loader, ModalTop } from "@/components/common";
 import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
-import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { ExamColumns } from "@/constants/table-constants";
-import { MockExamData } from "@/parsers/student-parser";
+import { MockExamData, parseExamListing } from "@/parsers/student-parser";
 import {
   deleteExamApi,
   fetchExamsListing,
@@ -14,29 +13,35 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-
-const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const AdminExams = () => {
   const [state, setState] = useState({
+    page: 0,
+    size: 10,
+    totalPages: 1,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
+    isLoading: false,
   });
 
   const { courseId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const {
     examsData: { data, loading },
   } = useSelector((s) => s.commonReducer);
 
-  const { campusesData } = useSelector((s) => s.commonReducer);
-
-  console.log({ campusesData, data });
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
+  };
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -54,6 +59,8 @@ const AdminExams = () => {
   const handleDelete = () => {
     const { selectedRecord } = state;
 
+    handleLoader();
+
     dispatch(
       deleteExamApi({
         payload: {
@@ -64,6 +71,7 @@ const AdminExams = () => {
         onSuccess: (resp) => {
           handleModal("deleteModalIsOpen");
           toast.success("Deleted Successfully!");
+          handleLoader();
           fetchListing();
         },
         onError: () => navigate("/404", { replace: true }),
@@ -72,26 +80,39 @@ const AdminExams = () => {
   };
 
   const fetchListing = () => {
+    const { page, size } = state;
+    const queryPage = search.split("=")[1];
+
+    const queryParams = `?page=${
+      queryPage ? queryPage - 1 : page
+    }&size=${size}`;
+
     dispatch(
       fetchExamsListing({
         payload: {
           query: {
-            page: 0,
-            size: 500,
             courseId,
+            queryParams,
           },
           dispatch,
+        },
+        onSuccess: (res) => {
+          setState((prev) => ({
+            ...prev,
+            page: res?.examPagination?.number,
+            totalPages: res?.examPagination?.totalPages,
+          }));
         },
       })
     );
   };
 
   useEffect(() => {
-    // fetchListing();
+    fetchListing();
     // fetchCompusListing(dispatch);
-  }, []);
+  }, [search]);
 
-  if (loading) {
+  if (loading || state.isLoading) {
     return <Loader />;
   }
 
@@ -113,13 +134,22 @@ const AdminExams = () => {
         </Grid>
         <Grid item md={3} />
 
-        <Grid item md={3}>
+        {/* <Grid item md={3}>
           <Dropdown placeholder="Published Date" options={options} />
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <div className="p-12">
-        <CustomTable columns={ExamColumns} rows={MockExamData(handleModal)} />
+        <CustomTable
+          page={state.page + 1}
+          totalPages={state.totalPages}
+          columns={ExamColumns}
+          rows={parseExamListing(
+            data?.examPagination?.content ?? [],
+            handleModal,
+            navigate
+          )}
+        />
       </div>
 
       <ModalTop

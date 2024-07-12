@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getOnGoingAssigmentById,
+  getOnGoingAssignmentsByCourseListing,
   getOnGoingAssignmentsListing,
 } from "../actions/ogaActions";
 
 const initialState = {
   ogaListingData: {
+    loading: false,
+    data: null,
+  },
+  ogaListingByCourseData: {
     loading: false,
     data: null,
   },
@@ -36,6 +41,29 @@ const ogaSlice = createSlice({
     builder.addCase(getOnGoingAssignmentsListing.rejected, (state) => {
       state.ogaListingData = {
         ...initialState.ogaListingData,
+        loading: false,
+      };
+    });
+
+    //get on going asssignments by Course
+    builder.addCase(getOnGoingAssignmentsByCourseListing.pending, (state) => {
+      state.ogaListingByCourseData = {
+        ...initialState.ogaListingByCourseData,
+        loading: true,
+      };
+    });
+    builder.addCase(
+      getOnGoingAssignmentsByCourseListing.fulfilled,
+      (state, action) => {
+        state.ogaListingByCourseData = {
+          loading: false,
+          data: action.payload,
+        };
+      }
+    );
+    builder.addCase(getOnGoingAssignmentsByCourseListing.rejected, (state) => {
+      state.ogaListingByCourseData = {
+        ...initialState.ogaListingByCourseData,
         loading: false,
       };
     });

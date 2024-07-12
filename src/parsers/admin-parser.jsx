@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const parseAddStudentData = (data) => {
   return {
     address: data?.address,
@@ -113,13 +115,69 @@ export const parseAddOgaDataForApi = (formValues, params) => {
 export const prepareParseInitialValues = (quizData) => {
   if (quizData) {
     return {
-      dueDate: quizData?.dueDate,
+      dueDate: moment(ogaData?.dueDate).format("YYYY-MM-DD"),
       quizTitle: quizData?.quizTitle,
       term: quizData?.term,
       time: quizData?.time,
       totalMarks: quizData?.totalMarks,
       visibility: true,
       questions: quizData?.quizQuestions?.map((item) => {
+        const options = [
+          item.optionOne,
+          item.optionTwo,
+          item.optionThree,
+          item.optionFour,
+        ];
+        return {
+          title: item?.question,
+          options,
+          correctOption: options.findIndex((option) => option === item.answer),
+        };
+      }),
+    };
+  } else {
+    return {};
+  }
+};
+
+export const prepareParseInitialValuesForOga = (ogaData) => {
+  if (ogaData) {
+    return {
+      dueDate: moment(ogaData?.dueDate).format("YYYY-MM-DD"),
+      ogaTitle: ogaData?.ogaTitle,
+      term: ogaData?.term,
+      time: ogaData?.time,
+      totalMarks: ogaData?.totalMarks,
+      visibility: true,
+      questions: ogaData?.ogaQuestions?.map((item) => {
+        const options = [
+          item.optionOne,
+          item.optionTwo,
+          item.optionThree,
+          item.optionFour,
+        ];
+        return {
+          title: item?.question,
+          options,
+          correctOption: options.findIndex((option) => option === item.answer),
+        };
+      }),
+    };
+  } else {
+    return {};
+  }
+};
+
+export const prepareParseInitialValuesForExam = (examData) => {
+  if (examData) {
+    return {
+      dueDate: moment(examData?.dueDate).format("YYYY-MM-DD"),
+      examTitle: examData?.examTitle,
+      term: examData?.term,
+      time: examData?.time,
+      totalMarks: examData?.totalMarks,
+      visibility: true,
+      questions: examData?.examQuestions?.map((item) => {
         const options = [
           item.optionOne,
           item.optionTwo,

@@ -1,25 +1,26 @@
 import { Loader, ModalTop } from "@/components/common";
 import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
-import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
 import DeleteActionModal from "@/components/modals/DeleteAction";
-import { ExamColumns } from "@/constants/table-constants";
-import { MockExamData } from "@/parsers/student-parser";
+import { OGAColumns } from "@/constants/table-constants";
+import { parseOgaListing } from "@/parsers/student-parser";
 import {
-  deleteExamApi,
-  fetchExamsListing,
-} from "@/store/actions/commonActions";
+  deleteOGAFromApi,
+  getOnGoingAssignmentsByCourseListing,
+} from "@/store/actions/ogaActions";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-
-const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const AdminOGA = () => {
   const [state, setState] = useState({
+    isLoading: false,
+    page: 0,
+    size: 10,
+    totalPages: 1,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
@@ -29,12 +30,18 @@ const AdminOGA = () => {
   const { courseId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const {
-    examsData: { data, loading },
-  } = useSelector((s) => s.commonReducer);
+    ogaListingByCourseData: { data, loading },
+  } = useSelector((s) => s.ogaReducer);
 
-  const { campusesData } = useSelector((s) => s.commonReducer);
+  const handleLoader = (loading) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: loading ?? !prev.isLoading,
+    }));
+  };
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -52,16 +59,19 @@ const AdminOGA = () => {
   const handleDelete = () => {
     const { selectedRecord } = state;
 
+    handleLoader();
+
     dispatch(
-      deleteExamApi({
+      deleteOGAFromApi({
         payload: {
           query: {
-            examId: selectedRecord?.examId,
+            ogaId: selectedRecord?.ogaId,
           },
         },
         onSuccess: (resp) => {
           handleModal("deleteModalIsOpen");
           toast.success("Deleted Successfully!");
+          handleLoader();
           fetchListing();
         },
         onError: () => navigate("/404", { replace: true }),
@@ -70,26 +80,41 @@ const AdminOGA = () => {
   };
 
   const fetchListing = () => {
+    const { page, size } = state;
+    const queryPage = search.split("=")[1];
+
+    const queryParams = `?page=${
+      queryPage ? queryPage - 1 : page
+    }&size=${size}`;
+
     dispatch(
-      fetchExamsListing({
+      getOnGoingAssignmentsByCourseListing({
         payload: {
           query: {
-            page: 0,
-            size: 500,
+            // page:,
+            // size,
             courseId,
+            queryParams,
           },
           dispatch,
+        },
+        onSuccess: (res) => {
+          setState((prev) => ({
+            ...prev,
+            page: res.ogaPagination?.number,
+            totalPages: res.ogaPagination?.totalPages,
+          }));
         },
       })
     );
   };
 
   useEffect(() => {
-    // fetchListing();
+    fetchListing();
     // fetchCompusListing(dispatch);
-  }, []);
+  }, [search]);
 
-  if (loading) {
+  if (loading || state.isLoading) {
     return <Loader />;
   }
 
@@ -111,13 +136,22 @@ const AdminOGA = () => {
         </Grid>
         <Grid item md={3} />
 
-        <Grid item md={3}>
+        {/* <Grid item md={3}>
           <Dropdown placeholder="Published Date" options={options} />
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <div className="p-12">
-        <CustomTable columns={ExamColumns} rows={MockExamData(handleModal)} />
+        <CustomTable
+          page={state.page + 1}
+          totalPages={state.totalPages}
+          columns={OGAColumns}
+          rows={parseOgaListing(
+            data?.ogaPagination?.content ?? [],
+            handleModal,
+            navigate
+          )}
+        />
       </div>
 
       <ModalTop

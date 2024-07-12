@@ -1145,6 +1145,77 @@ export const parseQuizzesListing = (data = [], handleModal, navigate) => {
   }));
 };
 
+export const parseOgaListing = (data = [], handleModal, navigate) => {
+  return data?.map((ogaData) => ({
+    ...ogaData,
+    marks: ogaData.totalMarks,
+    title: ogaData?.ogaTitle ?? "N/A",
+    dueDate: (
+      <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+        {moment(ogaData.dueDate).format("DD-MM-YYYY")}
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            navigate(`edit/${ogaData?.ogaId}`);
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            // const { password, ...otherInfo } = ogaData;
+            handleModal("deleteModalIsOpen", ogaData);
+          }}
+        />
+      </div>
+    ),
+  }));
+};
+
+export const parseExamListing = (data = [], handleModal, navigate) => {
+  return data?.map((examData) => ({
+    ...examData,
+    marks: examData.totalMarks,
+    title: examData?.examTitle ?? "N/A",
+    dueDate: (
+      <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+        {moment(examData.dueDate).format("DD-MM-YYYY")}
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            navigate(`edit/${examData?.examId}`);
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            handleModal("deleteModalIsOpen", examData);
+          }}
+        />
+      </div>
+    ),
+  }));
+};
+
 export const studentByCourseListingParser = (data = []) => {
   return !isEmpty(data)
     ? data?.map((item) => ({

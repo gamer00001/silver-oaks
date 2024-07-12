@@ -1,12 +1,19 @@
 import { Loader } from "@/components/common";
 import QuizCreator from "@/components/common/QuizCreator";
 import { AddOGAFields } from "@/constants/forms";
-import { parseAddOgaDataForApi } from "@/parsers/admin-parser";
+import {
+  parseAddOgaDataForApi,
+  prepareParseInitialValuesForOga,
+} from "@/parsers/admin-parser";
 import { addOgaValidationSchema } from "@/schema";
-import { addNewOGAByAdmin } from "@/store/actions/ogaActions";
-import React, { useState } from "react";
+import {
+  addNewOGAByAdmin,
+  getOnGoingAssigmentById,
+  updateOGAByAdmin,
+} from "@/store/actions/ogaActions";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const initialValues = {
@@ -20,12 +27,16 @@ const initialValues = {
 
 const AddNewOGA = () => {
   const [state, setState] = useState({
-    isLoading: false,
+    isLoading: true,
   });
   const navigate = useNavigate();
 
   const params = useParams();
   const dispatch = useDispatch();
+
+  const {
+    assesmentData: { data, loading },
+  } = useSelector((s) => s.ogaReducer);
 
   const handleLoader = (loading) => {
     setState((prev) => ({
@@ -34,15 +45,27 @@ const AddNewOGA = () => {
     }));
   };
 
-  const addNewOGA = (formValues) => {
+  const addNewOga = (formValues) => {
     handleLoader(true);
 
-    const apiPayload = parseAddOgaDataForApi(formValues, params);
+    let apiPayload = parseAddOgaDataForApi(formValues, params);
+
+    if (params.ogaId) {
+      apiPayload = {
+        ...apiPayload,
+        ogaId: params.ogaId,
+      };
+    }
+
+    const apiToCall = params.ogaId ? updateOGAByAdmin : addNewOGAByAdmin;
+
     dispatch(
-      addNewOGAByAdmin({
+      apiToCall({
         onSuccess: () => {
           handleLoader(false);
-          toast.success("OGA created successfully!");
+          toast.success(
+            `OGA ${params.ogaId ? "updated" : "created"} successfully!`
+          );
           navigate(-1);
         },
         onError: (error) => {
@@ -57,18 +80,46 @@ const AddNewOGA = () => {
     );
   };
 
-  if (state.isLoading) {
+  const fetchOgaById = () => {
+    dispatch(
+      getOnGoingAssigmentById({
+        onError: (error) => {
+          handleLoader(false);
+          handleError(error);
+        },
+        payload: {
+          query: {
+            ogaId: params.ogaId,
+          },
+          dispatch,
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    params.ogaId && fetchOgaById();
+
+    handleLoader(false);
+  }, []);
+
+  if (state.isLoading || loading) {
     return <Loader type={"screen"} />;
   }
 
   return (
     <div className="pl-10">
-      <h1 className="text-5xl font-bold">Add New OGA</h1>
+      <h1 className="text-5xl font-bold">{`${
+        params.ogaId ? "Edit" : "Add New"
+      } OGA`}</h1>
 
       <QuizCreator
-        addNewQuiz={addNewOGA}
+        type="OGA"
+        addNewQuiz={addNewOga}
         fields={AddOGAFields()}
-        initialValues={initialValues}
+        initialValues={
+          params.ogaId ? prepareParseInitialValuesForOga(data) : initialValues
+        }
         schema={addOgaValidationSchema}
       />
     </div>

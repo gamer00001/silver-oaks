@@ -172,8 +172,27 @@ export const ExamColumns = [
     key: "marks",
   },
   {
-    header: "Upload Date",
-    key: "uploadedDate",
+    header: "Due Date",
+    key: "dueDate",
+  },
+  {
+    header: "Actions",
+    key: "actions",
+  },
+];
+
+export const OGAColumns = [
+  {
+    header: "Title",
+    key: "title",
+  },
+  {
+    header: "Marks",
+    key: "marks",
+  },
+  {
+    header: "Due Date",
+    key: "dueDate",
   },
   {
     header: "Actions",

@@ -227,6 +227,10 @@ const adminLayoutRoutes = [
         }
       />
       <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams/edit/:examId"
+        element={<MyReactHelmet title="Quizzes" element={<AddNewExam />} />}
+      />
+      <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga"
         element={
           <MyReactHelmet title="On-Going Assessments" element={<AdminOGA />} />
@@ -237,6 +241,10 @@ const adminLayoutRoutes = [
         element={
           <MyReactHelmet title="On-Going Assessments" element={<AddNewOGA />} />
         }
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga/edit/:ogaId"
+        element={<MyReactHelmet title="Quizzes" element={<AddNewOGA />} />}
       />
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/students"

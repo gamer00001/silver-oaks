@@ -59,6 +59,16 @@ export const addNewExamByAdmin = asyncCatch(
     axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/exams`, body, config)
 );
 
+export const updateExamByAdmin = asyncCatch(
+  "quizSlice/updateExamByAdmin",
+  async ({ config, body }) =>
+    axios.put(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/update-exam`,
+      body,
+      config
+    )
+);
+
 export const deleteExamApi = asyncCatch(
   "quizSlice/deleteExamApi",
   async ({ config, query }) =>
@@ -72,7 +82,16 @@ export const fetchExamsListing = asyncCatch(
   "commonSlice/fetchExamsListing",
   async ({ query, config }) =>
     axios.get(
-      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/course/${query.courseId}`,
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/${query.courseId}${query.queryParams}`,
+      config
+    )
+);
+
+export const fetchExamDetailsById = asyncCatch(
+  "commonSlice/fetchExamDetailsById",
+  async ({ query, config }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/${query.examId}`,
       config
     )
 );
