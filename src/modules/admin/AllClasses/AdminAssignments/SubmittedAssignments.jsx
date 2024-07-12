@@ -8,7 +8,10 @@ import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddTeacherFields } from "@/constants/forms";
 import { SubmittedAssignmentColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
-import { MockSubmittedAssignmentData } from "@/parsers/student-parser";
+import {
+  MockSubmittedAssignmentData,
+  parseSubmittedAssignmentListing,
+} from "@/parsers/student-parser";
 import {
   getAssignmentById,
   getAssignmentSubmissions,
@@ -160,6 +163,10 @@ const SubmittedAssignments = () => {
     navigate(`${1}`);
   };
 
+  const handleMarkAssignment = (studentRollNumber) => {
+    navigate(`student/${studentRollNumber}`);
+  };
+
   useEffect(() => {
     fetchListing();
     fetchAssignmentById();
@@ -199,7 +206,10 @@ const SubmittedAssignments = () => {
       <div className="p-12">
         <CustomTable
           columns={SubmittedAssignmentColumns}
-          rows={MockSubmittedAssignmentData(handleModal, handleViewSubmission)}
+          rows={parseSubmittedAssignmentListing(
+            state?.submittedAssignments ?? [],
+            handleMarkAssignment
+          )}
         />
       </div>
 

@@ -192,6 +192,18 @@ const adminLayoutRoutes = [
           />
         }
       />
+
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/assignments/:aid/student/:sid"
+        // path="/all-classes/:id/assignment/:aid/student/:sid"
+        element={
+          <MyReactHelmet
+            title="Assignment"
+            element={<MarkAssignment forStudent={true} />}
+          />
+        }
+      />
+
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/quizzes"
         element={<MyReactHelmet title="Quizzes" element={<AdminQuizzes />} />}

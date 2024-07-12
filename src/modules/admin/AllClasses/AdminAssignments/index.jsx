@@ -194,7 +194,7 @@ const AdminAssignments = () => {
   };
 
   const handleViewSubmission = (assignmentId = 1) => {
-    navigate(`${1}`);
+    navigate(`${assignmentId}`);
   };
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import EditIcon from "@/assets/Icons/EditIcon";
 import { isEmpty } from "lodash";
 import moment from "moment";
 
@@ -697,13 +698,43 @@ export const parseAssignmentListing = (
           }}
         />
         <span
-          onClick={handleViewSubmission}
+          onClick={() => handleViewSubmission(assignmentData?.assignmentId)}
           className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
         >
           View Submissions
         </span>
       </div>
     ),
+  }));
+};
+
+export const parseSubmittedAssignmentListing = (
+  data = [],
+  handleMarkAssignment
+) => {
+  return data?.map((assignmentData) => ({
+    ...assignmentData,
+    fullName: assignmentData?.studentName,
+    rollNumber: assignmentData?.studentRollNumber,
+    status: (
+      <>
+        <div
+          className={`flex flex-row items-center gap-4 p-9 underline ${
+            assignmentData?.obtainedMarks !== -1
+              ? "text-green-700"
+              : "text-red-800"
+          } hover:text-gray-700 cursor-pointer`}
+          onClick={() => handleMarkAssignment(assignmentData.studentRollNumber)}
+        >
+          {assignmentData?.obtainedMarks === -1 ? "Unmarked" : "Marked" || "--"}{" "}
+          <EditIcon />
+        </div>
+        {/* assignmentData?.obtainedMarks === -1 ? "Unmarked" : "Marked" || "--", */}
+      </>
+    ),
+    // status:
+    // marks: assignmentData.totalMarks,
+    // title: assignmentData?.assignmentTitle ?? "N/A",
   }));
 };
 

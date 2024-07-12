@@ -10,9 +10,11 @@ import {
   getAssignmentSubmission,
   markAssignment,
 } from "@/store/actions/assignmentsActions";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MarkAssignment = () => {
+  const navigate = useNavigate();
+
   const {
     submissionData: { data, loading },
   } = useSelector((s) => s.assignmentReducer);
@@ -36,7 +38,7 @@ const MarkAssignment = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex flex-col gap-16 px-10">
       <div className="flex flex-row gap-2 justify-start items-center">
         <h1 className="font-semibold text-[2.5rem]">Assignment 01:</h1>
         <h1 className="text-[2.5rem] text-gray-600">
@@ -50,6 +52,8 @@ const MarkAssignment = () => {
 
 const MarkingComponent = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const {
     submissionData: { data, loading },
   } = useSelector((s) => s.assignmentReducer);
@@ -75,7 +79,10 @@ const MarkingComponent = () => {
       dispatch(
         markAssignment({
           onError: () => toast.error("Some error occured"),
-          onSuccess: () => toast.success("Update successfully!"),
+          onSuccess: () => {
+            toast.success("Update successfully!");
+            navigate(-1);
+          },
           payload: {
             body: v,
             dispatch,
