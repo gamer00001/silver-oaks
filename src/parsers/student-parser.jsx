@@ -679,10 +679,9 @@ export const parseAssignmentListing = (
           alt="edit"
           title="Edit"
           onClick={() => {
-            // const { password, ...otherInfo } = studentData;
             handleModal(
               "addNewModalIsOpen",
-              { ...studentData, section: studentData?.sectionName },
+              { ...assignmentData, section: assignmentData?.sectionName },
               true
             );
           }}
@@ -693,8 +692,7 @@ export const parseAssignmentListing = (
           alt="delete"
           title="Delete"
           onClick={() => {
-            // const { password, ...otherInfo } = studentData;
-            handleModal("deleteModalIsOpen", studentData);
+            handleModal("deleteModalIsOpen", assignmentData);
           }}
         />
         <span

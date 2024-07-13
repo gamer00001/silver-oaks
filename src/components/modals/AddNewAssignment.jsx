@@ -1,14 +1,13 @@
 import { assignmentSchema } from "@/schema";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 
 import Button from "../common/Button";
 import DynamicField from "../common/DynamicField";
 
 const defaultValues = {
-  lectureTitle: "",
+  assignmentTitle: "",
   description: "",
   file: "",
   totalMarks: null,
@@ -30,18 +29,15 @@ const AddNewAssignment = ({
     formValues: editValues ?? initialValues,
   });
 
-  const dispatch = useDispatch();
-
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
-    useFormik({
-      initialValues: editValues ?? initialValues ?? defaultValues,
-      // enableReinitialize: true,
-      validationSchema: assignmentSchema,
-      onSubmit: (values) => {
-        handleModal();
-        handleAdd(values);
-      },
-    });
+  const { handleSubmit, handleChange, values, errors, touched } = useFormik({
+    initialValues: editValues ?? initialValues ?? defaultValues,
+    // enableReinitialize: true,
+    validationSchema: assignmentSchema,
+    onSubmit: (values) => {
+      handleModal();
+      handleAdd(values);
+    },
+  });
 
   const getField = (field) => {
     if (field.name === "teacher") {

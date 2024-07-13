@@ -178,7 +178,7 @@ export const EditTeacherSchema = Yup.object().shape({
 export const lectureSchema = Yup.object().shape({
   lectureTitle: Yup.string().required("Lecture Title is required"),
   description: Yup.string().required("Description is required"),
-  file: Yup.array().optional(),
+  file: Yup.array().required("File is required"),
 });
 
 export const assignmentSchema = Yup.object().shape({

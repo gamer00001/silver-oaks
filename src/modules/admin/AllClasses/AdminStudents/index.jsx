@@ -72,7 +72,7 @@ const AdminStudents = () => {
 
   return (
     <div className="bg-white h-full">
-      <div className="flex justify-end gap-12 pr-12">
+      {/* <div className="flex justify-end gap-12 pr-12">
         <Button
           size="large"
           variant="secondary"
@@ -80,7 +80,7 @@ const AdminStudents = () => {
         >
           Add New Exam
         </Button>
-      </div>
+      </div> */}
 
       <Grid container spacing={4} className="px-12 py-12">
         <Grid item md={6}>

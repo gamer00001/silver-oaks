@@ -19,6 +19,22 @@ export const createAssignment = asyncCatch(
       })
 );
 
+export const updateAssignment = asyncCatch(
+  "assignmentSlice/updateAssignment",
+  async ({ config, body, dispatch }) =>
+    axios
+      .put(`${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/update`, body, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: config.headers.Authorization,
+        },
+      })
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
+
 export const getAssignments = asyncCatch(
   "assignmentSlice/getAssignments",
   async ({ config, query, dispatch }) =>
@@ -119,4 +135,19 @@ export const submitAssignmentByStudent = asyncCatch(
         handleError(error, dispatch);
       }),
   "multipart/form-data"
+);
+
+export const deleteAssignment = asyncCatch(
+  "assignmentSlice/deleteAssignment",
+  async ({ config, query, body, dispatch }) =>
+    axios
+      .delete(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/delete/${query.assignmentId}`,
+        body,
+        config
+      )
+      .then((resp) => resp)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
 );

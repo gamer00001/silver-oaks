@@ -12,6 +12,7 @@ import {
   addLecture,
   deleteLecture,
   getLectures,
+  updateLecture,
 } from "@/store/actions/lecturesActions";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -92,6 +93,8 @@ const LecturesPage = () => {
   };
 
   const handleAddLecture = (formValues) => {
+    const { selectedRecord, isEditMode } = state;
+
     handleLoader(true);
 
     const formData = new FormData();
@@ -108,8 +111,14 @@ const LecturesPage = () => {
       formData.append(key, value);
     });
 
+    const apiToCall = isEditMode ? updateLecture : addLecture;
+
+    if (isEditMode) {
+      formData.append("lectureId", selectedRecord.lectureId);
+    }
+
     dispatch(
-      addLecture({
+      apiToCall({
         onSuccess: () => {
           handleLoader(false);
           // handleModal("addNewModalIsOpen");

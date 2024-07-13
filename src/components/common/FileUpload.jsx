@@ -1,7 +1,8 @@
+import { isEmpty } from "lodash";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const FileUpload = ({ onChange, touched, error }) => {
+const FileUpload = ({ onChange, touched, error, value }) => {
   const [state, setState] = useState({
     file: null,
   });
@@ -20,8 +21,6 @@ const FileUpload = ({ onChange, touched, error }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
   });
-
-  console.log({ touched, error });
 
   return (
     <>
@@ -44,7 +43,12 @@ const FileUpload = ({ onChange, touched, error }) => {
       </div>
 
       {state.file && (
-        <p className="mt-5 text-xl font-semibold">{state.file[0]?.name}</p>
+        <p className="mt-5 text-xl font-semibold">
+          {state?.file[0]?.name ?? ""}
+        </p>
+      )}
+      {!isEmpty(value) && !state.file && (
+        <p className="mt-5 text-xl font-semibold">{value ? value : ""}</p>
       )}
       {error && (
         <div className="text-red-600 text-left text-xl py-4">{error}</div>

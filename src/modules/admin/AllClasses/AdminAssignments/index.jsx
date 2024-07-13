@@ -10,12 +10,11 @@ import { AssignmentsColumns } from "@/constants/table-constants";
 import { parseAssignmentListing } from "@/parsers/student-parser";
 import {
   createAssignment,
+  deleteAssignment,
   getAssignmentsByCourseId,
+  updateAssignment,
 } from "@/store/actions/assignmentsActions";
-import {
-  deleteTeacher,
-  fetchAllTeachers,
-} from "@/store/actions/teacherActions";
+import { fetchAllTeachers } from "@/store/actions/teacherActions";
 import { removeEmptyValues } from "@/utils/helper";
 import { Grid } from "@mui/material";
 import { isEmpty } from "lodash";
@@ -85,6 +84,7 @@ const AdminAssignments = () => {
     let parseData = {
       courseId,
       section: sectionId,
+      description: formData.description,
       // section: sectionName,
       term: formData?.term,
       totalMarks: formData.totalMarks,
@@ -101,14 +101,15 @@ const AdminAssignments = () => {
     if (isEditMode) {
       parseData = {
         ...parseData,
+        file: parseData.file ?? selectedRecord.file,
         assignmentId: selectedRecord.assignmentId,
       };
     }
 
-    console.log({ parseData }, removeEmptyValues(parseData));
+    const apiToCall = isEditMode ? updateAssignment : createAssignment;
 
     dispatch(
-      createAssignment({
+      apiToCall({
         payload: {
           body: removeEmptyValues(parseData),
         },
@@ -124,21 +125,6 @@ const AdminAssignments = () => {
         },
       })
     );
-
-    // const apiToCall = isEditMode ? editTeacher : addTeacher;
-
-    // dispatch(
-    //   apiToCall({
-    //     payload: {
-    //       body: parseData,
-    //     },
-    //     onSuccess: (resp) => {
-    //       console.log({ resp });
-    //       fetchListing();
-    //     },
-    //     onError: () => navigate("/404", { replace: true }),
-    //   })
-    // );
   };
 
   const fetchListingForTeacher = () => {
@@ -159,10 +145,10 @@ const AdminAssignments = () => {
     const { selectedRecord } = state;
 
     dispatch(
-      deleteTeacher({
+      deleteAssignment({
         payload: {
           query: {
-            teacherId: selectedRecord?.teacherId,
+            assignmentId: selectedRecord?.assignmentId,
           },
         },
         onSuccess: (resp) => {
@@ -170,7 +156,10 @@ const AdminAssignments = () => {
           toast.success("Deleted Successfully!");
           fetchListing();
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: () => {
+          console.log({ error });
+          return toast.error("Some Error Occured!");
+        },
       })
     );
   };
@@ -256,7 +245,14 @@ const AdminAssignments = () => {
           teachersList={data?.teacherList?.map((item) => item?.employeeName)}
           fields={AddAssignmentFields(campusesData?.data) ?? []}
           handleAdd={handleAdd}
-          editValues={state.selectedRecord}
+          editValues={
+            state.selectedRecord
+              ? {
+                  ...state.selectedRecord,
+                  file: [state?.selectedRecord?.file],
+                }
+              : {}
+          }
           handleModal={() => handleModal("addNewModalIsOpen")}
         />
       </ModalTop>

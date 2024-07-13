@@ -99,9 +99,9 @@ export const AdminCoursesTabs = [
     to: "./students",
     baseRoute: "students",
   },
-  {
-    title: "Reports",
-    to: "./reports",
-    baseRoute: "reports",
-  },
+  // {
+  //   title: "Reports",
+  //   to: "./reports",
+  //   baseRoute: "reports",
+  // },
 ];

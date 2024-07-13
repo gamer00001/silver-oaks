@@ -115,7 +115,7 @@ export const parseAddOgaDataForApi = (formValues, params) => {
 export const prepareParseInitialValues = (quizData) => {
   if (quizData) {
     return {
-      dueDate: moment(ogaData?.dueDate).format("YYYY-MM-DD"),
+      dueDate: moment(quizData?.dueDate).format("YYYY-MM-DD"),
       quizTitle: quizData?.quizTitle,
       term: quizData?.term,
       time: quizData?.time,

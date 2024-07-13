@@ -43,6 +43,12 @@ export const addLecture = asyncCatch(
     axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures`, body)
 );
 
+export const updateLecture = asyncCatch(
+  "lectureSlice/updateLecture",
+  async ({ config, query, body }) =>
+    axios.put(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures`, body)
+);
+
 export const deleteLecture = asyncCatch(
   "lectureSlice/deleteLecture",
   async ({ config, query, body }) =>
