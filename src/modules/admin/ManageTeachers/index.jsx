@@ -150,7 +150,7 @@ const ManageTeachers = () => {
       deleteTeacher({
         payload: {
           query: {
-            teacherId: selectedRecord?.teacherId,
+            teacherId: selectedRecord?.teacher_id,
           },
         },
         onSuccess: (resp) => {
@@ -189,7 +189,6 @@ const ManageTeachers = () => {
         onError: (error) => {
           handleLoader(false);
           handleModal("uploadModalIsOpen");
-          toast.error("Some Error Occured!");
           handleError(error);
         },
         payload: {

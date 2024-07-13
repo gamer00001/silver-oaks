@@ -251,7 +251,7 @@ const AdminAssignments = () => {
                   ...state.selectedRecord,
                   file: [state?.selectedRecord?.file],
                 }
-              : {}
+              : null
           }
           handleModal={() => handleModal("addNewModalIsOpen")}
         />

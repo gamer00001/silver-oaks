@@ -9,8 +9,10 @@ import {
   deleteCourse,
   getAllCoursesByGrade,
 } from "@/store/actions/coursesActions";
+import { handleError } from "@/utils/errorHandling";
 import { CoursesColors } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -50,6 +52,8 @@ const GradePage = () => {
       credits: values.credits,
     };
 
+    handleModal();
+
     dispatch(
       addCourse({
         payload: {
@@ -57,7 +61,12 @@ const GradePage = () => {
           dispatch,
         },
         onSuccess: () => {
+          toast.success("Course Added Successfully!");
           fetchAllCoursesByGrade();
+        },
+        onError: () => {
+          handleError(error);
+          // fetchAllCoursesByGrade();
         },
       })
     );

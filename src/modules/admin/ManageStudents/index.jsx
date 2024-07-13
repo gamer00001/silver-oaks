@@ -47,8 +47,6 @@ const initialValues = {
   address: "",
 };
 
-const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
-
 const ManageStudents = () => {
   const [state, setState] = useState({
     isLoading: false,
@@ -70,8 +68,6 @@ const ManageStudents = () => {
 
   const { search } = useLocation();
   const inputFileRef = useRef(null);
-
-  console.log({ search });
 
   const {
     studentsListing: { data, loading },
@@ -147,7 +143,7 @@ const ManageStudents = () => {
         },
         onSuccess: (resp) => {
           toast.success("Student added successfully!");
-          fetchListing();
+          fetchStudentsListingByFilter();
           handleModal("addNewModalIsOpen");
         },
         onError: (error) => {
@@ -172,7 +168,7 @@ const ManageStudents = () => {
         },
         onSuccess: (resp) => {
           handleModal("deleteModalIsOpen");
-          fetchListing();
+          fetchStudentsListingByFilter();
           handleLoader(false);
           toast.success("Student Deleted Successfully!");
         },
@@ -181,20 +177,20 @@ const ManageStudents = () => {
     );
   };
 
-  const fetchListing = () => {
-    dispatch(
-      fetchStudentsListing({
-        payload: {
-          query: {
-            page: 0,
-            size: 10,
-            campus: state?.selectedCampus ?? "",
-          },
-          dispatch,
-        },
-      })
-    );
-  };
+  // const fetchListing = () => {
+  //   dispatch(
+  //     fetchStudentsListing({
+  //       payload: {
+  //         query: {
+  //           page: 0,
+  //           size: 10,
+  //           campus: state?.selectedCampus ?? "",
+  //         },
+  //         dispatch,
+  //       },
+  //     })
+  //   );
+  // };
 
   const fetchStudentsListingByFilter = () => {
     const { page, size, selectedGrade, selectedCampus, selectedSection } =
@@ -237,7 +233,7 @@ const ManageStudents = () => {
     }));
   };
 
-  const handleUploadAssignment = () => {
+  const handleUploadFile = () => {
     handleLoader(true);
 
     const formData = new FormData();
@@ -250,7 +246,8 @@ const ManageStudents = () => {
           handleLoader(false);
           handleModal("uploadModalIsOpen");
           toast.success("File Uploaded Successfully!");
-          fetchListing();
+          // fetchListing();
+          fetchStudentsListingByFilter();
         },
         onError: (error) => {
           handleLoader(false);
@@ -391,7 +388,7 @@ const ManageStudents = () => {
           acceptedFiles=".csv"
           uploadFile={uploadFile}
           inputFileRef={inputFileRef}
-          handleUploadAssignment={handleUploadAssignment}
+          handleUploadAssignment={handleUploadFile}
           fileTypeText={"Excel File xlsx, file size no more than 10MB"}
           onClose={() => {
             handleModal("uploadModalIsOpen");
