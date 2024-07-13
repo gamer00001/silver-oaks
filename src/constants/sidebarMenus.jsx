@@ -81,6 +81,7 @@ export const panelSideBar = (defaultCampus) => ({
       name: "Manage Announcements",
       icon: <Events />,
     },
+
     // {
     //   to: "/manage-notifications",
     //   name: "Manage Notifications",

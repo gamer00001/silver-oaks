@@ -64,7 +64,7 @@ const GradePage = () => {
           toast.success("Course Added Successfully!");
           fetchAllCoursesByGrade();
         },
-        onError: () => {
+        onError: (error) => {
           handleError(error);
           // fetchAllCoursesByGrade();
         },
@@ -95,7 +95,11 @@ const GradePage = () => {
           dispatch,
         },
         onSuccess: () => {
+          toast.success("Deleted Successfully!");
           fetchAllCoursesByGrade();
+        },
+        onSuccess: (error) => {
+          handleError(error);
         },
       })
     );

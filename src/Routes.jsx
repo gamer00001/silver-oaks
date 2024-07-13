@@ -61,6 +61,7 @@ import AddNewQuiz from "./modules/admin/AllClasses/AdminQuizzes/AddNewQuiz";
 import AddNewExam from "./modules/admin/AllClasses/AdminExams/AddNewExam";
 import AdminOGA from "./modules/admin/AllClasses/AdminOGA";
 import AddNewOGA from "./modules/admin/AllClasses/AdminOGA/AddNewOGA";
+import AdminAnnouncements from "./modules/admin/AdminAnnouncements";
 
 const Routes = () => {
   return (
@@ -249,6 +250,12 @@ const adminLayoutRoutes = [
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/students"
         element={<MyReactHelmet title="Students" element={<AdminStudents />} />}
+      />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/announcements"
+        element={
+          <MyReactHelmet title="Reports" element={<AdminAnnouncements />} />
+        }
       />
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/reports"
