@@ -117,7 +117,7 @@ const AddNewExam = () => {
         addNewQuiz={addNewExam}
         fields={AddExamFields()}
         initialValues={
-          params.ogaId ? prepareParseInitialValuesForExam(data) : initialValues
+          params.examId ? prepareParseInitialValuesForExam(data) : initialValues
         }
         schema={addExamValidationSchema}
       />

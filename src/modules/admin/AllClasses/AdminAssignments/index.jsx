@@ -15,7 +15,7 @@ import {
   updateAssignment,
 } from "@/store/actions/assignmentsActions";
 import { fetchAllTeachers } from "@/store/actions/teacherActions";
-import { removeEmptyValues } from "@/utils/helper";
+import { fetchFileFromUrl, removeEmptyValues } from "@/utils/helper";
 import { Grid } from "@mui/material";
 import { isEmpty } from "lodash";
 import { useEffect, useState } from "react";
@@ -76,7 +76,7 @@ const AdminAssignments = () => {
     }));
   };
 
-  const handleAdd = (formData) => {
+  const handleAdd = async (formData) => {
     const { isEditMode, selectedRecord } = state;
 
     handleLoader(true);
@@ -98,11 +98,13 @@ const AdminAssignments = () => {
       assignmentTitle: formData.assignmentTitle,
     };
 
+    const oldFile = await fetchFileFromUrl(selectedRecord.file);
+
     if (isEditMode) {
       parseData = {
         ...parseData,
-        file: parseData.file ?? selectedRecord.file,
-        assignmentId: selectedRecord.assignmentId,
+        file: formData.file[0] instanceof File ? formData.file[0] : oldFile,
+        assignmentId: selectedRecord?.assignmentId,
       };
     }
 

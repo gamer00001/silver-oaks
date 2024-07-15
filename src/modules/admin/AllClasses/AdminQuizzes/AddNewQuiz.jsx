@@ -11,6 +11,7 @@ import {
   getQuizById,
   updateQuizByAdmin,
 } from "@/store/actions/quizzesActions";
+import { removeEmptyValues } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,7 +74,7 @@ const AddNewQuiz = () => {
           handleError(error);
         },
         payload: {
-          body: apiPayload,
+          body: removeEmptyValues(apiPayload),
           dispatch,
         },
       })

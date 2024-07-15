@@ -82,7 +82,7 @@ export const getAssignmentSubmissions = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/get-all-assignment-submissions/${query.assigmentId}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/assignments/get-all-assignment-submissions/${query.assigmentId}?page=${query.page}&size=${query.size}`,
         config
       )
       .then((resp) => resp)

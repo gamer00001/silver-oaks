@@ -1,17 +1,11 @@
 import { Loader, ModalTop } from "@/components/common";
-import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
-import Dropdown from "@/components/common/Dropdown";
-import InputField from "@/components/common/InputField";
 import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddTeacherFields } from "@/constants/forms";
 import { SubmittedAssignmentColumns } from "@/constants/table-constants";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
-import {
-  MockSubmittedAssignmentData,
-  parseSubmittedAssignmentListing,
-} from "@/parsers/student-parser";
+import { parseSubmittedAssignmentListing } from "@/parsers/student-parser";
 import {
   getAssignmentById,
   getAssignmentSubmissions,
@@ -20,20 +14,20 @@ import {
   addTeacher,
   deleteTeacher,
   editTeacher,
-  fetchTeachersListing,
 } from "@/store/actions/teacherActions";
-import { Grid } from "@mui/material";
+import { handleError } from "@/utils/errorHandling";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-
-const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const SubmittedAssignments = () => {
   const [state, setState] = useState({
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
+    page: 0,
+    size: 10,
+    totalPages: 1,
     selectedRecord: {},
     assignmentDetails: {},
     isEditMode: false,
@@ -43,6 +37,7 @@ const SubmittedAssignments = () => {
   const { assignmentId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { search } = useLocation();
 
   const { assignmentSubmissionsData } = useSelector((s) => s.assignmentReducer);
 
@@ -118,20 +113,26 @@ const SubmittedAssignments = () => {
   };
 
   const fetchListing = () => {
+    const { page, size } = state;
+    const queryPage = search.split("=")[1];
+
     dispatch(
       getAssignmentSubmissions({
         payload: {
           query: {
             assigmentId: assignmentId,
-            page: 0,
-            size: 500,
+            page: queryPage ? queryPage - 1 : page,
+            size,
           },
           dispatch,
         },
         onSuccess: (resp) => {
           setState((prev) => ({
             ...prev,
-            submittedAssignments: resp?.assignmentSubmissionResponseList,
+            page: resp?.assignmentSubmissionResponsePage.number,
+            totalPages: resp?.assignmentSubmissionResponsePage.totalPages,
+            submittedAssignments:
+              resp?.assignmentSubmissionResponsePage?.content ?? [],
           }));
         },
       })
@@ -148,7 +149,7 @@ const SubmittedAssignments = () => {
             assignmentDetails: resp,
           }));
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: (error) => handleError(error),
         payload: {
           query: {
             assignmentId: assignmentId,
@@ -169,12 +170,13 @@ const SubmittedAssignments = () => {
 
   useEffect(() => {
     fetchListing();
-    fetchAssignmentById();
 
     // fetchCompusListing(dispatch);
-  }, []);
+  }, [search]);
 
-  console.log({ assignmentSubmissionsData, state });
+  useEffect(() => {
+    fetchAssignmentById();
+  }, []);
 
   if (assignmentSubmissionsData.loading) {
     return <Loader type="screen" />;
@@ -205,6 +207,8 @@ const SubmittedAssignments = () => {
 
       <div className="p-12">
         <CustomTable
+          page={state.page + 1}
+          totalPages={state.totalPages}
           columns={SubmittedAssignmentColumns}
           rows={parseSubmittedAssignmentListing(
             state?.submittedAssignments ?? [],

@@ -99,8 +99,8 @@ const AdminExams = () => {
         onSuccess: (res) => {
           setState((prev) => ({
             ...prev,
-            page: res?.examPagination?.number,
-            totalPages: res?.examPagination?.totalPages,
+            page: res?.examListingPage?.number,
+            totalPages: res?.examListingPage?.totalPages,
           }));
         },
       })
@@ -145,7 +145,7 @@ const AdminExams = () => {
           totalPages={state.totalPages}
           columns={ExamColumns}
           rows={parseExamListing(
-            data?.examPagination?.content ?? [],
+            data?.examListingPage?.content ?? [],
             handleModal,
             navigate
           )}

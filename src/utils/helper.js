@@ -70,3 +70,25 @@ export function removeEmptyValues(obj) {
 
   return newObj;
 }
+
+export async function fetchFileFromUrl(url) {
+  try {
+    // Fetch the file from the URL
+    const response = await fetch(url);
+
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error("Network response was not ok " + response.statusText);
+    }
+
+    // Read the response as a Blob
+    const blob = await response.blob();
+
+    // Create a new file from the Blob
+    const file = new File([blob], "downloaded-file.jpg", { type: blob.type });
+
+    return file;
+  } catch (error) {
+    console.error("There was an error fetching the file:", error);
+  }
+}

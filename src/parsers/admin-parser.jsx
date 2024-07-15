@@ -60,6 +60,7 @@ export const parseAddQuizDataForApi = (formValues, params) => {
     totalMarks: formValues.totalMarks,
     visibility: true,
     quizQuestions: formValues?.questions.map((item) => ({
+      id: item?.id,
       question: item.title,
       optionFour: item.options[3],
       optionOne: item.options[0],
@@ -81,6 +82,7 @@ export const parseAddExamDataForApi = (formValues, params) => {
     totalMarks: formValues.totalMarks,
     visibility: true,
     examQuestions: formValues?.questions.map((item) => ({
+      id: item?.id,
       question: item.title,
       optionFour: item.options[3],
       optionOne: item.options[0],
@@ -102,6 +104,7 @@ export const parseAddOgaDataForApi = (formValues, params) => {
     totalMarks: formValues.totalMarks,
     visibility: true,
     ogaQuestions: formValues?.questions.map((item) => ({
+      id: item?.id,
       question: item.title,
       optionFour: item.options[3],
       optionOne: item.options[0],
@@ -129,8 +132,9 @@ export const prepareParseInitialValues = (quizData) => {
           item.optionFour,
         ];
         return {
-          title: item?.question,
           options,
+          id: item.id,
+          title: item?.question,
           correctOption: options.findIndex((option) => option === item.answer),
         };
       }),
@@ -159,6 +163,7 @@ export const prepareParseInitialValuesForOga = (ogaData) => {
         return {
           title: item?.question,
           options,
+          id: item.id,
           correctOption: options.findIndex((option) => option === item.answer),
         };
       }),
@@ -185,8 +190,9 @@ export const prepareParseInitialValuesForExam = (examData) => {
           item.optionFour,
         ];
         return {
-          title: item?.question,
+          id: item.id,
           options,
+          title: item?.question,
           correctOption: options.findIndex((option) => option === item.answer),
         };
       }),

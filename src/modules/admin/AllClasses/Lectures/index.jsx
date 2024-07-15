@@ -1,7 +1,6 @@
 import { Loader, ModalTop } from "@/components/common";
 import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
-import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
 import AddNewLecture from "@/components/modals/AddNewLecture";
 import DeleteActionModal from "@/components/modals/DeleteAction";
@@ -14,13 +13,12 @@ import {
   getLectures,
   updateLecture,
 } from "@/store/actions/lecturesActions";
+import { fetchFileFromUrl } from "@/utils/helper";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
-const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
 const LecturesPage = () => {
   const [state, setState] = useState({
@@ -92,7 +90,7 @@ const LecturesPage = () => {
     );
   };
 
-  const handleAddLecture = (formValues) => {
+  const handleAddLecture = async (formValues) => {
     const { selectedRecord, isEditMode } = state;
 
     handleLoader(true);
@@ -103,7 +101,6 @@ const LecturesPage = () => {
       courseId,
       description: formValues.description,
       lectureTitle: formValues.lectureTitle,
-      file: formValues.file[0],
       visible: true,
     };
 
@@ -113,8 +110,16 @@ const LecturesPage = () => {
 
     const apiToCall = isEditMode ? updateLecture : addLecture;
 
+    const oldFile = await fetchFileFromUrl(selectedRecord.file);
+
     if (isEditMode) {
+      formData.append(
+        "file",
+        formValues.file[0] instanceof File ? formValues.file[0] : oldFile
+      );
       formData.append("lectureId", selectedRecord.lectureId);
+    } else {
+      formData.append("file", formValues.file[0]);
     }
 
     dispatch(
@@ -188,7 +193,15 @@ const LecturesPage = () => {
           subtitle="Lecture Details"
           fields={AddLectureFields()}
           handleAddLecture={handleAddLecture}
-          editValues={state.selectedRecord}
+          // editValues={state.selectedRecord}
+          editValues={
+            state.selectedRecord
+              ? {
+                  ...state.selectedRecord,
+                  file: [state?.selectedRecord?.powerPointURL],
+                }
+              : null
+          }
           handleModal={() => handleModal("addNewModalIsOpen")}
         />
       </ModalTop>

@@ -714,6 +714,11 @@ export const parseSubmittedAssignmentListing = (
     ...assignmentData,
     fullName: assignmentData?.studentName,
     rollNumber: assignmentData?.studentRollNumber,
+    grade: (
+      <span className="capitalize">
+        {assignmentData?.obtainedGrade ?? "--"}
+      </span>
+    ),
     status: (
       <>
         <div

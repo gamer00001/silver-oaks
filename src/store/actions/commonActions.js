@@ -82,7 +82,7 @@ export const fetchExamsListing = asyncCatch(
   "commonSlice/fetchExamsListing",
   async ({ query, config }) =>
     axios.get(
-      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/${query.courseId}${query.queryParams}`,
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/exams/get-by-course/${query.courseId}${query.queryParams}`,
       config
     )
 );
