@@ -194,7 +194,7 @@ export const parseLectureListing = (data = [], handleModal) => {
   return data?.map((lectureData) => ({
     ...lectureData,
     title: lectureData?.lectureTitle ?? "N/A",
-    publishedDate: "N/A",
+    publishedDate: lectureData?.publishDate ?? "N/A",
     lastLoggedIn: (
       <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
         N/A

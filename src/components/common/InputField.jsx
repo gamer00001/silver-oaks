@@ -10,11 +10,29 @@ const InputField = ({
   touched,
   disabled = false,
   label = "",
+  showPreviousDates = false,
+  showNextDates = false,
   showLabel = false,
   placeholder = "Search...",
   onChange = () => {},
 }) => {
   const [searchQuery, setSearchQuery] = useState(value ?? "");
+
+  const getMaxDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const getMinDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -69,6 +87,8 @@ const InputField = ({
             value={searchQuery}
             placeholder={placeholder}
             onChange={handleSearchChange}
+            max={showPreviousDates ? getMaxDate() : undefined}
+            min={showNextDates ? getMinDate() : undefined}
             className={`bg-[#f4f4f4] text-[#7A7A7A] text-3xl p-8 ${
               icon ? "pl-20" : "pl-8"
             } rounded-xl w-full focus:outline-none font-semibold placeholder-[#7A7A7A]`}

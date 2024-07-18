@@ -35,8 +35,6 @@ const AdminQuizzes = () => {
     quizzesDataByCourse: { data, loading },
   } = useSelector((s) => s.quizReducer);
 
-  const { campusesData } = useSelector((s) => s.commonReducer);
-
   const handleModal = (
     key = "deleteModalIsOpen",
     selectedRecord,

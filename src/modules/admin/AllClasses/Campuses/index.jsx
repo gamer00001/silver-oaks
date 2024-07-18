@@ -1,12 +1,12 @@
-import { Loader, ModalTop } from "@/components/common";
+import { ModalTop } from "@/components/common";
 import CourseBlock from "@/components/common/CourseBlock";
 import AddNewClass from "@/components/modals/AddNewClass";
 import { editCampus } from "@/store/actions/commonActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import { CoursesColors } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 
 const CampusesPage = () => {
   const [state, setState] = useState({
@@ -50,10 +50,9 @@ const CampusesPage = () => {
         },
         onSuccess: (resp) => {
           // fetchListing();
-          handleModal("addNewModalIsOpen");
+          handleModal("editModalIsOpen");
           fetchCompusListing(dispatch);
-
-          toast.success("Section added successfully!");
+          toast.success("Campus updated successfully!");
         },
         onError: () => navigate("/404", { replace: true }),
       })
@@ -110,8 +109,8 @@ const CampusesPage = () => {
           option="Campus"
           handleAddCampus={handleEditCampus}
           editValues={{
-            ...state.selectedRecord,
-            name: state.selectedRecord?.campusName,
+            ...state?.selectedRecord,
+            name: state?.selectedRecord?.campusName,
           }}
           handleModal={() => handleModal("editModalIsOpen")}
           campusesOptions={data?.map((item) => item?.campusName) ?? []}

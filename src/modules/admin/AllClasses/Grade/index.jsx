@@ -98,7 +98,7 @@ const GradePage = () => {
           toast.success("Deleted Successfully!");
           fetchAllCoursesByGrade();
         },
-        onSuccess: (error) => {
+        onError: (error) => {
           handleError(error);
         },
       })

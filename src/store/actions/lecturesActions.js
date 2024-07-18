@@ -10,7 +10,9 @@ export const getLectures = asyncCatch(
   async ({ config, query, dispatch }) =>
     axios
       .get(
-        `${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures/by-course/${query.courseId}`,
+        `${CONSTANTS.VITE_BACKEND_API_URL}/v1/lectures/by-course/${
+          query.courseId
+        }${query?.queryParams ?? ""}`,
         config
       )
       .then((resp) => resp)

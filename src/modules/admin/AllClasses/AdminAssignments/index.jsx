@@ -91,7 +91,7 @@ const AdminAssignments = () => {
       dueDate: formData?.dueDate,
       file: !isEmpty(formData?.file) ? formData?.file[0] : "",
       // file: formData.file[0],
-      teacherId: data.teacherList.find(
+      teacherId: data.teacherCompleteList.find(
         (item) => item.employeeName === formData.teacher
       )?.teacherId,
       visibility: true,
@@ -244,7 +244,9 @@ const AdminAssignments = () => {
           title={state.isEditMode ? "Edit Assignment" : "Add Assignment"}
           subtitle="Assignment Details"
           initialValues={initialValues}
-          teachersList={data?.teacherList?.map((item) => item?.employeeName)}
+          teachersList={data?.teacherCompleteList?.map(
+            (item) => item?.employeeName
+          )}
           fields={AddAssignmentFields(campusesData?.data) ?? []}
           handleAdd={handleAdd}
           editValues={

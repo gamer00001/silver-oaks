@@ -18,10 +18,13 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const LecturesPage = () => {
   const [state, setState] = useState({
+    page: 0,
+    size: 10,
+    totalPages: 1,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
@@ -31,10 +34,9 @@ const LecturesPage = () => {
 
   const dispatch = useDispatch();
   const { courseId } = useParams();
+  const { search } = useLocation();
 
   const { lecturesData } = useSelector((s) => s.lectureReducer);
-
-  const { campusesData } = useSelector((s) => s.commonReducer);
 
   const handleLoader = (loading) => {
     setState((prev) => ({
@@ -77,12 +79,27 @@ const LecturesPage = () => {
   };
 
   const fetchListing = () => {
+    const { page, size } = state;
+    const queryPage = search.split("=")[1];
+
+    const queryParams = `?page=${
+      queryPage ? queryPage - 1 : page
+    }&size=${size}`;
+
     dispatch(
       getLectures({
+        onSuccess: (res) => {
+          setState((prev) => ({
+            ...prev,
+            page: res.ogaPagination?.number,
+            totalPages: res.ogaPagination?.totalPages,
+          }));
+        },
         onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
             courseId,
+            queryParams,
           },
           dispatch,
         },
@@ -110,7 +127,9 @@ const LecturesPage = () => {
 
     const apiToCall = isEditMode ? updateLecture : addLecture;
 
-    const oldFile = await fetchFileFromUrl(selectedRecord.file);
+    const oldFile = selectedRecord?.file
+      ? await fetchFileFromUrl(selectedRecord?.file)
+      : "";
 
     if (isEditMode) {
       formData.append(
