@@ -124,9 +124,9 @@ const AdminQuizzes = () => {
         </Grid>
         <Grid item md={3} />
 
-        <Grid item md={3}>
+        {/* <Grid item md={3}>
           <Dropdown placeholder="Published Date" options={options} />
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <div className="p-12">
