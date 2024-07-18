@@ -8,8 +8,9 @@ import {
 } from "@/constants/table-constants";
 import {
   MockExamData,
-  studentByCourseListingParser,
+  parseAnnouncementListing,
 } from "@/parsers/student-parser";
+import { getEventsByStudent } from "@/store/actions/eventActions";
 import { fetchStudentsListing } from "@/store/actions/studentActions";
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -18,6 +19,9 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const AdminAnnouncements = () => {
   const [state, setState] = useState({
+    page: 0,
+    size: 10,
+    totalPages: 1,
     addNewModalIsOpen: false,
     deleteModalIsOpen: false,
     selectedRecord: {},
@@ -30,9 +34,9 @@ const AdminAnnouncements = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { studentsListing } = useSelector((s) => s.studentReducer);
+  const { studentEvents } = useSelector((s) => s.eventReducer);
 
-  console.log({ studentsListing });
+  console.log({ studentEvents });
 
   const handleModal = (
     key = "deleteModalIsOpen",
@@ -50,13 +54,14 @@ const AdminAnnouncements = () => {
   const fetchListing = () => {
     const queryParams = `&section=${sectionName}`;
     dispatch(
-      fetchStudentsListing({
+      getEventsByStudent({
         payload: {
           query: {
             page: 0,
             size: 500,
-            campus: campusName,
-            queryParams,
+            courseId,
+            section: sectionName,
+            // queryParams,
           },
           dispatch,
         },
@@ -69,7 +74,7 @@ const AdminAnnouncements = () => {
     // fetchCompusListing(dispatch);
   }, []);
 
-  if (studentsListing.loading) {
+  if (studentEvents.loading) {
     return <Loader />;
   }
 
@@ -95,9 +100,7 @@ const AdminAnnouncements = () => {
       <div className="p-12">
         <CustomTable
           columns={ManageAnnouncementsColumns}
-          rows={studentByCourseListingParser(
-            studentsListing?.data?.studentPage?.content ?? []
-          )}
+          rows={parseAnnouncementListing(studentEvents?.data?.eventList ?? [])}
         />
       </div>
 

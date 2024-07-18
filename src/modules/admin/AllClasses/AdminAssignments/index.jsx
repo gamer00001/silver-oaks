@@ -98,7 +98,9 @@ const AdminAssignments = () => {
       assignmentTitle: formData.assignmentTitle,
     };
 
-    const oldFile = await fetchFileFromUrl(selectedRecord.file);
+    const oldFile = selectedRecord?.file
+      ? await fetchFileFromUrl(selectedRecord?.file)
+      : "";
 
     if (isEditMode) {
       parseData = {

@@ -668,7 +668,7 @@ export const parseAssignmentListing = (
     title: assignmentData?.assignmentTitle ?? "N/A",
     dueDate: (
       <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
-        12-02-2024
+        {assignmentData?.dueDate}
       </div>
     ),
     actions: (
@@ -1228,4 +1228,38 @@ export const studentByCourseListingParser = (data = []) => {
         campus: item.campusName,
       }))
     : [];
+};
+
+export const parseAnnouncementListing = (data = [], handleModal, navigate) => {
+  return data?.map((eventData) => ({
+    ...eventData,
+    title: eventData?.title ?? "N/A",
+    eventDate: (
+      <div className="text-[#0CAF60] text-center bg-[#E7F7EF] rounded-2xl">
+        {moment(eventData.eventDate).format("DD-MM-YYYY")}
+      </div>
+    ),
+    actions: (
+      <div className="flex gap-8 justify-center">
+        <img
+          className="cursor-pointer"
+          src="/edit-action.svg"
+          alt="edit"
+          title="Edit"
+          onClick={() => {
+            handleModal("addNewModalIsOpen", { ...eventData }, true);
+          }}
+        />
+        <img
+          className="cursor-pointer"
+          src="/delete-action.svg"
+          alt="delete"
+          title="Delete"
+          onClick={() => {
+            handleModal("deleteModalIsOpen", eventData);
+          }}
+        />
+      </div>
+    ),
+  }));
 };

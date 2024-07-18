@@ -46,12 +46,12 @@ export const ManageAnnouncementsColumns = [
     key: "title",
   },
   {
-    header: "Published Date",
-    key: "publishDate",
+    header: "Section",
+    key: "section",
   },
   {
-    header: "Visible to",
-    key: "visibleTo",
+    header: "Event Date",
+    key: "eventDate",
   },
   {
     header: "Actions",

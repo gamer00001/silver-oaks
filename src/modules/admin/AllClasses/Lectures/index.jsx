@@ -13,6 +13,7 @@ import {
   getLectures,
   updateLecture,
 } from "@/store/actions/lecturesActions";
+import { handleError } from "@/utils/errorHandling";
 import { fetchFileFromUrl } from "@/utils/helper";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -145,11 +146,17 @@ const LecturesPage = () => {
       apiToCall({
         onSuccess: () => {
           handleLoader(false);
+          toast.success(
+            isEditMode
+              ? "Lecture Updated Successfully!"
+              : "Lecture Created Successfully"
+          );
           // handleModal("addNewModalIsOpen");
           fetchListing();
         },
-        onError: () => {
+        onError: (error) => {
           handleLoader(false);
+          handleError(error);
         },
         payload: {
           body: formData,
