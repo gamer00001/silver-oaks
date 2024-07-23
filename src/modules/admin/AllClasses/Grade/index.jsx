@@ -2,15 +2,18 @@ import { Loader, ModalTop } from "@/components/common";
 import Button from "@/components/common/Button";
 import CourseBlock from "@/components/common/CourseBlock";
 import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
+import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddCourseFields } from "@/constants/forms";
 import { AddCourseSchema } from "@/schema";
 import {
   addCourse,
   deleteCourse,
   getAllCoursesByGrade,
+  updateCourse,
 } from "@/store/actions/coursesActions";
 import { handleError } from "@/utils/errorHandling";
 import { CoursesColors } from "@/utils/helper";
+import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +30,7 @@ const GradePage = () => {
     addNewModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
+    deleteModalIsOpen: false,
   });
 
   const { gradeId, campusName, campusId, sectionName, sectionId } = useParams();
@@ -45,6 +49,8 @@ const GradePage = () => {
   };
 
   const handleAddCourse = (values) => {
+    const { isEditMode, selectedRecord } = state;
+
     let payload = {
       courseName: values.name,
       description: values.description,
@@ -54,8 +60,20 @@ const GradePage = () => {
 
     handleModal();
 
+    let apiToCall;
+
+    if (!isEmpty(selectedRecord)) {
+      apiToCall = updateCourse;
+      payload = {
+        ...payload,
+        courseId: selectedRecord?.courseId,
+      };
+    } else {
+      apiToCall = addCourse;
+    }
+
     dispatch(
-      addCourse({
+      apiToCall({
         payload: {
           body: payload,
           dispatch,
@@ -85,12 +103,16 @@ const GradePage = () => {
     );
   };
 
-  const handleDeleteCourse = (courseId) => {
+  const handleDeleteCourse = () => {
+    const { selectedRecord } = state;
+
+    handleModal("deleteModalIsOpen");
+
     dispatch(
       deleteCourse({
         payload: {
           query: {
-            courseId,
+            courseId: selectedRecord?.courseId,
           },
           dispatch,
         },
@@ -144,12 +166,14 @@ const GradePage = () => {
               headingFontSize="text-2xl"
               title={item?.courseName}
               showDeleteIcon={true}
+              showEditIcon
               heading={`Grade ${item?.grade}`}
               data={CoursesColors[index]}
-              handleDeleteAction={() => handleDeleteCourse(item.courseId)}
-              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${sectionName}/${sectionId}/${item?.courseName}/${item?.courseId}/lectures`}
-              bgColor={CoursesColors[index]?.backgroundColor}
               textColor={CoursesColors[index]?.textColor}
+              bgColor={CoursesColors[index]?.backgroundColor}
+              handleEditAction={() => handleModal("addNewModalIsOpen", item)}
+              handleDeleteAction={() => handleModal("deleteModalIsOpen", item)}
+              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${sectionName}/${sectionId}/${item?.courseName}/${item?.courseId}/lectures`}
               {...item}
             />
           ))
@@ -161,17 +185,32 @@ const GradePage = () => {
       <ModalTop
         className="!rounded-[2.4rem] !max-w-[59.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
         open={state.addNewModalIsOpen}
-        onClose={() => handleModal("deleteModalIsOpen")}
+        onClose={() => handleModal("addNewModalIsOpen")}
       >
         <AddStudentTeacher
-          title={"Add Course"}
-          subtitle="Teacher Details"
+          title={`${!isEmpty(state?.selectedRecord) ? "Edit" : "Add"} Course`}
+          subtitle="Course Details"
           fields={AddCourseFields() ?? []}
           handleAddUser={handleAddCourse}
           initialValues={initialValues}
           schema={AddCourseSchema}
-          editValues={state.selectedRecord}
+          editValues={{
+            ...state.selectedRecord,
+            name: state?.selectedRecord?.courseName,
+          }}
           handleModal={() => handleModal("addNewModalIsOpen")}
+        />
+      </ModalTop>
+
+      <ModalTop
+        className="!rounded-[2.4rem] !max-w-[45.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
+        open={state.deleteModalIsOpen}
+        onClose={() => handleModal("deleteModalIsOpen")}
+      >
+        <DeleteActionModal
+          disabled={state.isLoading}
+          handleAction={handleDeleteCourse}
+          handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>
     </div>

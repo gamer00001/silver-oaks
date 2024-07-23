@@ -248,6 +248,52 @@ export const AddAnnouncementFields = () => {
   ];
 };
 
+export const AddNewAnnouncementFields = () => {
+  return [
+    {
+      name: "title",
+      placeholder: "Enter Announcement Title",
+      column: 12,
+      // icon: "/icon-1.svg",
+      showLabel: true,
+      type: "text",
+    },
+    {
+      name: "description",
+      placeholder: "Enter Description",
+      column: 12,
+      showLabel: true,
+      // icon: "/icon-1.svg",
+      type: "text",
+    },
+    {
+      name: "eventDate",
+      placeholder: "Select Date",
+      column: 12,
+      showLabel: true,
+      // icon: "/icon-8.svg",
+      type: "date",
+    },
+    {
+      name: "time",
+      placeholder: "Enter Time",
+      column: 12,
+      showLabel: true,
+      // icon: "/icon-5.svg",
+      type: "number",
+    },
+    {
+      name: "type",
+      placeholder: "Enter Event Type",
+      column: 12,
+      showLabel: true,
+      // icon: "/icon-5.svg",
+      type: "text",
+    },
+    ,
+  ];
+};
+
 export const AddNotificationFields = () => {
   return [
     {

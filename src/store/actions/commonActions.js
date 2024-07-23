@@ -18,6 +18,15 @@ export const addCampus = asyncCatch("courseSlice/addCampus", async ({ body }) =>
   axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses`, body)
 );
 
+export const deleteCampus = asyncCatch(
+  "courseSlice/deleteCampus",
+  async ({ query, body }) =>
+    axios.delete(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/get-campus/${query.campusId}`,
+      body
+    )
+);
+
 export const editCampus = asyncCatch(
   "courseSlice/editCampus",
   async ({ query, body }) =>

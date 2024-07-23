@@ -15,6 +15,7 @@ import {
   updateAssignment,
 } from "@/store/actions/assignmentsActions";
 import { fetchAllTeachers } from "@/store/actions/teacherActions";
+import { handleError } from "@/utils/errorHandling";
 import { fetchFileFromUrl, removeEmptyValues } from "@/utils/helper";
 import { Grid } from "@mui/material";
 import { isEmpty } from "lodash";
@@ -117,15 +118,17 @@ const AdminAssignments = () => {
         payload: {
           body: removeEmptyValues(parseData),
         },
-        onError: () => {
-          toast.error("Something went wrong");
+        onError: (error) => {
           handleLoader(false);
+          handleError(error);
         },
         onSuccess: () => {
           fetchListing();
           handleLoader(false);
           // handleModal("addNewModalIsOpen");
-          toast.success("Assignment Created Successfully!");
+          toast.success(
+            `Assignment ${isEditMode ? "Updated" : "Created"} Successfully!`
+          );
         },
       })
     );

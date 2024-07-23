@@ -21,6 +21,12 @@ export const addCourse = asyncCatch("courseSlice/addCourse", async ({ body }) =>
   axios.post(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/courses`, body)
 );
 
+export const updateCourse = asyncCatch(
+  "courseSlice/updateCourse",
+  async ({ body }) =>
+    axios.put(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/courses`, body)
+);
+
 export const deleteCourse = asyncCatch(
   "courseSlice/addCourse",
   async ({ query }) =>

@@ -53,21 +53,44 @@ const CourseBlock = ({
         src="/books-icon.svg"
         alt="course-icon"
       />
-      {showEditIcon && (
-        <img
-          alt="delete-icon"
-          src="/edit-icon.png"
-          onClick={handleEditAction}
-          className="absolute w-10 cursor-pointer top-2 right-4"
-        />
-      )}
-      {showDeleteIcon && (
-        <img
-          alt="delete-icon"
-          src="/delete-icon.png"
-          onClick={handleDeleteAction}
-          className="absolute w-10 cursor-pointer top-2 right-4"
-        />
+      {showEditIcon && showDeleteIcon ? (
+        <>
+          {showEditIcon && (
+            <img
+              alt="delete-icon"
+              src="/edit-icon.png"
+              onClick={handleEditAction}
+              className="absolute w-10 cursor-pointer top-2 right-16"
+            />
+          )}
+          {showDeleteIcon && (
+            <img
+              alt="delete-icon"
+              src="/delete-icon.png"
+              onClick={handleDeleteAction}
+              className="absolute w-10 cursor-pointer top-2 right-4"
+            />
+          )}
+        </>
+      ) : (
+        <>
+          {showEditIcon && (
+            <img
+              alt="delete-icon"
+              src="/edit-icon.png"
+              onClick={handleEditAction}
+              className="absolute w-10 cursor-pointer top-2 right-4"
+            />
+          )}
+          {showDeleteIcon && (
+            <img
+              alt="delete-icon"
+              src="/delete-icon.png"
+              onClick={handleDeleteAction}
+              className="absolute w-10 cursor-pointer top-2 right-4"
+            />
+          )}
+        </>
       )}
     </div>
   );

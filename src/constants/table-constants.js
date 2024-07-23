@@ -153,7 +153,7 @@ export const QuizzColumns = [
     key: "visibleTo",
   },
   {
-    header: "Published Date",
+    header: "Due Date",
     key: "publishedDate",
   },
   {

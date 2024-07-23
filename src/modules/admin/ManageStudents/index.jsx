@@ -438,6 +438,7 @@ const ManageStudents = () => {
           handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>
+
       {(loading ||
         filteredLoading ||
         state.isLoading ||
