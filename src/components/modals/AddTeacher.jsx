@@ -79,6 +79,13 @@ const AddTeacher = ({
                     value={values[field.name]}
                     disabled={field.isDisabled}
                     onChange={(value) => {
+                      const event = {
+                        target: {
+                          name: field.name,
+                          value: value,
+                        },
+                      };
+
                       if (field.name === "campusName") {
                         const event2 = {
                           target: {
@@ -86,15 +93,10 @@ const AddTeacher = ({
                             value: [defaultSection],
                           },
                         };
-                        handleChange(event2);
-                      } else {
-                        const event = {
-                          target: {
-                            name: field.name,
-                            value: value,
-                          },
-                        };
 
+                        handleChange(event2);
+                        handleChange(event);
+                      } else {
                         handleChange(event);
                       }
                     }}
@@ -181,11 +183,11 @@ const AddSectionForTeacher = ({
   const [sectionsList, setSectionsList] = useState([]);
 
   const fetchSectionsForGrade = (grade) => {
-    const campusId = campusesData.find(
-      (item) => item.campusName === values.campusName
-    )?.id;
-
     if (!isEmpty(values.campusName)) {
+      const campusId = campusesData.find(
+        (item) => item.campusName === values.campusName
+      )?.id;
+
       dispatch(
         fetchSectionsByCampus({
           payload: {
@@ -233,6 +235,7 @@ const AddSectionForTeacher = ({
               touched={
                 touched &&
                 touched?.sectionsList &&
+                touched?.sectionsList[formIndex] &&
                 touched?.sectionsList[formIndex][item.name]
               }
               value={values?.sectionsList[formIndex][item.name]}
