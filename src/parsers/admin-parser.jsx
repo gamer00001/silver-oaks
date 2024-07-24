@@ -32,20 +32,16 @@ export const parseAddTeacherData = (data) => {
     // grade: data.grade,
     // sectionName: data.sectionName,
     // section: data.section,
-    teacherSectionList: [
-      {
-        grade: data.grade,
-        section: data.section,
-      },
-    ],
     // teacherSectionList: [
     //   {
-    //     grade: data,
-    //     id: 0,
-    //     section: data,
-    //     teacherId: 0,
+    //     grade: data.grade,
+    //     section: data.section,
     //   },
     // ],
+    teacherSectionList: data.sectionsList.map((item) => ({
+      grade: item.grade,
+      section: item.section,
+    })),
   };
 };
 

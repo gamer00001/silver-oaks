@@ -3,10 +3,11 @@ import Button from "@/components/common/Button";
 import CustomTable from "@/components/common/CustomTable";
 import Dropdown from "@/components/common/Dropdown";
 import InputField from "@/components/common/InputField";
-import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
+import AddTeacher from "@/components/modals/AddTeacher";
 import DeleteActionModal from "@/components/modals/DeleteAction";
 import { AddTeacherFields } from "@/constants/forms";
 import { ManageTeachersColumns } from "@/constants/table-constants";
+import { UploadAssignmnet } from "@/modules/Assignment";
 import { parseAddTeacherData } from "@/parsers/admin-parser";
 import { parseTeachersListing } from "@/parsers/student-parser";
 import { AddTeacherSchema, EditTeacherSchema } from "@/schema";
@@ -22,21 +23,25 @@ import { Grid } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { MOCK_GRADES } from "../AllClasses";
-import { UploadAssignmnet } from "@/modules/Assignment";
 import { useLocation } from "react-router-dom";
+
+import { MOCK_GRADES } from "../AllClasses";
 
 const initialValues = {
   employeeName: "",
   campusName: "",
   gender: "",
-  grade: "",
-  section: "",
   password: "",
   dateOfBirth: "",
   joiningDate: "",
   phoneNumber: "",
   email: "",
+  sectionsList: [
+    {
+      grade: "",
+      section: "",
+    },
+  ],
 };
 
 const ManageTeachers = () => {
@@ -332,7 +337,7 @@ const ManageTeachers = () => {
         open={state.addNewModalIsOpen}
         onClose={() => handleModal("addNewModalIsOpen")}
       >
-        <AddStudentTeacher
+        <AddTeacher
           schema={state.isEditMode ? EditTeacherSchema : AddTeacherSchema}
           subtitle="Teacher Details"
           initialValues={initialValues}

@@ -140,24 +140,6 @@ export const AddTeacherFields = (campuses = []) => {
       type: "dropdown",
     },
     {
-      name: "grade",
-      placeholder: "Grade",
-      column: 6,
-      options: MOCK_GRADES().map((item) => item.title),
-      icon: "/icon-2.svg",
-      type: "dropdown",
-      showLabel: true,
-    },
-    {
-      name: "section",
-      placeholder: "Section",
-      column: 6,
-      icon: "/icon-4.svg",
-      options: [],
-      type: "dropdown",
-      showLabel: true,
-    },
-    {
       name: "password",
       placeholder: "Password",
       column: 6,
@@ -207,6 +189,29 @@ export const AddTeacherFields = (campuses = []) => {
       column: 6,
       icon: "/icon-11.svg",
       type: "email",
+      showLabel: true,
+    },
+  ];
+};
+
+export const GradeSectionSelectionFields = () => {
+  return [
+    {
+      name: "grade",
+      placeholder: "Grade",
+      column: 6,
+      options: MOCK_GRADES().map((item) => item.title),
+      icon: "/icon-2.svg",
+      type: "dropdown",
+      showLabel: true,
+    },
+    {
+      name: "section",
+      placeholder: "Section",
+      column: 6,
+      icon: "/icon-4.svg",
+      options: [],
+      type: "dropdown",
       showLabel: true,
     },
   ];

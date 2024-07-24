@@ -158,29 +158,39 @@ export const EditStudentSchema = Yup.object().shape({
 
 export const AddTeacherSchema = Yup.object().shape({
   employeeName: Yup.string().required("Name is required"),
-  grade: Yup.string().required("Grade is required"),
   campusName: Yup.string().required("Campus is required"),
-  campusName: Yup.string().required("Campus is required"),
-  section: Yup.string().required("Section is required"),
+  // campusName: Yup.string().required("Campus is required"),
   gender: Yup.string().required("Gender is required"),
   password: Yup.string().required("Password is required"),
   dateOfBirth: Yup.string().required("Date of Birth is required"),
   joiningDate: Yup.string().required("Joining Date is required"),
   phoneNumber: Yup.string().required("Phone Number is required"),
   email: Yup.string().required("Email is required"),
+  sectionsList: Yup.array().of(
+    Yup.object({
+      section: Yup.string().required("Section is required"),
+      grade: Yup.string().required("Grade is required"),
+    })
+  ),
 });
 
 export const EditTeacherSchema = Yup.object().shape({
   employeeName: Yup.string().required("Name is required"),
-  grade: Yup.string().required("Grade is required"),
   campusName: Yup.string().required("Campus is required"),
-  campusName: Yup.string().required("Campus is required"),
-  section: Yup.string().required("Section is required"),
+  // grade: Yup.string().required("Grade is required"),
+  // campusName: Yup.string().required("Campus is required"),
+  // section: Yup.string().required("Section is required"),
   gender: Yup.string().required("Gender is required"),
   dateOfBirth: Yup.string().required("Date of Birth is required"),
   joiningDate: Yup.string().required("Joining Date is required"),
   phoneNumber: Yup.string().required("Phone Number is required"),
   email: Yup.string().required("Email is required"),
+  sectionsList: Yup.array().of(
+    Yup.object({
+      section: Yup.string().required("Section is required"),
+      grade: Yup.string().required("Grade is required"),
+    })
+  ),
 });
 
 export const lectureSchema = Yup.object().shape({

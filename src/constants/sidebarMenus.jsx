@@ -76,11 +76,11 @@ export const panelSideBar = (defaultCampus) => ({
       name: "Manage Teachers",
       icon: <Events />,
     },
-    {
-      to: "/manage-announcements",
-      name: "Manage Announcements",
-      icon: <Events />,
-    },
+    // {
+    //   to: "/manage-announcements",
+    //   name: "Manage Announcements",
+    //   icon: <Events />,
+    // },
 
     // {
     //   to: "/manage-notifications",
