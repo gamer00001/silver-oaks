@@ -26,8 +26,6 @@ const StudentDashboard = () => {
     (s) => s.studentReducer
   );
 
-  console.log({ studentData });
-
   const { studentEvents } = useSelector((s) => s.eventReducer);
 
   useEffect(() => {

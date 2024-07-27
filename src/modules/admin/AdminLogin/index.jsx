@@ -43,7 +43,6 @@ const AdminLogin = ({ forStudent = false }) => {
             },
           },
           onSuccess: (res) => {
-            console.log({ res });
             navigate("/", { replace: true });
             localStorage.setItem("email", body.email);
             localStorage.setItem(

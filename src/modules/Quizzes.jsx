@@ -158,8 +158,6 @@ const QuizCard = ({
   const navigate = useNavigate();
   const { id } = useParams();
 
-  console.log({ file });
-
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
       <CardContent>

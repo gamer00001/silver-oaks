@@ -114,7 +114,6 @@ const AllClasses = () => {
   const { campusesData } = useSelector((s) => s.commonReducer);
 
   const handleModal = (key = "deleteModalIsOpen") => {
-    console.log({ key }, [key], !state[key]);
     setState((prev) => ({
       ...prev,
       [key]: !prev[key],

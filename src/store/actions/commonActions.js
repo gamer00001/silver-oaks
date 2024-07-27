@@ -53,6 +53,15 @@ export const editSection = asyncCatch(
     )
 );
 
+export const deleteSection = asyncCatch(
+  "courseSlice/deleteSection",
+  async ({ query, body }) =>
+    axios.delete(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/campuses/sections/${query.sectionId}`,
+      body
+    )
+);
+
 export const fetchSectionsByCampus = asyncCatch(
   "commonSlice/fetchSectionsByCampus",
   async ({ query, config }) =>

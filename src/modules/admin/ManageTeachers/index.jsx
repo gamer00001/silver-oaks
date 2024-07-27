@@ -95,7 +95,6 @@ const ManageTeachers = () => {
     selectedRecord,
     isEditMode = false
   ) => {
-    console.log({ selectedRecord });
     setState((prev) => ({
       ...prev,
       [key]: !prev[key],
@@ -103,6 +102,7 @@ const ManageTeachers = () => {
       uploadedFile: "",
       selectedRecord: {
         ...selectedRecord,
+        sectionsList: selectedRecord?.teacherSectionList ?? [],
         employeeName: selectedRecord?.employee_Name,
         campusName: selectedRecord?.campus_Name,
         // grade: "",
@@ -122,7 +122,7 @@ const ManageTeachers = () => {
     if (isEditMode) {
       parseData = {
         ...parseData,
-        teacherId: selectedRecord.teacher_id,
+        teacherId: selectedRecord.teacher_Id,
       };
     }
 
@@ -155,7 +155,7 @@ const ManageTeachers = () => {
       deleteTeacher({
         payload: {
           query: {
-            teacherId: selectedRecord?.teacher_id,
+            teacherId: selectedRecord?.teacher_Id,
           },
         },
         onSuccess: (resp) => {

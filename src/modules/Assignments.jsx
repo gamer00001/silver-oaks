@@ -391,7 +391,6 @@ const AddAssignment = ({ onClose, onAdd }) => {
       Object.entries(v).forEach(([key, value]) => {
         formData.append(key, value);
       });
-      console.log(formData);
       onAdd(formData);
     },
   });

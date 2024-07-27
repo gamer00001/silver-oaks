@@ -29,8 +29,6 @@ const AdminStudents = () => {
 
   const { studentsListing } = useSelector((s) => s.studentReducer);
 
-  console.log({ studentsListing });
-
   const handleModal = (
     key = "deleteModalIsOpen",
     selectedRecord,

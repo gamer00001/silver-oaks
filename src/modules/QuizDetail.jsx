@@ -120,8 +120,6 @@ const QuizDetail = ({
     ? singleExamData.data?.examQuestions
     : data?.quizQuestions;
 
-  console.log({ questionsList });
-
   return (
     <div>
       <div className="flex flex-row gap-2 justify-between items-center">

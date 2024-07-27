@@ -19,7 +19,7 @@ const OnGoingAssignments = ({ forStudent = false }) => {
 
   const { ogaListingData } = useSelector((s) => s.ogaReducer);
 
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
 
   const { coursesData } = useSelector((s) => s.courseReducer);
 
@@ -31,22 +31,20 @@ const OnGoingAssignments = ({ forStudent = false }) => {
   };
 
   useEffect(() => {
-    forStudent && findCourseById()
+    forStudent && findCourseById();
     dispatch(
       getOnGoingAssignmentsListing({
         onError: () => navigate("/404", { replace: true }),
         payload: {
           query: {
             courseId: id,
-            studentRollNumber: localStorage.getItem("email")
+            studentRollNumber: localStorage.getItem("email"),
           },
           dispatch,
         },
       })
     );
   }, []);
-
-  console.log({ ogaListingData });
 
   return (
     <div className="flex flex-col justify-center items-center gap-8 pb-8">

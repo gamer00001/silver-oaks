@@ -36,7 +36,7 @@ const OGA = ({ forStudent = false }) => {
 
   const { teacherIdData } = useSelector((s) => s.dashboardReducer);
 
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
 
   const { coursesData } = useSelector((s) => s.courseReducer);
 
@@ -48,8 +48,7 @@ const OGA = ({ forStudent = false }) => {
   };
 
   useEffect(() => {
-
-    forStudent && findCourseById()
+    forStudent && findCourseById();
     const studentInfo = JSON.parse(localStorage.getItem("userInfo")) ?? {};
 
     localStorage.getItem("userType") == "teacher"
@@ -77,17 +76,19 @@ const OGA = ({ forStudent = false }) => {
             },
           })
         )
-      : dispatch(getAssignments({
-          onError: () => navigate("/404", { replace: true }),
-          payload: {
-            query: {
-              courseId: id,
-              section: studentInfo?.sectionName,
-              rollNumber: studentInfo?.rollNumber,
+      : dispatch(
+          getAssignments({
+            onError: () => navigate("/404", { replace: true }),
+            payload: {
+              query: {
+                courseId: id,
+                section: studentInfo?.sectionName,
+                rollNumber: studentInfo?.rollNumber,
+              },
+              dispatch,
             },
-            dispatch,
-          },
-        }));
+          })
+        );
   }, []);
 
   useEffect(() => {
@@ -386,7 +387,6 @@ const AddAssignment = ({ onClose, onAdd }) => {
       Object.entries(v).forEach(([key, value]) => {
         formData.append(key, value);
       });
-      console.log(formData);
       onAdd(formData);
     },
   });

@@ -47,8 +47,6 @@ const SubmittedAssignments = () => {
 
   const { campusesData } = useSelector((s) => s.commonReducer);
 
-  console.log({ campusesData });
-
   const handleModal = (
     key = "deleteModalIsOpen",
     selectedRecord,
@@ -82,7 +80,6 @@ const SubmittedAssignments = () => {
           body: parseData,
         },
         onSuccess: (resp) => {
-          console.log({ resp });
           fetchListing();
         },
         onError: () => navigate("/404", { replace: true }),
@@ -92,8 +89,6 @@ const SubmittedAssignments = () => {
 
   const handleDelete = () => {
     const { selectedRecord } = state;
-
-    console.log({ selectedRecord }, selectedRecord?.selectedRecord?.teacherId);
 
     dispatch(
       deleteTeacher({
@@ -143,7 +138,6 @@ const SubmittedAssignments = () => {
     dispatch(
       getAssignmentById({
         onSuccess: (resp) => {
-          console.log("fetchAssignmentById", resp);
           setState((prev) => ({
             ...prev,
             assignmentDetails: resp,

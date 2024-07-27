@@ -63,11 +63,12 @@ const AddTeacher = ({
       </h4>
       {/* <form onSubmit={handleSubmit}> */}
       <Formik
-        initialValues={initialValues}
+        initialValues={editValues ?? initialValues}
         validationSchema={schema}
         onSubmit={handleSubmitForm}
+        enableReinitialize
       >
-        {({ values, errors, touched, handleChange, setFieldValue }) => (
+        {({ values, errors, touched, handleChange }) => (
           <Form>
             <Grid className="pb-8" container spacing={4}>
               {state?.formFields?.map((field, key) => (

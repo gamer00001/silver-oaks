@@ -1,19 +1,12 @@
 import { Loader, ModalTop } from "@/components/common";
-import Button from "@/components/common/Button";
 import CourseBlock from "@/components/common/CourseBlock";
 import AddNewClass from "@/components/modals/AddNewClass";
-import AddStudentTeacher from "@/components/modals/AddStudentTeacher";
-import { AddCourseFields } from "@/constants/forms";
-import { AddCourseSchema } from "@/schema";
+import DeleteActionModal from "@/components/modals/DeleteAction";
 import {
+  deleteSection,
   editSection,
   fetchSectionsByCampus,
 } from "@/store/actions/commonActions";
-import {
-  addCourse,
-  deleteCourse,
-  getAllCoursesByGrade,
-} from "@/store/actions/coursesActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import { CoursesColors } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
@@ -21,15 +14,10 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const initialValues = {
-  name: "",
-  description: "",
-  credits: "",
-};
-
 const SectionPage = () => {
   const [state, setState] = useState({
     editModalIsOpen: false,
+    deleteModalIsOpen: false,
     selectedRecord: {},
     isEditMode: false,
   });
@@ -95,6 +83,30 @@ const SectionPage = () => {
     );
   };
 
+  const handleDelete = () => {
+    const { selectedRecord } = state;
+
+    handleModal("deleteModalIsOpen");
+
+    dispatch(
+      deleteSection({
+        payload: {
+          query: {
+            sectionId: selectedRecord?.id,
+          },
+          dispatch,
+        },
+        onSuccess: () => {
+          toast.success("Deleted Successfully!");
+          fetchAllSectionsByGrade();
+        },
+        onError: (error) => {
+          handleError(error);
+        },
+      })
+    );
+  };
+
   useEffect(() => {
     fetchAllSectionsByGrade();
     fetchCompusListing(dispatch);
@@ -121,15 +133,16 @@ const SectionPage = () => {
               width="w-full"
               height="h-72"
               bookIcon="w-40"
-              titleFontSize="text-5xl"
-              headingFontSize="text-2xl"
-              title={item.sectionName}
-              showDeleteIcon={false}
               showEditIcon={true}
+              showDeleteIcon={true}
               heading={campusName}
+              titleFontSize="text-5xl"
+              title={item.sectionName}
+              headingFontSize="text-2xl"
               data={CoursesColors[index]}
               textColor={CoursesColors[index]?.textColor}
               bgColor={CoursesColors[index]?.backgroundColor}
+              handleDeleteAction={() => handleModal("deleteModalIsOpen", item)}
               handleEditAction={() => handleModal("editModalIsOpen", item)}
               link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
               {...item}
@@ -162,6 +175,18 @@ const SectionPage = () => {
           campusesOptions={
             campusesData?.data?.map((item) => item?.campusName) ?? []
           }
+        />
+      </ModalTop>
+
+      <ModalTop
+        className="!rounded-[2.4rem] !max-w-[45.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
+        open={state.deleteModalIsOpen}
+        onClose={() => handleModal("deleteModalIsOpen")}
+      >
+        <DeleteActionModal
+          disabled={state.isLoading}
+          handleAction={handleDelete}
+          handleModal={() => handleModal("deleteModalIsOpen")}
         />
       </ModalTop>
     </div>

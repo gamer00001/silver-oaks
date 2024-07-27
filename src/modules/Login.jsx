@@ -42,7 +42,6 @@ const Login = ({ forStudent = false }) => {
             },
           },
           onSuccess: (res) => {
-            console.log({ res });
             navigate("/", { replace: true });
             localStorage.setItem(
               "userType",

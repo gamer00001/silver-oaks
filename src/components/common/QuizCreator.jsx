@@ -11,7 +11,6 @@ const QuizCreator = ({
   addNewQuiz,
 }) => {
   const handleSubmit = (values) => {
-    console.log(values);
     addNewQuiz(values);
   };
 
