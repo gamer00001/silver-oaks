@@ -30,10 +30,10 @@ export const ManageTeachersColumns = [
     header: "Grade Assigned",
     key: "gradeAssigned",
   },
-  {
-    header: "Last Logged in",
-    key: "lastLoggedIn",
-  },
+  // {
+  //   header: "Last Logged in",
+  //   key: "lastLoggedIn",
+  // },
   {
     header: "Actions",
     key: "actions",

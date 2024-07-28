@@ -1080,12 +1080,27 @@ export const parseTeachersListing = (data = [], handleModal) => {
   return data?.map((teachersData) => ({
     ...teachersData,
     name: teachersData?.employee_Name ?? "N/A",
-    gradeAssigned: teachersData?.gradeAssigned ?? "N/A",
-    lastLoggedIn: (
-      <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
-        N/A
+    gradeAssigned: (
+      <div className="max-w-sm">
+        {!isEmpty(teachersData?.teacherSectionList)
+          ? teachersData?.teacherSectionList?.map((item) => {
+              const grade = item.grade?.split(" ");
+              return (
+                <div className="capitalize">
+                  <span>{grade[0]} </span>
+                  <span className="uppercase">{grade[1]} </span>
+                  <span>{`(${item.section})`}</span>
+                </div>
+              );
+            })
+          : "N/A"}
       </div>
     ),
+    // lastLoggedIn: (
+    //   <div className="text-[#FE964A] text-center bg-[#FFF0E6] rounded-2xl">
+    //     N/A
+    //   </div>
+    // ),
     actions: (
       <div className="flex gap-8 justify-center">
         <img
