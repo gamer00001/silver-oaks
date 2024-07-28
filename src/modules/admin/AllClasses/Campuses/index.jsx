@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
-const CampusesPage = () => {
+const CampusesPage = ({ campuses }) => {
   const [state, setState] = useState({
     editModalIsOpen: false,
     selectedRecord: {},
@@ -20,10 +20,6 @@ const CampusesPage = () => {
 
   // const { gradeId, campusId, campusName } = useParams();
   const dispatch = useDispatch();
-
-  const {
-    campusesData: { data, loading },
-  } = useSelector((s) => s.commonReducer);
 
   const handleModal = (key = "editModalIsOpen", selectedRecord) => {
     setState((prev) => ({
@@ -86,11 +82,6 @@ const CampusesPage = () => {
     );
   };
 
-  useEffect(() => {
-    // fetchAllSectionsByGrade();
-    fetchCompusListing(dispatch);
-  }, []);
-
   return (
     <div className="px-20">
       <div className="flex items-center justify-between">
@@ -101,8 +92,8 @@ const CampusesPage = () => {
       </div>
 
       <div className="gap-12 pt-12 grid grid-cols-3 w-full">
-        {data?.length > 0 ? (
-          data?.map((item, index) => (
+        {campuses?.length > 0 ? (
+          campuses?.map((item, index) => (
             <CourseBlock
               key={index}
               width="w-full"
@@ -141,7 +132,7 @@ const CampusesPage = () => {
             name: state?.selectedRecord?.campusName,
           }}
           handleModal={() => handleModal("editModalIsOpen")}
-          campusesOptions={data?.map((item) => item?.campusName) ?? []}
+          campusesOptions={campuses?.map((item) => item?.campusName) ?? []}
         />
       </ModalTop>
 

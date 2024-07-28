@@ -714,6 +714,9 @@ export const parseSubmittedAssignmentListing = (
     ...assignmentData,
     fullName: assignmentData?.studentName,
     rollNumber: assignmentData?.studentRollNumber,
+    submitted: assignmentData?.submissionDate
+      ? moment(assignmentData?.submissionDate).format("DD-MM-YYYY")
+      : "--",
     grade: (
       <span className="capitalize">
         {assignmentData?.obtainedGrade ?? "--"}

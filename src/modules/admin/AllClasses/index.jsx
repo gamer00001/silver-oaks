@@ -23,6 +23,7 @@ import garde8 from "../../../assets/common/grade8.png";
 import garde9 from "../../../assets/common/grade9.png";
 import CampusesPage from "./Campuses";
 import TabsComponent from "./TabView";
+import { isEmpty, isNil } from "lodash";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
@@ -127,10 +128,12 @@ const AllClasses = () => {
     }));
   };
 
-  const fetchCampusValue = () =>
-    state?.selectionCampus ?? campusesData?.data
+  const fetchCampusValue = () => {
+    return state?.selectionCampus ??
+      (!isNil(campusesData?.data) && !campusesData.loading)
       ? campusesData?.data[0]?.campusName
       : "";
+  };
 
   const fetchSelectCampusInfo = (selectedCampus = "") => {
     return campusesData?.data?.find(
@@ -246,16 +249,16 @@ const AllClasses = () => {
   };
 
   const CampusTabView = () => {
-    return <CampusesPage />;
+    return <CampusesPage campuses={campusesData.data} />;
   };
 
   useEffect(() => {
     fetchCompusListing(dispatch);
   }, []);
 
-  // if (campusesData?.loading) {
-  //   return <Loader />;
-  // }
+  if (campusesData?.loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-white h-full">
@@ -302,7 +305,7 @@ const AllClasses = () => {
         />
       </ModalTop>
 
-      {campusesData.loading && <Loader type={"screen"} />}
+      {/* {campusesData.loading && <Loader type={"screen"} />} */}
     </div>
   );
 };

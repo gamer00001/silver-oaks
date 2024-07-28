@@ -7,6 +7,13 @@ import NotificationsBing from "@/assets/Icons/NotificationsBing";
 import { MyMenu } from "../common";
 import { Avatar } from "@/assets/common";
 
+const dropdownitems = [
+  { to: "/my-profile", text: "My Profile" },
+  { to: "/logout", text: "Logout" },
+];
+
+const dropdownitemsForAdmin = [{ to: "/logout", text: "Logout" }];
+
 const UserProfile = ({ setIsOpen }) => {
   const {
     loginUserData: { user },
@@ -15,6 +22,11 @@ const UserProfile = ({ setIsOpen }) => {
   const { pathname } = useLocation();
 
   const [isNotification, setIsNotification] = useState(false);
+
+  const userType = localStorage.getItem("userType");
+
+  const profileOptions =
+    userType === "admin" ? dropdownitemsForAdmin : dropdownitems;
 
   return (
     <>
@@ -60,7 +72,7 @@ const UserProfile = ({ setIsOpen }) => {
         }}
         className="[&_>_div_>_ul]:bg-white [&_>_div_>_ul]:p-[1.2rem] [&_>_div_>_ul]:gap-[1rem]"
       >
-        {dropdownitems.map((item, k) => (
+        {profileOptions?.map((item, k) => (
           <ProfileDropDownItem
             key={k}
             item={item}
@@ -73,11 +85,6 @@ const UserProfile = ({ setIsOpen }) => {
 };
 
 export default UserProfile;
-
-const dropdownitems = [
-  { to: "/my-profile", text: "My Profile" },
-  { to: "/logout", text: "Logout" },
-];
 
 const ProfileDropDownItem = ({ item, onClick }) => {
   return (

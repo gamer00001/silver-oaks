@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CourseBlock = ({
   link,
@@ -37,16 +37,18 @@ const CourseBlock = ({
         {title}
       </span>
       {link && (
-        <span
-          style={{ color: textColor ?? "#000" }}
-          onClick={() => {
-            localStorage.setItem("selectedCourseInfo", JSON.stringify(data));
-            navigate(link);
-          }}
-          className="text-[#131215] text-md underline pt-6 cursor-pointer font-semibold"
-        >
-          View Course
-        </span>
+        <Link to={link}>
+          <div
+            style={{ color: textColor ?? "#000" }}
+            onClick={() => {
+              localStorage.setItem("selectedCourseInfo", JSON.stringify(data));
+              navigate(link);
+            }}
+            className="text-[#131215] text-md underline pt-6 cursor-pointer font-semibold"
+          >
+            View Course
+          </div>
+        </Link>
       )}
       <img
         className={`absolute right-0 bottom-0 ${bookIcon}`}
