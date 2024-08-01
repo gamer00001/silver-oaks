@@ -56,7 +56,7 @@ const AdminDashboard = () => {
   }, []);
 
   if (loading) {
-    return <Loader />;
+    return <Loader type={"screen"} />;
   }
 
   return (

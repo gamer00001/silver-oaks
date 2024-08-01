@@ -8,11 +8,12 @@ import {
   fetchSectionsByCampus,
 } from "@/store/actions/commonActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
+import { handleError } from "@/utils/errorHandling";
 import { CoursesColors } from "@/utils/helper";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SectionPage = () => {
   const [state, setState] = useState({
@@ -28,6 +29,8 @@ const SectionPage = () => {
   const {
     sectionsData: { data, loading },
   } = useSelector((s) => s.commonReducer);
+
+  const navigate = useNavigate();
 
   const { campusesData } = useSelector((s) => s.commonReducer);
 
@@ -69,7 +72,7 @@ const SectionPage = () => {
       editSection({
         payload: {
           query: {
-            sectionId: state.selectedRecord.id,
+            sectionId: state.selectedRecord?.id,
           },
           body: payload,
         },
@@ -78,7 +81,9 @@ const SectionPage = () => {
           fetchAllSectionsByGrade();
           toast.success("Section updated successfully!");
         },
-        onError: () => navigate("/404", { replace: true }),
+        onError: (error) => {
+          handleError(error);
+        },
       })
     );
   };
@@ -120,7 +125,15 @@ const SectionPage = () => {
     <div className="px-20">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-black font-semibold text-5xl">{`All Classes > Grade ${gradeId} > Campus ${campusName}`}</p>
+          <p className="text-black font-semibold text-5xl">
+            <span
+              onClick={() => navigate(`/all-classes?campus=${campusName}`)}
+              className="hover:underline cursor-pointer"
+            >
+              All Classes
+            </span>
+            {` > Grade ${gradeId} > Campus (${campusName})`}
+          </p>
           <p className="text-black font-semibold text-3xl pt-8">All Sections</p>
         </div>
       </div>

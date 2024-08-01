@@ -8,9 +8,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
 import { useLocation } from "react-router-dom";
-import { getCourses } from "@/store/actions/coursesActions";
+import {
+  getCourses,
+  getCoursesByStudent,
+} from "@/store/actions/coursesActions";
 import { panelSideBar } from "@/constants/sidebarMenus";
-import { currentLoggedInUserType } from "@/utils/helper";
+import {
+  currentLoggedInUserType,
+  fetchCurrentUserInfo,
+  isCurrentUserStudent,
+} from "@/utils/helper";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 
 const SideBar = () => {
@@ -24,8 +31,15 @@ const SideBar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const userInfo = fetchCurrentUserInfo();
+    const apiToCall = isCurrentUserStudent() ? getCoursesByStudent : getCourses;
     dispatch(
-      getCourses({
+      apiToCall({
+        payload: {
+          query: {
+            studentId: userInfo?.studentId,
+          },
+        },
         onError: () => navigate("/404", { replace: true }),
         onSuccess: (res) => {
           const coursesList =
@@ -89,6 +103,8 @@ const SideBarItem = ({ route }) => {
   const { setIsSidebarOpen } = useGlobalContext();
   const [expanded, setExpanded] = useState(false);
   const { coursesData } = useSelector((s) => s.courseReducer);
+  const { studentCourses } = useSelector((s) => s.courseReducer);
+
   const { pathname } = useLocation();
 
   const handleItemClick = () => {

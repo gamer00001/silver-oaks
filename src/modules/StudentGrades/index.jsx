@@ -77,7 +77,6 @@ const StudentGrades = () => {
   };
 
   const handleAcademicType = (selectedValue) => {
-    console.log({ selectedValue });
     setState((prev) => ({
       ...prev,
       academicCategory: selectedValue,
@@ -175,7 +174,6 @@ const StudentGrades = () => {
     dispatch(
       getAcademicRecord({
         onSuccess: (res) => {
-          console.log({ res });
           parseTableData(res);
         },
         onError: () => navigate("/404", { replace: true }),
@@ -192,8 +190,6 @@ const StudentGrades = () => {
       })
     );
   }, [state.academicCategory, state.term]);
-
-  console.log({ academicRecordData, state });
 
   return (
     <div>
@@ -229,7 +225,7 @@ const StudentGrades = () => {
         <Table
           page={page}
           columns={["Name", "Date", "Marks", "Feedback"]}
-          rows={state.tableData.length > 0 ? state.tableData : Mock_Table_Data}
+          rows={state.tableData.length > 0 ? state.tableData : []}
         />
       </div>
 

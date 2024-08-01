@@ -17,7 +17,7 @@ import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const initialValues = {
   name: "",
@@ -35,6 +35,7 @@ const GradePage = () => {
 
   const { gradeId, campusName, campusId, sectionName, sectionId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     coursesListing: { data, loading },
@@ -139,7 +140,34 @@ const GradePage = () => {
     <div className="px-20">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-black font-semibold text-6xl">{`All Classes > Grade ${gradeId}`}</p>
+          {/* <p className="text-black font-semibold text-6xl">{`All Classes > Grade ${gradeId}`}</p> */}
+          <p className="text-black font-semibold text-5xl">
+            <span
+              // onClick={() => window.history.back()}
+              onClick={() => navigate(`/all-classes?campus=${campusName}`)}
+              className="hover:underline cursor-pointer"
+            >
+              All Classes
+            </span>
+            {" > "}
+
+            <span
+              onClick={() =>
+                navigate(
+                  `/all-classes/grade/${gradeId}/${campusName}/${campusId}`
+                )
+              }
+              className="hover:underline cursor-pointer"
+            >{`Grade ${gradeId}`}</span>
+            <span>{` > Campus (${campusName}) > `}</span>
+
+            <span
+            // onClick={() => navigate(-1)}
+            // className="hover:underline cursor-pointer"
+            >
+              {`Section (${sectionName})`}
+            </span>
+          </p>
           <p className="text-black font-semibold text-3xl pt-4">All Subjects</p>
         </div>
 

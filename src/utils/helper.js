@@ -6,6 +6,10 @@ export const isCurrentUserStudent = () => {
   return localStorage.getItem("userType") === "student";
 };
 
+export const fetchCurrentUserInfo = () => {
+  return JSON.parse(localStorage.getItem("userInfo"));
+};
+
 export const CoursesColors = [
   {
     textColor: "#000",

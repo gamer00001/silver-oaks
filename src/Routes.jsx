@@ -218,6 +218,12 @@ const adminLayoutRoutes = [
         element={<MyReactHelmet title="Quizzes" element={<AddNewQuiz />} />}
       />
       <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/quizzes/quiz-detail/:qid"
+        element={
+          <MyReactHelmet title="Quiz Summary" element={<QuizDetail />} />
+        }
+      />
+      <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams"
         element={<MyReactHelmet title="Exams" element={<AdminExams />} />}
       />
@@ -231,6 +237,16 @@ const adminLayoutRoutes = [
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams/edit/:examId"
         element={<MyReactHelmet title="Quizzes" element={<AddNewExam />} />}
       />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/exams/exam-detail/:eid"
+        element={
+          <MyReactHelmet
+            title="Exam Summary"
+            element={<QuizDetail forExam={true} />}
+          />
+        }
+      />
+
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga"
         element={
@@ -247,6 +263,16 @@ const adminLayoutRoutes = [
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga/edit/:ogaId"
         element={<MyReactHelmet title="Quizzes" element={<AddNewOGA />} />}
       />
+      <Route
+        path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/oga/oga-detail/:aid"
+        element={
+          <MyReactHelmet
+            title="Exam Summary"
+            element={<QuizDetail forAssesment={true} />}
+          />
+        }
+      />
+
       <Route
         path="/all-classes/grade/:gradeId/:campusName/:campusId/:sectionName/:sectionId/:courseName/:courseId/students"
         element={<MyReactHelmet title="Students" element={<AdminStudents />} />}

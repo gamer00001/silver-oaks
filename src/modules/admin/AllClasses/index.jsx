@@ -9,7 +9,7 @@ import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import garde1 from "../../../assets/common/grade1.png";
 import garde10 from "../../../assets/common/grade10.png";
@@ -24,6 +24,7 @@ import garde9 from "../../../assets/common/grade9.png";
 import CampusesPage from "./Campuses";
 import TabsComponent from "./TabView";
 import { isEmpty, isNil } from "lodash";
+import { convertObjectToQueryString } from "@/utils";
 
 const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
@@ -111,6 +112,7 @@ const AllClasses = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { campusesData } = useSelector((s) => s.commonReducer);
 
@@ -128,11 +130,22 @@ const AllClasses = () => {
     }));
   };
 
+  const updateUrlBasedOnCampus = (selectedCampus) => {
+    const newUrl = new URL(window.location);
+    const params = new URLSearchParams(newUrl.search);
+    params.set("campus", selectedCampus);
+    newUrl.search = params.toString();
+    window.history.pushState({}, "", newUrl);
+  };
+
   const fetchCampusValue = () => {
-    return state?.selectionCampus ??
+    const selectedCampus =
+      state?.selectionCampus ??
       (!isNil(campusesData?.data) && !campusesData.loading)
-      ? campusesData?.data[0]?.campusName
-      : "";
+        ? campusesData?.data[0]?.campusName
+        : "";
+
+    return selectedCampus;
   };
 
   const fetchSelectCampusInfo = (selectedCampus = "") => {
@@ -142,6 +155,8 @@ const AllClasses = () => {
   };
 
   const handleCampusDropdown = (selectionOption) => {
+    updateUrlBasedOnCampus(selectionOption);
+
     setState((prev) => ({
       ...prev,
       selectionCampus: selectionOption,
@@ -208,30 +223,17 @@ const AllClasses = () => {
     return (
       <>
         <Grid container spacing={4} className="px-12 py-12">
-          {/* <Grid item sm={3} md={3} lg={2}>
-            <Dropdown placeholder="Grade" options={options} />
-          </Grid> */}
           <Grid item sm={3} md={3} lg={2}>
             <Dropdown
               placeholder="Campus"
               onChange={handleCampusDropdown}
-              value={fetchCampusValue()}
+              value={state.selectionCampus ?? fetchCampusValue()}
               options={
                 campusesData?.data?.map((item) => item?.campusName) ?? []
               }
             />
           </Grid>
           <Grid item sm={3} md={2} lg={4} />
-
-          {/* <Grid item sm={3} md={4} lg={4} className="flex justify-end gap-8">
-            <Button
-              variant="secondary"
-              size="large"
-              onClick={() => handleModal("addNewModalIsOpen")}
-            >
-              Add New
-            </Button>
-          </Grid> */}
         </Grid>
         <Grid container spacing={6} className="p-12 flex">
           {MOCK_GRADES(
@@ -248,12 +250,29 @@ const AllClasses = () => {
     );
   };
 
+  const prepopulateCampus = () => {
+    // const searchParams = window.location?.search;
+
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const campus = searchParams.get("campus");
+
+    if (!isEmpty(campus)) {
+      setState((prev) => ({
+        ...prev,
+        selectionCampus: campus,
+      }));
+    }
+  };
+
   const CampusTabView = () => {
     return <CampusesPage campuses={campusesData.data} />;
   };
 
   useEffect(() => {
     fetchCompusListing(dispatch);
+
+    prepopulateCampus();
   }, []);
 
   if (campusesData?.loading) {

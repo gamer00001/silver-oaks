@@ -57,7 +57,9 @@ const QuizDetail = ({
               ogaInfo: res,
             }));
           },
-          onError: () => navigate("/404", { replace: true }),
+          onError: (error) => {
+            handleError(error);
+          },
           payload: {
             query: {
               ogaId: aid,
@@ -75,7 +77,9 @@ const QuizDetail = ({
               examInfo: res,
             }));
           },
-          onError: () => navigate("/404", { replace: true }),
+          onError: (error) => {
+            handleError(error);
+          },
           payload: {
             query: {
               examId: eid,
@@ -92,6 +96,9 @@ const QuizDetail = ({
               ...prev,
               quizInfo: res,
             }));
+          },
+          onError: (error) => {
+            handleError(error);
           },
           // onError: () => navigate("/404", { replace: true }),
           payload: {
@@ -200,7 +207,7 @@ const QuizOptions = ({ checked, setChecked, data, options }) => {
 
 export default QuizDetail;
 
-const QuizOption = ({ setChecked, option, checked }) => {
+const QuizOption = ({ setChecked = () => {}, option, checked }) => {
   return (
     <MUICard
       className="flex justify-start items-center cursor-pointer"

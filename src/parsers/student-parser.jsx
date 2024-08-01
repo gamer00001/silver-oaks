@@ -1141,7 +1141,7 @@ export const parseQuizzesListing = (data = [], handleModal, navigate) => {
       </div>
     ),
     actions: (
-      <div className="flex gap-8 justify-center">
+      <div className="flex gap-8 justify-center items-center">
         <img
           className="cursor-pointer"
           src="/edit-action.svg"
@@ -1161,6 +1161,12 @@ export const parseQuizzesListing = (data = [], handleModal, navigate) => {
             handleModal("deleteModalIsOpen", quizData);
           }}
         />
+        <span
+          onClick={() => navigate(`quiz-detail/${quizData.quizId}`)}
+          className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+        >
+          View Quiz
+        </span>
       </div>
     ),
   }));
@@ -1177,7 +1183,7 @@ export const parseOgaListing = (data = [], handleModal, navigate) => {
       </div>
     ),
     actions: (
-      <div className="flex gap-8 justify-center">
+      <div className="flex gap-8 justify-center items-center">
         <img
           className="cursor-pointer"
           src="/edit-action.svg"
@@ -1197,6 +1203,12 @@ export const parseOgaListing = (data = [], handleModal, navigate) => {
             handleModal("deleteModalIsOpen", ogaData);
           }}
         />
+        <span
+          onClick={() => navigate(`oga-detail/${ogaData.ogaId}`)}
+          className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+        >
+          View OGA
+        </span>
       </div>
     ),
   }));
@@ -1213,7 +1225,7 @@ export const parseExamListing = (data = [], handleModal, navigate) => {
       </div>
     ),
     actions: (
-      <div className="flex gap-8 justify-center">
+      <div className="flex gap-8 justify-center items-center">
         <img
           className="cursor-pointer"
           src="/edit-action.svg"
@@ -1232,6 +1244,12 @@ export const parseExamListing = (data = [], handleModal, navigate) => {
             handleModal("deleteModalIsOpen", examData);
           }}
         />
+        <span
+          onClick={() => navigate(`exam-detail/${examData.examId}`)}
+          className="text-[#7A1315] font-semibold text-2xl hover:underline cursor-pointer"
+        >
+          View Exam
+        </span>
       </div>
     ),
   }));

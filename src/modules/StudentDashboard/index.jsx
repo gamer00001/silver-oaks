@@ -68,13 +68,14 @@ const StudentDashboard = () => {
     const courses = localStorage.getItem("coursesList");
 
     courses &&
+      studentData &&
       dispatch(
         getEventsByStudent({
           onError: () => navigate("/404", { replace: true }),
           payload: {
             query: {
               courseId: courses,
-              section: studentData.sectionName,
+              section: studentData.data?.sectionName,
             },
             dispatch,
           },

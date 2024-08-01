@@ -48,7 +48,12 @@ const FileUpload = ({ onChange, touched, error, value }) => {
         </p>
       )}
       {!isEmpty(value) && !state.file && (
-        <p className="mt-5 text-xl font-semibold">{value ? value : ""}</p>
+        <p
+          className="mt-5 text-xl font-semibold cursor-pointer"
+          onClick={() => window.open(value)}
+        >
+          {value ? value : ""}
+        </p>
       )}
       {error && (
         <div className="text-red-600 text-left text-xl py-4">{error}</div>

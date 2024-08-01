@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllCoursesByGrade, getCourses } from "../actions/coursesActions";
+import {
+  getAllCoursesByGrade,
+  getCourses,
+  getCoursesByStudent,
+} from "../actions/coursesActions";
 
 const initialState = {
   coursesData: {
@@ -7,6 +11,10 @@ const initialState = {
     data: null,
   },
   coursesListing: {
+    loading: false,
+    data: null,
+  },
+  studentCourses: {
     loading: false,
     data: null,
   },
@@ -53,6 +61,26 @@ const courseSlice = createSlice({
     builder.addCase(getAllCoursesByGrade.rejected, (state) => {
       state.coursesListing = {
         ...initialState.coursesListing,
+        loading: false,
+      };
+    });
+
+    //get all courses of Student
+    builder.addCase(getCoursesByStudent?.pending, (state) => {
+      state.studentCourses = {
+        ...initialState.studentCourses,
+        loading: true,
+      };
+    });
+    builder.addCase(getCoursesByStudent.fulfilled, (state, action) => {
+      state.studentCourses = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getCoursesByStudent.rejected, (state) => {
+      state.studentCourses = {
+        ...initialState.studentCourses,
         loading: false,
       };
     });

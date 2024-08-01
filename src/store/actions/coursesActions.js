@@ -8,6 +8,15 @@ export const getCourses = asyncCatch(
     axios.get(`${CONSTANTS.VITE_BACKEND_API_URL}/v1/courses`, config)
 );
 
+export const getCoursesByStudent = asyncCatch(
+  "courseSlice/getCoursesByStudent",
+  async ({ config, query }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/api/student-course/courses/student/${query?.studentId}`,
+      config
+    )
+);
+
 export const getAllCoursesByGrade = asyncCatch(
   "courseSlice/getAllCoursesByGrade",
   async ({ config, query }) =>
