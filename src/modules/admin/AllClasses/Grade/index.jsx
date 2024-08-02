@@ -184,27 +184,33 @@ const GradePage = () => {
 
       <div className="gap-12 pt-12 grid grid-cols-3 w-full">
         {data?.courseList ? (
-          data?.courseList?.map((item, index) => (
-            <CourseBlock
-              key={index}
-              width="w-full"
-              height="h-72"
-              bookIcon="w-40"
-              titleFontSize="text-5xl"
-              headingFontSize="text-2xl"
-              title={item?.courseName}
-              showDeleteIcon={true}
-              showEditIcon
-              heading={`Grade ${item?.grade}`}
-              data={CoursesColors[index]}
-              textColor={CoursesColors[index]?.textColor}
-              bgColor={CoursesColors[index]?.backgroundColor}
-              handleEditAction={() => handleModal("addNewModalIsOpen", item)}
-              handleDeleteAction={() => handleModal("deleteModalIsOpen", item)}
-              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${sectionName}/${sectionId}/${item?.courseName}/${item?.courseId}/lectures`}
-              {...item}
-            />
-          ))
+          data?.courseList?.map((item, index) => {
+            const colorIndex = index % CoursesColors.length;
+
+            return (
+              <CourseBlock
+                key={index}
+                width="w-full"
+                height="h-72"
+                bookIcon="w-40"
+                titleFontSize="text-5xl"
+                headingFontSize="text-2xl"
+                title={item?.courseName}
+                showDeleteIcon={true}
+                showEditIcon
+                heading={`Grade ${item?.grade}`}
+                data={CoursesColors[colorIndex]}
+                textColor={CoursesColors[colorIndex]?.textColor}
+                bgColor={CoursesColors[colorIndex]?.backgroundColor}
+                handleEditAction={() => handleModal("addNewModalIsOpen", item)}
+                handleDeleteAction={() =>
+                  handleModal("deleteModalIsOpen", item)
+                }
+                link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${sectionName}/${sectionId}/${item?.courseName}/${item?.courseId}/lectures`}
+                {...item}
+              />
+            );
+          })
         ) : (
           <div className="font-semibold text-3xl pt-10">No Courses Found!</div>
         )}

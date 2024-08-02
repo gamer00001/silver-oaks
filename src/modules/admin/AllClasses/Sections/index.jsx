@@ -140,27 +140,33 @@ const SectionPage = () => {
 
       <div className="gap-12 pt-12 grid grid-cols-3 w-full">
         {data?.length > 0 ? (
-          data?.map((item, index) => (
-            <CourseBlock
-              key={index}
-              width="w-full"
-              height="h-72"
-              bookIcon="w-40"
-              showEditIcon={true}
-              showDeleteIcon={true}
-              heading={campusName}
-              titleFontSize="text-5xl"
-              title={item.sectionName}
-              headingFontSize="text-2xl"
-              data={CoursesColors[index]}
-              textColor={CoursesColors[index]?.textColor}
-              bgColor={CoursesColors[index]?.backgroundColor}
-              handleDeleteAction={() => handleModal("deleteModalIsOpen", item)}
-              handleEditAction={() => handleModal("editModalIsOpen", item)}
-              link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
-              {...item}
-            />
-          ))
+          data?.map((item, index) => {
+            const colorIndex = index % CoursesColors.length;
+
+            return (
+              <CourseBlock
+                key={index}
+                width="w-full"
+                height="h-72"
+                bookIcon="w-40"
+                showEditIcon={true}
+                showDeleteIcon={true}
+                heading={campusName}
+                titleFontSize="text-5xl"
+                title={item.sectionName}
+                headingFontSize="text-2xl"
+                data={CoursesColors[colorIndex]}
+                textColor={CoursesColors[colorIndex]?.textColor}
+                bgColor={CoursesColors[colorIndex]?.backgroundColor}
+                handleDeleteAction={() =>
+                  handleModal("deleteModalIsOpen", item)
+                }
+                handleEditAction={() => handleModal("editModalIsOpen", item)}
+                link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
+                {...item}
+              />
+            );
+          })
         ) : (
           <div className="font-semibold text-3xl pt-10">No Sections Found!</div>
         )}

@@ -93,26 +93,32 @@ const CampusesPage = ({ campuses }) => {
 
       <div className="gap-12 pt-12 grid grid-cols-3 w-full">
         {campuses?.length > 0 ? (
-          campuses?.map((item, index) => (
-            <CourseBlock
-              key={index}
-              width="w-full"
-              height="h-72"
-              bookIcon="w-40"
-              titleFontSize="text-5xl"
-              headingFontSize="text-2xl"
-              title={item.campusName}
-              showDeleteIcon={true}
-              showEditIcon={true}
-              data={CoursesColors[index]}
-              textColor={CoursesColors[index]?.textColor}
-              bgColor={CoursesColors[index]?.backgroundColor}
-              handleDeleteAction={() => handleModal("deleteModalIsOpen", item)}
-              handleEditAction={() => handleModal("editModalIsOpen", item)}
-              //   link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
-              {...item}
-            />
-          ))
+          campuses?.map((item, index) => {
+            const colorIndex = index % CoursesColors.length;
+
+            return (
+              <CourseBlock
+                key={index}
+                width="w-full"
+                height="h-72"
+                bookIcon="w-40"
+                titleFontSize="text-5xl"
+                headingFontSize="text-2xl"
+                title={item.campusName}
+                showDeleteIcon={true}
+                showEditIcon={true}
+                data={CoursesColors[colorIndex]}
+                textColor={CoursesColors[colorIndex]?.textColor}
+                bgColor={CoursesColors[colorIndex]?.backgroundColor}
+                handleDeleteAction={() =>
+                  handleModal("deleteModalIsOpen", item)
+                }
+                handleEditAction={() => handleModal("editModalIsOpen", item)}
+                //   link={`/all-classes/grade/${gradeId}/${campusName}/${campusId}/${item.sectionName}/${item.id}`}
+                {...item}
+              />
+            );
+          })
         ) : (
           <div className="font-semibold text-3xl pt-10">No Campuses Found!</div>
         )}
