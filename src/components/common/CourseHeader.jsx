@@ -52,7 +52,7 @@ const CourseHeader = ({ courseTabs, forStudent = false }) => {
         ) : (
           <Link to={forStudent ? "/enrolled-courses" : "/my-courses"}>
             <h1 className="body-medium mb-8 font-extrabold">
-              {`My Courses > `}
+              {forStudent ? `Enrolled Courses >` : `My Courses > `}
             </h1>
           </Link>
         )}

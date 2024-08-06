@@ -130,7 +130,7 @@ const AdminExams = () => {
 
       <Grid container spacing={4} className="px-12 py-12">
         <Grid item md={6}>
-          <InputField icon="/search-icon.svg" />
+          {/* <InputField icon="/search-icon.svg" /> */}
         </Grid>
         <Grid item md={3} />
 

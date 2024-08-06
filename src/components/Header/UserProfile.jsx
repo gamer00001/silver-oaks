@@ -8,7 +8,7 @@ import { MyMenu } from "../common";
 import { Avatar } from "@/assets/common";
 
 const dropdownitems = [
-  { to: "/my-profile", text: "My Profile" },
+  // { to: "/my-profile", text: "My Profile" },
   { to: "/logout", text: "Logout" },
 ];
 

@@ -326,7 +326,7 @@ const ManageStudents = () => {
 
       <Grid container spacing={4} className="px-12 py-12">
         <Grid item md={4}>
-          <InputField />
+          {/* <InputField /> */}
         </Grid>
 
         <Grid item sm={2} md={2} />

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Loader, MyInput, MyPagination } from "@/components/common";
-import SearchForm from "@/components/common/SearchForm";
+import { Loader, MyPagination } from "@/components/common";
 import { useQueryParams } from "@/hooks";
 import { getAcademicRecord } from "@/store/actions/academicRecord";
+import { isEmpty } from "lodash";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AcademicOptions = [
   {
@@ -58,9 +57,9 @@ const Mock_Table_Data = [
 
 const StudentGrades = () => {
   const [state, setState] = useState({
-    term: "all",
+    term: "All",
     tableData: [],
-    academicCategory: "assignment",
+    academicCategory: "all",
   });
 
   const { page } = useQueryParams({ page: 1, query: "" });
@@ -193,9 +192,9 @@ const StudentGrades = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-10 justify-start">
+      {/* <div className="flex items-center gap-10 justify-start">
         <SearchForm />
-      </div>
+      </div> */}
 
       <div className="flex flex-row justify-start gap-10 items-center mb-8 pt-5">
         <div class="flex flex-row gap-6">
@@ -210,7 +209,10 @@ const StudentGrades = () => {
 
         <div className="md:flex">
           <select
-            className="text-[2rem] border border-custom-golden border-solid"
+            // value={state.term}
+            defaultValue={state.term}
+            // defaultChecked={state.term}
+            className="text-[2rem] border border-custom-golden border-solid p-2 rounded-2xl cursor-pointer"
             onChange={handleAcademicTerm}
           >
             <option>Term 01</option>
@@ -236,20 +238,16 @@ const StudentGrades = () => {
 
 export default StudentGrades;
 
-const RadioGroup = ({ optionsList, selectionOption, onChange }) => {
+const RadioGroup = ({ optionsList = [], selectionOption, onChange }) => {
   return (
     <>
       {optionsList.map((option, index) => (
         <label className="inline-flex items-center" key={index}>
           <input
             type="radio"
-            className="form-radio"
             name="options"
-            // value={selectionOption}
-            // defaultChecked={
-            //   optionsList.find((item) => item.value === selectionOption).value
-            // }
-            // defaultValue={selectionOption}
+            className="form-radio h-6 w-6"
+            checked={selectionOption === option.value}
             onChange={() => {
               onChange(option);
             }}
@@ -313,17 +311,19 @@ const Table = ({ columns, rows, page }) => {
           </tbody>
         </table>
 
-        <div className="grid gap-[3.2rem] justify-end grid-cols-[auto_auto] items-center mt-16">
-          <button
-            className="p-[1.3rem_2.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
-            type="submit"
-            onClick={exportData}
-          >
-            Download Excel
-          </button>
+        {!isEmpty(rows) && (
+          <div className="grid gap-[3.2rem] justify-end grid-cols-[auto_auto] items-center mt-16">
+            <button
+              className="p-[1.3rem_2.3rem] text-white button opacity-button border bg-custom-red rounded-[2.8rem] disabled:opacity-50"
+              type="submit"
+              onClick={exportData}
+            >
+              Download Excel
+            </button>
 
-          <MyPagination page={page} totalPages={10 || 0} />
-        </div>
+            <MyPagination page={page} totalPages={10 || 0} />
+          </div>
+        )}
       </div>
     </>
   );

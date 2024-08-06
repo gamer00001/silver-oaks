@@ -102,11 +102,11 @@ const CampusesPage = ({ campuses }) => {
                 width="w-full"
                 height="h-72"
                 bookIcon="w-40"
+                showEditIcon={true}
+                showDeleteIcon={true}
+                title={item.campusName}
                 titleFontSize="text-5xl"
                 headingFontSize="text-2xl"
-                title={item.campusName}
-                showDeleteIcon={true}
-                showEditIcon={true}
                 data={CoursesColors[colorIndex]}
                 textColor={CoursesColors[colorIndex]?.textColor}
                 bgColor={CoursesColors[colorIndex]?.backgroundColor}

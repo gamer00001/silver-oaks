@@ -200,8 +200,6 @@ const AdminAssignments = () => {
     // fetchCompusListing(dispatch);
   }, []);
 
-  console.log({ assignmentsData });
-
   if (assignmentsData.loading || state.isLoading) {
     return <Loader type={"screen"} />;
   }
@@ -220,7 +218,7 @@ const AdminAssignments = () => {
 
       <Grid container spacing={4} className="px-12 py-12">
         <Grid item md={6}>
-          <InputField icon="/search-icon.svg" />
+          {/* <InputField icon="/search-icon.svg" /> */}
         </Grid>
         <Grid item md={3} />
 

@@ -81,10 +81,10 @@ const AdminStudents = () => {
       </div> */}
 
       <Grid container spacing={4} className="px-12 py-12">
-        <Grid item md={6}>
+        {/* <Grid item md={6}>
           <InputField icon="/search-icon.svg" />
         </Grid>
-        <Grid item md={3} />
+        <Grid item md={3} /> */}
       </Grid>
 
       <div className="p-12">
@@ -95,17 +95,6 @@ const AdminStudents = () => {
           )}
         />
       </div>
-
-      {/* <ModalTop
-        className="!rounded-[2.4rem] !max-w-[45.3rem] p-[3.5rem_2rem_3.4rem] xxs:p-[3.5rem_3rem_3.4rem] xs:p-[3.5rem_4rem_3.4rem] sm:p-[3.5rem_5rem_3.4rem] grid gap-[4.2rem]"
-        open={state.deleteModalIsOpen}
-        onClose={() => handleModal("deleteModalIsOpen")}
-      >
-        <DeleteActionModal
-          handleAction={handleDelete}
-          handleModal={() => handleModal("deleteModalIsOpen")}
-        />
-      </ModalTop> */}
     </div>
   );
 };

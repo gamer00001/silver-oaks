@@ -29,23 +29,26 @@ const EnrolledCourses = () => {
     <div className="pl-20">
       <span className="text-black font-bold text-4xl">My Courses</span>
       <div className="flex gap-12 pt-12 flex-wrap">
-        {data?.courseList?.map((item, index) => (
-          <CourseBlock
-            key={index}
-            width="w-5/12"
-            height="h-72"
-            bookIcon="w-40"
-            titleFontSize="text-5xl"
-            headingFontSize="text-2xl"
-            title={item?.courseName}
-            heading={item?.grade}
-            data={CoursesColors[index]}
-            link={`/enrolled-courses/lectures/${item?.courseId}`}
-            bgColor={CoursesColors[index]?.backgroundColor}
-            textColor={CoursesColors[index]?.textColor}
-            {...item}
-          />
-        ))}
+        {data?.courseList?.map((item, index) => {
+          const colorIndex = index % CoursesColors.length;
+          return (
+            <CourseBlock
+              key={index}
+              width="w-5/12"
+              height="h-72"
+              bookIcon="w-40"
+              titleFontSize="text-5xl"
+              headingFontSize="text-2xl"
+              title={item?.courseName}
+              heading={item?.grade}
+              data={CoursesColors[colorIndex]}
+              link={`/enrolled-courses/lectures/${item?.courseId}`}
+              bgColor={CoursesColors[colorIndex]?.backgroundColor}
+              textColor={CoursesColors[colorIndex]?.textColor}
+              {...item}
+            />
+          );
+        })}
       </div>
     </div>
   );
