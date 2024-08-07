@@ -325,13 +325,13 @@ const ManageStudents = () => {
       </div>
 
       <Grid container spacing={4} className="px-12 py-12">
-        <Grid item md={4}>
+        <Grid item xs={2} sm={2} md={2} lg={4}>
           {/* <InputField /> */}
         </Grid>
 
-        <Grid item sm={2} md={2} />
+        <Grid item xs={2} sm={2} md={2} />
 
-        <Grid item md={2}>
+        <Grid item xs={2} md={2}>
           <Dropdown
             placeholder="Select Grade"
             onChange={handleGrade}

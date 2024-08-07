@@ -314,7 +314,7 @@ const studentLayoutRoutes = [
         element={<MyReactHelmet title="Course" element={<ViewCourse />} />}
       />
       <Route
-        path="/enrolled-courses/lectures/:id"
+        path="/enrolled-courses/:courseName/:courseId/lectures/:id"
         element={
           <MyReactHelmet
             title="Lectures"
@@ -323,7 +323,7 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/quizzes/:id"
+        path="/enrolled-courses/:courseName/:courseId/quizzes/:id"
         element={
           <MyReactHelmet
             title="Quizzes"
@@ -332,17 +332,17 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/on-going-assesments/:id"
+        path="/enrolled-courses/:courseName/:courseId/on-going-assesments/:id"
         element={
           <MyReactHelmet
-            title="Quizzes"
+            title="OGA"
             element={<OnGoingAssignments forStudent={true} />}
           />
         }
       />
 
       <Route
-        path="/enrolled-courses/:id/on-going-assesments/:aid"
+        path="/enrolled-courses/:courseName/:courseId/:id/on-going-assesments/:aid"
         element={
           <MyReactHelmet
             title="Quiz Summary"
@@ -352,7 +352,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/assignments/:id"
+        path="/enrolled-courses/:courseName/:courseId/assignments/:id"
         element={
           <MyReactHelmet
             title="Assignments"
@@ -361,7 +361,7 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/grades/:id"
+        path="/enrolled-courses/:courseName/:courseId/grades/:id"
         element={
           <MyReactHelmet
             title="Student Grades"
@@ -370,13 +370,13 @@ const studentLayoutRoutes = [
         }
       />
       <Route
-        path="/enrolled-courses/exam/:id"
+        path="/enrolled-courses/:courseName/:courseId/exam/:id"
         element={
           <MyReactHelmet title="Exam" element={<Exam forStudent={true} />} />
         }
       />
       <Route
-        path="/enrolled-courses/:id/exam/:eid"
+        path="/enrolled-courses/:courseName/:courseId/:id/exam/:eid"
         element={
           <MyReactHelmet
             title="Exam"
@@ -386,7 +386,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/quizzes/:qid"
+        path="/enrolled-courses/:courseName/:courseId/:id/quizzes/:qid"
         element={
           <MyReactHelmet
             title="Quiz Summary"
@@ -396,7 +396,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/quizSummary/:qid"
+        path="/enrolled-courses/:courseName/:courseId/:id/quizSummary/:qid"
         element={
           <MyReactHelmet
             title="Quiz Summary"
@@ -406,7 +406,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/assignments/:aid"
+        path="/enrolled-courses/:courseName/:courseId/:id/assignments/:aid"
         element={
           <MyReactHelmet
             title="Assignment"
@@ -416,7 +416,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/assignmentSummary/:aid"
+        path="/enrolled-courses/:courseName/:courseId/:id/assignmentSummary/:aid"
         element={
           <MyReactHelmet
             title="Assignment"
@@ -426,7 +426,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/assignment/:aid/student/:sid"
+        path="/enrolled-courses/:courseName/:courseId/:id/assignment/:aid/student/:sid"
         element={
           <MyReactHelmet
             title="Assignment"
@@ -436,7 +436,7 @@ const studentLayoutRoutes = [
       />
 
       <Route
-        path="/enrolled-courses/:id/lectures/:lid"
+        path="/enrolled-courses/:courseName/:courseId/:id/lectures/:lid"
         element={
           <MyReactHelmet
             title="Lecture Report"

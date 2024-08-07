@@ -32,6 +32,7 @@ const SideBar = () => {
 
   useEffect(() => {
     const userInfo = fetchCurrentUserInfo();
+
     const apiToCall = isCurrentUserStudent() ? getCoursesByStudent : getCourses;
     dispatch(
       apiToCall({
@@ -180,7 +181,7 @@ const SideBarItem = ({ route }) => {
                   <NavLink
                     to={`/${
                       currentLoggedInUserType() === "student"
-                        ? "enrolled-courses"
+                        ? `enrolled-courses/${course.courseName}/${course.courseId}`
                         : "course"
                     }/lectures/${course.courseId}`}
                   >

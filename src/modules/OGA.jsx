@@ -137,7 +137,7 @@ const OGA = ({ forStudent = false }) => {
       ) : (
         <img src={gradeImg} className="w-5/6 rounded-[2rem]" />
       )}
-      {localStorage.getItem("userType") == "teacher" && (
+      {/* {localStorage.getItem("userType") == "teacher" && (
         <div className="flex flex-row gap-4">
           <button
             type="button"
@@ -147,7 +147,7 @@ const OGA = ({ forStudent = false }) => {
             Add On Going Assignment
           </button>
         </div>
-      )}
+      )} */}
       {assignmentsData.data?.assignmentList?.map((item, k) => (
         <div className="w-5/6">
           <QuizCard
@@ -214,7 +214,7 @@ const QuizCard = ({
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [menu, setIsMenu] = useState(false);
-  const { id } = useParams();
+  const { id, courseName, courseId } = useParams();
   const navigate = useNavigate();
 
   return (
@@ -282,7 +282,9 @@ const QuizCard = ({
               <button
                 className="text-custom-red font-bold text-[1.5rem]"
                 onClick={() =>
-                  navigate(`/enrolled-courses/${id}/assignments/${aid}`)
+                  navigate(
+                    `/enrolled-courses/${courseName}/${courseId}/${id}/assignments/${aid}`
+                  )
                 } //navigate(`/course/${id}/assignment/${aid}`)}
               >
                 View Assignment

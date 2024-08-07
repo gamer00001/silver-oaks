@@ -3,6 +3,7 @@ import { TeacherCoursesTabs } from "@/constants/common";
 import {
   currentLoggedInUserType,
   manipulateCourseTabsForAdmin,
+  manipulateCourseTabsForStudent,
 } from "@/utils/helper";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -29,9 +30,12 @@ const CourseHeader = ({ courseTabs, forStudent = false }) => {
     let tabs = courseTabs;
 
     let isAdmin = currentLoggedInUserType() === "admin";
+    let isStudent = currentLoggedInUserType() === "student";
 
     if (isAdmin) {
       tabs = manipulateCourseTabsForAdmin(tabs, params);
+    } else if (isStudent) {
+      tabs = manipulateCourseTabsForStudent(tabs, params);
     }
 
     setState((prev) => ({
@@ -52,11 +56,13 @@ const CourseHeader = ({ courseTabs, forStudent = false }) => {
         ) : (
           <Link to={forStudent ? "/enrolled-courses" : "/my-courses"}>
             <h1 className="body-medium mb-8 font-extrabold">
-              {forStudent ? `Enrolled Courses >` : `My Courses > `}
+              {forStudent ? `Enrolled Courses > ` : `My Courses > `}
             </h1>
           </Link>
         )}
-        <span className="body-regular">{course?.courseName}</span>
+        <span className="body-medium font-extrabold">
+          &nbsp;{params?.courseName}
+        </span>
       </div>
       <div className="w-full flex flex-row flex-wrap body-regular md:body-medium md:pr-[36rem] gap-8 mb-4">
         {state.courseTabs?.map((item, k) => (

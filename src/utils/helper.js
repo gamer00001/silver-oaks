@@ -41,6 +41,14 @@ export const manipulateCourseTabsForAdmin = (tabs = [], params) => {
   }));
 };
 
+export const manipulateCourseTabsForStudent = (tabs = [], params) => {
+  return tabs?.map((item) => ({
+    ...item,
+    isAdminRoute: true,
+    baseRoute: `${params?.courseName}/${params?.courseId}/${item.to}/${params.id}`,
+  }));
+};
+
 export const prepareLineChartData = (list = []) => {
   let categories = [],
     marksSeriesData = [],

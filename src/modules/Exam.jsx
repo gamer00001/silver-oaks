@@ -21,7 +21,7 @@ const Exam = ({ forStudent = false }) => {
 
   const { assesmentsData } = useSelector((s) => s.assesmentReducer);
 
-  const [course, setCourse] = useState(null)
+  const [course, setCourse] = useState(null);
 
   const { coursesData } = useSelector((s) => s.courseReducer);
 
@@ -33,7 +33,7 @@ const Exam = ({ forStudent = false }) => {
   };
 
   useEffect(() => {
-    forStudent && findCourseById()
+    forStudent && findCourseById();
     dispatch(
       getAssesments({
         onError: () => navigate("/404", { replace: true }),
@@ -97,7 +97,7 @@ const ExamCard = ({
   const [menu, setIsMenu] = useState(false);
   const navigate = useNavigate();
 
-  const { id } = useParams();
+  const { id, courseName, courseId } = useParams();
 
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
@@ -147,7 +147,11 @@ const ExamCard = ({
               className="text-custom-red font-bold text-[1.5rem]"
               // onClick={() => navigate(`/course/${id}/quizSummary/${qid}`)}
               onClick={() =>
-                navigate(`/enrolled-courses/${id}/exam/${e_id ?? 1}`)
+                navigate(
+                  `/enrolled-courses/${courseName}/${courseId}/${id}/exam/${
+                    e_id ?? 1
+                  }`
+                )
               }
             >
               Attempt

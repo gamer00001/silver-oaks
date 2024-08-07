@@ -156,7 +156,7 @@ const QuizCard = ({
   const [menu, setIsMenu] = useState(false);
 
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, courseName, courseId } = useParams();
 
   return (
     <MUICard style={{ backgroundColor: "#F6F5F5", borderRadius: "1rem" }}>
@@ -189,7 +189,11 @@ const QuizCard = ({
               className="text-custom-red font-bold text-[1.5rem]"
               // onClick={() => navigate(`/course/${id}/quizSummary/${qid}`)}
               onClick={() =>
-                navigate(`/enrolled-courses/${id}/quizzes/${qid ?? 1}`)
+                navigate(
+                  `/enrolled-courses/${courseName}/${courseId}/${id}/quizzes/${
+                    qid ?? 1
+                  }`
+                )
               }
             >
               Attempt

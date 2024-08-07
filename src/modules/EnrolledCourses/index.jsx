@@ -42,7 +42,7 @@ const EnrolledCourses = () => {
               title={item?.courseName}
               heading={item?.grade}
               data={CoursesColors[colorIndex]}
-              link={`/enrolled-courses/lectures/${item?.courseId}`}
+              link={`/enrolled-courses/${item.courseName}/${item.courseId}/lectures/${item?.courseId}`}
               bgColor={CoursesColors[colorIndex]?.backgroundColor}
               textColor={CoursesColors[colorIndex]?.textColor}
               {...item}

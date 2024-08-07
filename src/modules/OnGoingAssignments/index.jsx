@@ -87,6 +87,8 @@ export default OnGoingAssignments;
 const QuizCard = ({ assignmentNo, title, id, forStudent, aid }) => {
   const [expanded, setExpanded] = useState(false);
 
+  const { courseName, courseId } = useParams();
+
   const navigate = useNavigate();
 
   return (
@@ -119,7 +121,9 @@ const QuizCard = ({ assignmentNo, title, id, forStudent, aid }) => {
               // onClick={() => navigate(`/course/${id}/quizSummary/${qid}`)}
               onClick={() =>
                 navigate(
-                  `/enrolled-courses/${id}/on-going-assesments/${aid ?? 1}`
+                  `/enrolled-courses/${courseName}/${courseId}/${id}/on-going-assesments/${
+                    aid ?? 1
+                  }`
                 )
               }
             >

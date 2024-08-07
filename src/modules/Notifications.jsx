@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Activity from "@/components/Dashboard/Activity";
 import { getEventsByStudent } from "@/store/actions/eventActions";
 import { Loader } from "@/components/common";
+import { isEmpty } from "lodash";
 
 const demoActivityData = [
   {
@@ -38,6 +39,7 @@ const Notifications = () => {
     const studentInfo = JSON.parse(localStorage.getItem("userInfo") ?? false);
 
     studentInfo &&
+      !isEmpty(courses) &&
       dispatch(
         getEventsByStudent({
           onError: () => navigate("/404", { replace: true }),

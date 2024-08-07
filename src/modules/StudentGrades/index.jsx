@@ -62,7 +62,7 @@ const StudentGrades = () => {
     academicCategory: "all",
   });
 
-  const { page } = useQueryParams({ page: 1, query: "" });
+  const { page } = useQueryParams({ page: 0, query: "" });
 
   const dispatch = useDispatch();
 
