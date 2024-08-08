@@ -1,24 +1,23 @@
-import { Link, NavLink } from ".";
 import { Avatar, Logo } from "@/assets/common";
-import { useGlobalContext } from "@/hooks";
-import CoursesIcon from "@/assets/Icons/CoursesIcon";
-import Events from "@/assets/Icons/Events";
-import Desktop from "@/assets/Icons/Desktop";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { CONSTANTS } from "@/constants";
-import { useLocation } from "react-router-dom";
+import { panelSideBar } from "@/constants/sidebarMenus";
+import { useGlobalContext } from "@/hooks";
 import {
   getCourses,
   getCoursesByStudent,
 } from "@/store/actions/coursesActions";
-import { panelSideBar } from "@/constants/sidebarMenus";
+import { fetchCompusListing } from "@/utils/common-api-helper";
 import {
   currentLoggedInUserType,
   fetchCurrentUserInfo,
   isCurrentUserStudent,
 } from "@/utils/helper";
-import { fetchCompusListing } from "@/utils/common-api-helper";
+import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+
+import { Link, NavLink } from ".";
 
 const SideBar = () => {
   const {
@@ -27,28 +26,31 @@ const SideBar = () => {
 
   const { campusesData } = useSelector((s) => s.commonReducer);
 
+  const userInfo = fetchCurrentUserInfo();
+
   // const { pathname } = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userInfo = fetchCurrentUserInfo();
-
     const apiToCall = isCurrentUserStudent() ? getCoursesByStudent : getCourses;
-    dispatch(
-      apiToCall({
-        payload: {
-          query: {
-            studentId: userInfo?.studentId,
+
+    if (!isEmpty(userInfo)) {
+      dispatch(
+        apiToCall({
+          payload: {
+            query: {
+              studentId: userInfo?.studentId,
+            },
           },
-        },
-        onError: () => navigate("/404", { replace: true }),
-        onSuccess: (res) => {
-          const coursesList =
-            res?.courseList?.map((item) => item?.courseId) ?? [];
-          localStorage.setItem("coursesList", coursesList ?? []);
-        },
-      })
-    );
+          onError: () => navigate("/404", { replace: true }),
+          onSuccess: (res) => {
+            const coursesList =
+              res?.courseList?.map((item) => item?.courseId) ?? [];
+            localStorage.setItem("coursesList", coursesList ?? []);
+          },
+        })
+      );
+    }
   }, []);
 
   useEffect(() => {

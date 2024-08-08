@@ -46,7 +46,7 @@ const CourseHeader = ({ courseTabs, forStudent = false }) => {
 
   return (
     <header>
-      <div className="flex flex-row">
+      <div className="flex flex-row w-1/2">
         {currentLoggedInUserType() === "admin" ? (
           <Link to={"/all-classes"}>
             <h1 className="body-medium mb-8 font-extrabold">
@@ -54,15 +54,17 @@ const CourseHeader = ({ courseTabs, forStudent = false }) => {
             </h1>
           </Link>
         ) : (
-          <Link to={forStudent ? "/enrolled-courses" : "/my-courses"}>
-            <h1 className="body-medium mb-8 font-extrabold">
-              {forStudent ? `Enrolled Courses > ` : `My Courses > `}
-            </h1>
-          </Link>
+          <>
+            <Link to={forStudent ? "/enrolled-courses" : "/my-courses"}>
+              <h1 className="body-medium mb-8 font-extrabold">
+                {forStudent ? `Enrolled Courses > ` : `My Courses > `}
+              </h1>
+            </Link>
+            <span className="body-medium font-extrabold">
+              &nbsp;{params?.courseName}
+            </span>
+          </>
         )}
-        <span className="body-medium font-extrabold">
-          &nbsp;{params?.courseName}
-        </span>
       </div>
       <div className="w-full flex flex-row flex-wrap body-regular md:body-medium md:pr-[36rem] gap-8 mb-4">
         {state.courseTabs?.map((item, k) => (

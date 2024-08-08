@@ -7,7 +7,7 @@ const CourseLayout = ({ tabs, forStudent }) => {
   return (
     <div className="mx-auto grid grid-cols-1 gap-[1.5rem]">
       <div
-        className={`md:-mt-56 sticky lg:grid grid-cols-1 top-0 py-[2.3rem] px-[1.6rem] bg-[${
+        className={`w-11/12 md:-mt-56 sticky lg:grid grid-cols-1 top-0 py-[2.3rem] px-[1.6rem] bg-[${
           currentLoggedInUserType() === "admin" ? "#fff" : "#edf0f3"
         }] z-40`}
       >
