@@ -14,7 +14,7 @@ const Attendance = () => {
         <MyInput
           type="date"
           placeholder="Enter date"
-          className="w-[300px]"
+          className="max-w-[300px]"
           name="date"
         />
       </div>

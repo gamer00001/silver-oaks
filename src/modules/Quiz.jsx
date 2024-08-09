@@ -44,6 +44,7 @@ const Quiz = ({
   const navigate = useNavigate();
   const { id, qid, aid, eid } = useParams();
 
+  console.log("These are params ", params);
   const {
     singleQuizData: { data, loading },
   } = useSelector((s) => s.quizReducer);
@@ -223,7 +224,11 @@ const Quiz = ({
         },
         onSuccess: () => {
           toast.success("Exam has been submitted!");
-          navigate(`/${forStudent ? "enrolled-courses" : "course"}/exam/${id}`);
+          navigate(
+            `/${forStudent ? "enrolled-courses" : "course"}/${
+              params?.courseName
+            }/${params?.courseId}/exam/${id}`
+          );
         },
         onError: (error) => {
           handleError(error);

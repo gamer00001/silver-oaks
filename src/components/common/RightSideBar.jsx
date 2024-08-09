@@ -65,7 +65,7 @@ const RightSideBar = ({ handleSidebar }) => {
   // }, [localStorage.getItem("coursesList")]);
 
   return (
-    <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem]">
+    <aside className="py-[2.8rem] grid grid-cols-1 content-start gap-[3.2rem] z-50">
       <div className="px-[1.9rem]">
         <UserProfile setIsOpen={handleSidebar} />
         <Calendar

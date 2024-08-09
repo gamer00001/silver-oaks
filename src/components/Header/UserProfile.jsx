@@ -30,20 +30,24 @@ const UserProfile = ({ setIsOpen }) => {
 
   return (
     <>
-      <div className="grid gap-[2.7rem] grid-cols-[auto_auto] items-center justify-between cursor-pointer">
-        {pathname === "/" ? (
-          <NavLink to={"/notifications"}>
-            <span
-              // onClick={(e) => setAnchorEl(e.currentTarget)}
-              className="body-medium !font-semibold text-black capitalize max-w-[20rem] overflow-hidden text-ellipsis whitespace-nowrap"
-            >
-              {isNotification ? <NotificationsBing /> : <Notifications />}
-            </span>
-          </NavLink>
-        ) : (
-          <div onClick={setIsOpen}>
-            {isNotification ? <NotificationsBing /> : <Notifications />}
-          </div>
+      <div className="grid gap-[2.7rem] grid-cols-[auto_auto] items-center justify-between cursor-pointer z-50">
+        {userType !== "admin" && (
+          <>
+            {pathname === "/" ? (
+              <NavLink to={"/notifications"}>
+                <span
+                  // onClick={(e) => setAnchorEl(e.currentTarget)}
+                  className="body-medium !font-semibold text-black capitalize max-w-[20rem] overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  {isNotification ? <NotificationsBing /> : <Notifications />}
+                </span>
+              </NavLink>
+            ) : (
+              <div onClick={setIsOpen}>
+                {isNotification ? <NotificationsBing /> : <Notifications />}
+              </div>
+            )}
+          </>
         )}
 
         <img
