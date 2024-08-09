@@ -8,7 +8,7 @@ import Grade4 from "@/assets/common/grade4.png";
 const CourseCard = ({ grade, title, location, id }) => {
   return (
     <Link
-      className="px-[2rem] py-[1rem] rounded-[.8rem] text-[1.6rem] font-bold leading-[120%] text-custom-dark-gren hover:opacity-70 transition-opacity duration-300"
+      className="px-[2rem] py-[1rem] rounded-[.8rem] text-[1.6rem] font-bold leading-[120%] text-custom-dark-gren hover:opacity-70 transition-opacity duration-300 max-md:w-full"
       to={`/course/lectures/${id}`}
     >
       <motion.div

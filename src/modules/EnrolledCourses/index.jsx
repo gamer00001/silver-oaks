@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import CourseBlock from "@/components/common/CourseBlock";
 import { getCourses } from "@/store/actions/coursesActions";
-import { CoursesColors } from "@/utils/helper";
+import { CoursesColors, currentLoggedInUserType } from "@/utils/helper";
 import { Loader } from "@/components/common";
 
 const EnrolledCourses = () => {
@@ -11,6 +11,8 @@ const EnrolledCourses = () => {
 
   const {
     coursesData: { data, loading },
+    studentCourses: { data: studentData, loading: studentLoading },
+    teacherCourses: { data: teacherData, loading: teacherLoading },
   } = useSelector((s) => s.courseReducer);
 
   useEffect(() => {
@@ -21,20 +23,25 @@ const EnrolledCourses = () => {
     );
   }, []);
 
-  if (loading) {
+  if (studentLoading || teacherLoading) {
     return <Loader type="screen" />;
   }
 
   return (
-    <div className="pl-20">
+    <div className="px-20">
       <span className="text-black font-bold text-4xl">My Courses</span>
       <div className="flex gap-12 pt-12 flex-wrap">
-        {data?.courseList?.map((item, index) => {
+        {(currentLoggedInUserType() === "teacher"
+          ? teacherData
+          : currentLoggedInUserType() === "student"
+          ? studentData
+          : data
+        )?.courseList?.map((item, index) => {
           const colorIndex = index % CoursesColors.length;
           return (
             <CourseBlock
               key={index}
-              width="w-5/12"
+              width="w-full"
               height="h-72"
               bookIcon="w-40"
               titleFontSize="text-5xl"

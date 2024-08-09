@@ -324,22 +324,16 @@ const ManageStudents = () => {
         </Button>
       </div>
 
-      <Grid container spacing={4} className="px-12 py-12">
-        <Grid item xs={2} sm={2} md={2} lg={4}>
-          {/* <InputField /> */}
-        </Grid>
-
-        <Grid item xs={2} sm={2} md={2} />
-
-        <Grid item xs={2} md={2}>
+      <div className="px-12 py-12 flex items-center gap-4">
+        <div className="w-[220px] max-md:w-[120px]">
           <Dropdown
             placeholder="Select Grade"
             onChange={handleGrade}
             value={state.selectedGrade}
             options={MOCK_GRADES().map((item) => item.title)}
           />
-        </Grid>
-        <Grid item md={2}>
+        </div>
+        <div className="w-[220px] max-md:w-[120px]">
           <Dropdown
             placeholder="Campus"
             value={state?.selectedCampus}
@@ -350,8 +344,8 @@ const ManageStudents = () => {
                 : []
             }
           />
-        </Grid>
-        <Grid item md={2}>
+        </div>
+        <div className="w-[220px] max-md:w-[120px]">
           <Dropdown
             placeholder="Section"
             onChange={handleSection}
@@ -360,8 +354,8 @@ const ManageStudents = () => {
               sectionsData?.data?.map((section) => section.sectionName) ?? []
             }
           />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
 
       <div className="p-12">
         <CustomTable

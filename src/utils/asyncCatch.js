@@ -47,11 +47,14 @@ const asyncCatch = (name, cb, type) =>
             dispatch({ type: "authSlice/session-expired" });
             return rejectWithValue("");
           } else if (typeof error?.response?.data?.message === "string") {
-            toast.error(error?.response?.data?.message);
+            console.log(error?.response?.data?.message);
+            toast.error("Invalid error");
           } else if (typeof error?.response?.data?.error === "string") {
-            toast.error(error?.response?.data?.error);
+            console.log(error?.response?.data?.error);
+            toast.error("Invalid error");
           } else if (typeof error?.response?.data === "string") {
-            toast.error(error?.response?.data);
+            console.log(error?.response?.data);
+            toast.error("Invalid error");
           } else {
             toast.error("Something went wrong! Please try again.");
           }

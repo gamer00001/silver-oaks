@@ -83,7 +83,7 @@ const CampusesPage = ({ campuses }) => {
   };
 
   return (
-    <div className="px-20">
+    <div className="">
       <div className="flex items-center justify-between">
         <div>
           {/* <p className="text-black font-semibold text-5xl">{`All Classes > Grade ${gradeId} > Campus ${campusName}`}</p> */}
@@ -91,7 +91,7 @@ const CampusesPage = ({ campuses }) => {
         </div>
       </div>
 
-      <div className="gap-12 pt-12 grid grid-cols-3 w-full">
+      <div className="gap-12 pt-12 grid md:grid-cols-3 max-md:grid-cols-1 w-full">
         {campuses?.length > 0 ? (
           campuses?.map((item, index) => {
             const colorIndex = index % CoursesColors.length;

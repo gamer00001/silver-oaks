@@ -8,12 +8,17 @@ const MyPagination = ({ page, totalPages }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const queryParams = useQueryParams({ page: 0 });
+
+  // Adjust the usePagination to start from 0
   const { items } = usePagination({
     count: totalPages,
-    page: Number(page),
-    onChange: (_, page) => {
+    page: Number(page) + 1, // Increment page by 1 to align with MUI's 1-based index
+    onChange: (_, newPage) => {
       navigate(
-        `${pathname}?${convertObjectToQueryString({ ...queryParams, page })}`
+        `${pathname}?${convertObjectToQueryString({
+          ...queryParams,
+          page: newPage - 1,
+        })}` // Decrement by 1 to use 0-based index
       );
     },
   });
@@ -29,7 +34,7 @@ const MyPagination = ({ page, totalPages }) => {
           } else if (type === "page") {
             children = (
               <PaginationButton {...item} selected={selected}>
-                {page}
+                {page - 1} {/* Display 0-based page number */}
               </PaginationButton>
             );
           } else if (type === "previous") {

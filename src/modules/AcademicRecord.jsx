@@ -1,90 +1,223 @@
 import EditIcon from "@/assets/Icons/EditIcon";
-import { MyPagination } from "@/components/common";
+import { Loader, MyPagination } from "@/components/common";
 import SearchForm from "@/components/common/SearchForm";
 import { useQueryParams } from "@/hooks";
 import { getAcademicRecord } from "@/store/actions/academicRecord";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import {
+  getCourses,
+  getCoursesByStudent,
+  getCoursesByTeacher,
+} from "@/store/actions/coursesActions";
+import { getTeacherId } from "@/store/actions/dashboardActions";
+import { fetchTeacherAcademicRecord } from "@/store/actions/studentActions";
+import { currentLoggedInUserType, fetchCurrentUserInfo } from "@/utils/helper";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AcademicRecord = () => {
-  const { page } = useQueryParams({ page: 1, query: "" });
+  const params = useParams();
+  const navigate = useNavigate();
+  const { page } = useQueryParams({ page: 0, query: "" });
+  const {
+    teacherIdData: { data },
+  } = useSelector((s) => s.dashboardReducer);
+  const { studentCourses, teacherCourses } = useSelector(
+    (s) => s.courseReducer
+  );
+  const {
+    loginUserData: { user, userDetail },
+  } = useSelector((s) => s.authReducer);
+  const { studentAcademicRecords } = useSelector((s) => s.studentReducer);
   const dispatch = useDispatch();
+  // const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedTerm, setSelectedTerm] = useState("none");
+  const [selectedSection, setSelectedSection] = useState("none");
+  const [selectedGrade, setSelectedGrade] = useState("none");
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [allGrades, setAllGrade] = useState([]);
+  const setAllGrades = () => {
+    let allGrades = new Set();
 
-  // useEffect(() => {
-  //   dispatch(getAcademicRecord());
-  // }, []);
-
+    data?.teacherSections?.map((item) => {
+      allGrades.add(item?.grade);
+    });
+    setAllGrade([...allGrades]);
+  };
+  useEffect(() => {
+    const userInfo =
+      currentLoggedInUserType() === "student"
+        ? fetchCurrentUserInfo()
+        : userDetail;
+    console.log("This is user info ", userInfo);
+    const apiToCall =
+      currentLoggedInUserType() === "student"
+        ? getCoursesByStudent
+        : currentLoggedInUserType() === "teacher"
+        ? getCoursesByTeacher
+        : getCourses;
+    dispatch(
+      apiToCall({
+        payload: {
+          query: {
+            studentId: userInfo?.studentId,
+            teacherId: userInfo?.teacherId,
+          },
+        },
+        onError: () => navigate("/404", { replace: true }),
+        onSuccess: (res) => {
+          const coursesList =
+            res?.courseList?.map((item) => item?.courseId) ?? [];
+          localStorage.setItem("coursesList", coursesList ?? []);
+        },
+      })
+    );
+  }, []);
+  useEffect(() => {
+    if (params?.id) {
+      teacherCourses?.data?.courseList?.map((item) => {
+        if (item?.courseId == params?.id) {
+          setSelectedCourse(item);
+        }
+      });
+    }
+  }, [params?.id]);
+  useEffect(() => {
+    dispatch(
+      fetchTeacherAcademicRecord({
+        payload: {
+          query: {
+            term: selectedTerm,
+            section: selectedSection,
+            grade: selectedGrade,
+            page: page,
+          },
+          dispatch,
+        },
+      })
+    );
+  }, [selectedTerm, selectedSection, selectedGrade, page]);
+  useEffect(() => {
+    dispatch(
+      getTeacherId({
+        payload: {
+          query: {
+            email: localStorage.getItem("email"),
+          },
+        },
+      })
+    );
+  }, []);
+  useEffect(() => {
+    setAllGrades();
+  }, [teacherCourses, data]);
+  if (studentAcademicRecords.loading) return <Loader type="screen" />;
   return (
     <div>
-      <div className="flex flex-row justify-between items-center mb-8">
-        <SearchForm />
-        <select className="text-[2rem] border border-custom-golden border-solid">
-          <option>Term 1</option>
-          <option>Term 1</option>
-          <option>Term 1</option>
-          <option>All Terms</option>
-        </select>
-        <MyPagination page={page} totalPages={10 || 0} />
+      <div className="flex flex-row justify-between items-center mb-8 mt-12">
+        {/* <SearchForm /> */}
+        <div className="flex items-center gap-3">
+          <select
+            value={selectedTerm}
+            onChange={(e) => setSelectedTerm(e.target.value)}
+            className="text-[2rem] border border-custom-golden border-solid"
+          >
+            <option value="Term 01">Term 01</option>
+            <option value="Term 02">Term 02</option>
+            <option value="Term 03">Term 03</option>
+            <option value="none">None</option>
+          </select>
+          <select
+            value={selectedSection}
+            onChange={(e) => setSelectedSection(e.target.value)}
+            className="text-[2rem] border border-custom-golden border-solid"
+          >
+            {data?.teacherSections?.map((item, index) => (
+              <option key={index} value={item?.section}>
+                {item?.section}
+              </option>
+            ))}
+            <option value="none">None</option>
+          </select>
+          <select
+            value={selectedGrade}
+            onChange={(e) => setSelectedGrade(e.target.value)}
+            className="text-[2rem] border border-custom-golden border-solid"
+          >
+            {allGrades?.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+            <option value="none">None</option>
+          </select>
+        </div>
+        {studentAcademicRecords?.data?.totalPages > 1 && (
+          <MyPagination
+            page={page}
+            totalPages={studentAcademicRecords?.data?.totalPages || 0}
+          />
+        )}
       </div>
 
       <div className="grid grid-cols-1 w-full">
-        <Table />
+        <Table data={studentAcademicRecords} />
       </div>
     </div>
   );
 };
 
-const Table = () => {
-  const { page, query } = useQueryParams({ page: 1, query: "" });
+const Table = ({ data }) => {
+  const { page = 0, query } = useQueryParams({ page: 0, query: "" });
+  const dispatch = useDispatch();
 
-  const data = [
-    {
-      id: "276354723",
-      fullName: "John Roe",
-      rollNo: "453",
-      quiz1: "0.1",
-      term1: "13",
-      term2: "13",
-      total: "26.1",
-    },
-    {
-      id: "276354723",
-      fullName: "John Roe",
-      rollNo: "453",
-      quiz1: "0.1",
-      term1: "13",
-      term2: "13",
-      total: "26.1",
-    },
-    {
-      id: "276354723",
-      fullName: "John Roe",
-      rollNo: "453",
-      quiz1: "0.1",
-      term1: "13",
-      term2: "13",
-      total: "26.1",
-    },
-    {
-      id: "276354723",
-      fullName: "John Roe",
-      rollNo: "453",
-      quiz1: "0.1",
-      term1: "13",
-      term2: "13",
-      total: "26.1",
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: "276354723",
+  //     fullName: "John Roe",
+  //     rollNo: "453",
+  //     quiz1: "0.1",
+  //     term1: "13",
+  //     term2: "13",
+  //     total: "26.1",
+  //   },
+  //   {
+  //     id: "276354723",
+  //     fullName: "John Roe",
+  //     rollNo: "453",
+  //     quiz1: "0.1",
+  //     term1: "13",
+  //     term2: "13",
+  //     total: "26.1",
+  //   },
+  //   {
+  //     id: "276354723",
+  //     fullName: "John Roe",
+  //     rollNo: "453",
+  //     quiz1: "0.1",
+  //     term1: "13",
+  //     term2: "13",
+  //     total: "26.1",
+  //   },
+  //   {
+  //     id: "276354723",
+  //     fullName: "John Roe",
+  //     rollNo: "453",
+  //     quiz1: "0.1",
+  //     term1: "13",
+  //     term2: "13",
+  //     total: "26.1",
+  //   },
+  // ];
 
   const exportData = () => {
-    const exportedData = data.map((item) => ({
-      FullName: item.fullName || "--",
-      RollNo: item.rollNo || "--",
-      Quiz1: item.quiz1 || "--",
-      TermExam1: item.term1 || "--",
-      TermExam2: item.term2 || "--",
-      CourseTotal: item.total || "--",
+    const exportedData = data?.data?.studentDetails?.map((item) => ({
+      FullName: item.studentName || "--",
+      RollNo: item.rollNumber || "--",
+      Quizes: item.avgQuizGainedMarks || "--",
+      OGA: item.avgOgaGainedMarks || "--",
+      Assignments: item.avgAssignmentGainedMarks || "--",
+      TermExam: item.avgExamGainedMarks || "--",
     }));
 
     const csvContent =
@@ -105,41 +238,50 @@ const Table = () => {
 
   const navigate = useNavigate();
   const { id, aid } = useParams();
-
+  console.log("This is my data ", data);
   return (
     <>
       <div className="overflow-x-auto">
         <table className="w-full table text-[2rem]">
           <thead>
             <tr className="tr">
-              <th className="p-9 th">Full Name</th>
-              <th className="p-9 th">Roll No</th>
-              <th className="p-9 th">Quiz :01</th>
-              <th className="p-9 th">Term Exam: 01</th>
-              <th className="p-9 th">Term Exam :02</th>
-              <th className="p-9 th">Course Total</th>
+              <th className="p-9 th w-[400px]">Full Name</th>
+              <th className="p-9 th w-[200px]">Roll No</th>
+              <th className="p-9 th w-[200px]">Quizes</th>
+              <th className="p-9 th w-[200px]">OGA</th>
+              <th className="p-9 th w-[200px]">Assignments</th>
+              <th className="p-9 th w-[200px]">Term Exam</th>
             </tr>
           </thead>
-          <tbody>
-            {data?.map((b, i) => (
+          <tbody className="w-full">
+            {data?.data?.studentDetails?.map((b, i) => (
               <tr key={i} className="tr">
-                <td className="p-9 td flex flex-row items-center gap-2">
-                  {" "}
-                  <img
-                    className="w-[4.3rem] h-[4.3rem] border-2 border-custom-offwhite rounded-full object-cover "
-                    src={
-                      "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                    }
-                    alt="Admin"
-                    onClick={(e) => setAnchorEl(e.currentTarget)}
-                  />
-                  {b?.fullName || "--"}
+                <td className="p-9 td w-[400px]">
+                  <div className="flex flex-row items-center gap-2">
+                    <img
+                      className="w-[4.3rem] h-[4.3rem] border-2 border-custom-offwhite rounded-full object-cover "
+                      src={
+                        "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                      }
+                      alt="Admin"
+                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                    />
+                    <p className="w-[100px]">{b?.studentName || "--"}</p>
+                  </div>
                 </td>
-                <td className="p-9 td">{b?.rollNo || "--"}</td>
-                <td className="p-9 td">{b?.quiz1 || "--"}</td>
-                <td className="p-9 td">{b?.term1 || "--"}</td>
-                <td className="p-9 td">{b?.term2 || "--"}</td>
-                <td className="p-9 td">{b?.total || "--"}</td>
+                <td className="p-9 td w-[200px]">{b?.rollNumber || "--"}</td>
+                <td className="p-9 td w-[200px]">
+                  {b?.avgQuizGainedMarks || "--"}
+                </td>
+                <td className="p-9 td w-[200px]">
+                  {b?.avgOgaGainedMarks || "--"}
+                </td>
+                <td className="p-9 td w-[200px]">
+                  {b?.avgAssignmentGainedMarks || "--"}
+                </td>
+                <td className="p-9 td w-[200px]">
+                  {b?.avgExamGainedMarks || "--"}
+                </td>
               </tr>
             ))}
           </tbody>

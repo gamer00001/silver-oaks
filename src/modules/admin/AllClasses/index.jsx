@@ -222,8 +222,8 @@ const AllClasses = () => {
   const GradeTabView = () => {
     return (
       <>
-        <Grid container spacing={4} className="px-12 py-12">
-          <Grid item sm={3} md={3} lg={2}>
+        <div className="py-12">
+          <div className="flex items-center justify-end w-[200px]">
             <Dropdown
               placeholder="Campus"
               onChange={handleCampusDropdown}
@@ -232,20 +232,17 @@ const AllClasses = () => {
                 campusesData?.data?.map((item) => item?.campusName) ?? []
               }
             />
-          </Grid>
-          <Grid item sm={3} md={2} lg={4} />
-        </Grid>
-        <Grid container spacing={6} className="p-12 flex">
+          </div>
+        </div>
+        <div className="gap-12 pt-12 grid md:grid-cols-3 max-md:grid-cols-1 w-full">
           {MOCK_GRADES(
             state.selectionCampus ?? fetchCampusValue(),
             fetchSelectCampusInfo(state.selectionCampus ?? fetchCampusValue())
               ?.id
           ).map((grade) => (
-            <Grid item lg={4} key={grade.id}>
-              <GradeBlock onClick={() => navigate(grade.route)} {...grade} />
-            </Grid>
+            <GradeBlock onClick={() => navigate(grade.route)} {...grade} />
           ))}
-        </Grid>
+        </div>
       </>
     );
   };
@@ -280,19 +277,16 @@ const AllClasses = () => {
   }
 
   return (
-    <div className="bg-white h-full">
-      <Grid container>
-        <Grid item sm={8} md={8} />
-        <Grid item sm={4} md={4} className="flex justify-end pr-20">
-          <Button
-            variant="secondary"
-            size="large"
-            onClick={() => handleModal("addNewModalIsOpen")}
-          >
-            Add New
-          </Button>
-        </Grid>
-      </Grid>
+    <div className="bg-white h-full p-10">
+      <div className="flex items-center justify-end">
+        <Button
+          variant="secondary"
+          size="large"
+          onClick={() => handleModal("addNewModalIsOpen")}
+        >
+          Add New
+        </Button>
+      </div>
       <TabsComponent
         currentTab={state.currentTab}
         handleTabChange={handleTabChange}

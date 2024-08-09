@@ -4,6 +4,7 @@ import {
   fetchStudentInfo,
   fetchStudentsListing,
   fetchStudentsListingByFilterApi,
+  fetchTeacherAcademicRecord,
 } from "../actions/studentActions";
 
 const initialState = {
@@ -12,6 +13,10 @@ const initialState = {
     data: null,
   },
   studentDashboardData: {
+    loading: false,
+    data: null,
+  },
+  studentAcademicRecords: {
     loading: false,
     data: null,
   },
@@ -66,6 +71,25 @@ const studentSlice = createSlice({
     builder.addCase(fetchStudentDashboardInfo.rejected, (state) => {
       state.studentDashboardData = {
         ...initialState.studentDashboardData,
+        loading: false,
+      };
+    });
+    //Student Record Dashboard info
+    builder.addCase(fetchTeacherAcademicRecord.pending, (state) => {
+      state.studentAcademicRecords = {
+        ...initialState.studentAcademicRecords,
+        loading: true,
+      };
+    });
+    builder.addCase(fetchTeacherAcademicRecord.fulfilled, (state, action) => {
+      state.studentAcademicRecords = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(fetchTeacherAcademicRecord.rejected, (state) => {
+      state.studentAcademicRecords = {
+        ...initialState.studentAcademicRecords,
         loading: false,
       };
     });

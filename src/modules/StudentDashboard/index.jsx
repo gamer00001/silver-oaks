@@ -13,15 +13,42 @@ import {
 import { getCourses } from "@/store/actions/coursesActions";
 import { CoursesColors } from "@/utils/helper";
 import { getEventsByStudent } from "@/store/actions/eventActions";
-
+const pieChartData = [
+  {
+    name: "Group A",
+    value: 20,
+    fill: "#FFD900",
+  },
+  {
+    name: "Group B",
+    value: 40,
+    fill: "#FFD100",
+  },
+  {
+    name: "Group C",
+    value: 80,
+    fill: "#FFD200",
+  },
+  {
+    name: "Group D",
+    value: 80,
+    fill: "#FFD500",
+  },
+  {
+    name: "Group E",
+    value: 90,
+    fill: "#FFD800",
+  },
+];
 const StudentDashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const {
     coursesData: { data },
+    studentCourses,
+    teacherCourses,
   } = useSelector((s) => s.courseReducer);
-
   const { studentDashboardData, studentData } = useSelector(
     (s) => s.studentReducer
   );
@@ -94,17 +121,16 @@ const StudentDashboard = () => {
         // studentInfo={studentData?.data}
       />
 
-      <div className="flex gap-10">
-        <div className="w-3/4">
+      <div className="flex gap-10 max-md:flex-wrap">
+        <div className="w-3/4 max-md:w-full">
           <ActivityBlock activityData={studentDashboardData?.data} />
-
           <EnrolledCourses
             navigate={navigate}
-            coursesList={data?.courseList ?? []}
+            coursesList={studentCourses.data?.courseList ?? []}
           />
         </div>
 
-        <div className="w-3/12">
+        <div className="w-3/12 max-md:w-full">
           <div className="flex justify-center">
             <img className="pt-8 pl-12" src="/dashboard-icon.svg" alt="icon" />
           </div>
@@ -155,17 +181,17 @@ const ProfileView = ({ studentInfo, studentName }) => {
 
       <div className="flex">
         <img
-          className="absolute bottom-10 w-1/4 right-96"
+          className="absolute bottom-10 w-1/4 right-96 max-md:hidden"
           src="/scholar-icon.png"
           alt="scholar-icon"
         />
         <img
-          className="absolute bottom-0 w-96 right-52"
+          className="absolute bottom-0 w-96 right-52 max-md:hidden"
           src="/student-icon.png"
           alt="icon"
         />
         <img
-          className="absolute right-0 bottom-0"
+          className="absolute right-0 bottom-0 max-md:hidden"
           src="/backpack-icon.png"
           alt="backpack-icon"
         />
@@ -179,7 +205,7 @@ const ActivityBlock = ({ activityData }) => {
     <div className="pt-12">
       <span className="text-black font-bold text-4xl">Your Activity</span>
 
-      <div className="flex gap-12 pt-12">
+      <div className="flex gap-12 pt-12 max-md:flex-wrap">
         <StatsBlock value={activityData?.termCompletion ?? 0} />
         <StatsBlock
           title="Attendance"
@@ -208,7 +234,7 @@ const EnrolledCourses = ({ coursesList = [], navigate }) => {
         </span>
       </div>
 
-      <div className="flex gap-12 pt-12">
+      <div className="flex gap-12 pt-12 max-md:flex-wrap">
         {coursesList?.slice(0, 3).map((item, index) => (
           <CourseBlock
             key={index}

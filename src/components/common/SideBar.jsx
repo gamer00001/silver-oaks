@@ -5,6 +5,7 @@ import { useGlobalContext } from "@/hooks";
 import {
   getCourses,
   getCoursesByStudent,
+  getCoursesByTeacher,
 } from "@/store/actions/coursesActions";
 import { fetchCompusListing } from "@/utils/common-api-helper";
 import {
@@ -32,25 +33,32 @@ const SideBar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const apiToCall = isCurrentUserStudent() ? getCoursesByStudent : getCourses;
-
-    if (!isEmpty(userInfo)) {
-      dispatch(
-        apiToCall({
-          payload: {
-            query: {
-              studentId: userInfo?.studentId,
-            },
+    const userInfo =
+      currentLoggedInUserType() === "student"
+        ? fetchCurrentUserInfo()
+        : userDetail;
+    const apiToCall =
+      currentLoggedInUserType() === "student"
+        ? getCoursesByStudent
+        : currentLoggedInUserType() === "teacher"
+        ? getCoursesByTeacher
+        : getCourses;
+    dispatch(
+      apiToCall({
+        payload: {
+          query: {
+            studentId: userInfo?.studentId,
+            teacherId: userInfo?.teacherId,
           },
-          onError: () => navigate("/404", { replace: true }),
-          onSuccess: (res) => {
-            const coursesList =
-              res?.courseList?.map((item) => item?.courseId) ?? [];
-            localStorage.setItem("coursesList", coursesList ?? []);
-          },
-        })
-      );
-    }
+        },
+        onError: () => navigate("/404", { replace: true }),
+        onSuccess: (res) => {
+          const coursesList =
+            res?.courseList?.map((item) => item?.courseId) ?? [];
+          localStorage.setItem("coursesList", coursesList ?? []);
+        },
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -106,8 +114,10 @@ const SideBarItem = ({ route }) => {
   const { setIsSidebarOpen } = useGlobalContext();
   const [expanded, setExpanded] = useState(false);
   const { coursesData } = useSelector((s) => s.courseReducer);
-  const { studentCourses } = useSelector((s) => s.courseReducer);
-
+  const { studentCourses, teacherCourses } = useSelector(
+    (s) => s.courseReducer
+  );
+  console.log("This is my teacher course ", teacherCourses);
   const { pathname } = useLocation();
 
   const handleItemClick = () => {
@@ -177,28 +187,82 @@ const SideBarItem = ({ route }) => {
                   </li>
                 ))}
               </>
+            ) : currentLoggedInUserType() === "student" ? (
+              <>
+                {studentCourses?.data?.courseList?.map((course, index) => {
+                  return (
+                    <li className="px-[2.9rem] md:px-0 " key={index}>
+                      <NavLink
+                        to={`/${
+                          currentLoggedInUserType() === "student"
+                            ? `enrolled-courses/${course.courseName}/${course.courseId}`
+                            : "course"
+                        }/lectures/${course.courseId}`}
+                      >
+                        <span
+                          className={`md:pl-24  body-medium hover:text-custom-golden ${
+                            pathname.includes(course.courseId)
+                              ? "text-custom-golden"
+                              : "text-white"
+                          }`}
+                        >
+                          {course.courseName}
+                        </span>
+                      </NavLink>
+                    </li>
+                  );
+                })}
+              </>
+            ) : currentLoggedInUserType() === "teacher" ? (
+              <>
+                {teacherCourses?.data?.courseList?.map((course, index) => {
+                  return (
+                    <li className="px-[2.9rem] md:px-0 " key={index}>
+                      <NavLink
+                        to={`/${
+                          currentLoggedInUserType() === "student"
+                            ? `enrolled-courses/${course.courseName}/${course.courseId}`
+                            : "course"
+                        }/lectures/${course.courseId}`}
+                      >
+                        <span
+                          className={`md:pl-24  body-medium hover:text-custom-golden ${
+                            pathname.includes(course.courseId)
+                              ? "text-custom-golden"
+                              : "text-white"
+                          }`}
+                        >
+                          {course.courseName}
+                        </span>
+                      </NavLink>
+                    </li>
+                  );
+                })}
+              </>
             ) : (
-              coursesData?.data?.courseList?.map((course, index) => (
-                <li className="px-[2.9rem] md:px-0 " key={index}>
-                  <NavLink
-                    to={`/${
-                      currentLoggedInUserType() === "student"
-                        ? `enrolled-courses/${course.courseName}/${course.courseId}`
-                        : "course"
-                    }/lectures/${course.courseId}`}
-                  >
-                    <span
-                      className={`md:pl-24  body-medium hover:text-custom-golden ${
-                        pathname.includes(course.courseId)
-                          ? "text-custom-golden"
-                          : "text-white"
-                      }`}
+              coursesData?.data?.courseList?.map((course, index) => {
+                return (
+                  <li className="px-[2.9rem] md:px-0 " key={index}>
+                    <NavLink
+                      to={`/${
+                        currentLoggedInUserType() === "student"
+                          ? `enrolled-courses/${course.courseName}/${course.courseId}`
+                          : "course"
+                      }/lectures/${course.courseId}`}
                     >
-                      {course.courseName}
-                    </span>
-                  </NavLink>
-                </li>
-              ))
+                      <span
+                        className={`md:pl-24  body-medium hover:text-custom-golden ${
+                          pathname.includes(course.courseId)
+                            ? "text-custom-golden"
+                            : "text-white"
+                        }`}
+                      >
+                        {course.courseName}
+                      </span>
+                    </NavLink>
+                  </li>
+                );
+              })
             )}
           </ul>
         </div>

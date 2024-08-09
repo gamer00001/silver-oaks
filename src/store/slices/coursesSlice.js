@@ -3,6 +3,7 @@ import {
   getAllCoursesByGrade,
   getCourses,
   getCoursesByStudent,
+  getCoursesByTeacher,
 } from "../actions/coursesActions";
 
 const initialState = {
@@ -15,6 +16,10 @@ const initialState = {
     data: null,
   },
   studentCourses: {
+    loading: false,
+    data: null,
+  },
+  teacherCourses: {
     loading: false,
     data: null,
   },
@@ -81,6 +86,25 @@ const courseSlice = createSlice({
     builder.addCase(getCoursesByStudent.rejected, (state) => {
       state.studentCourses = {
         ...initialState.studentCourses,
+        loading: false,
+      };
+    });
+    //get all courses of Teacher
+    builder.addCase(getCoursesByTeacher?.pending, (state) => {
+      state.teacherCourses = {
+        ...initialState.teacherCourses,
+        loading: true,
+      };
+    });
+    builder.addCase(getCoursesByTeacher.fulfilled, (state, action) => {
+      state.teacherCourses = {
+        loading: false,
+        data: action.payload,
+      };
+    });
+    builder.addCase(getCoursesByTeacher.rejected, (state) => {
+      state.teacherCourses = {
+        ...initialState.teacherCourses,
         loading: false,
       };
     });

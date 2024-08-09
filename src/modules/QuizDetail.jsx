@@ -129,12 +129,12 @@ const QuizDetail = ({
 
   return (
     <div>
-      <div className="flex flex-row gap-2 justify-between items-center">
+      <div className="flex flex-row gap-2 justify-between items-center md:my-14">
         {(loading || assesmentData?.loading || singleExamData?.loading) && (
           <Loader type="screen" />
         )}
 
-        <div className={`flex flex-row gap-4 justify-center`}>
+        <div className={`flex flex-row gap-4 justify-center `}>
           <QuizIcon />
           <div className={`flex flex-col justify-center`}>
             <div className="flex flex-row gap-2 justify-center items-center">

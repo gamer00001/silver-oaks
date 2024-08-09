@@ -21,7 +21,7 @@ const CourseBlock = ({
   return (
     <div
       style={{ backgroundColor: bgColor ?? "#0BF4C8" }}
-      className={`pt-12 rounded-3xl flex flex-col p-10 ${width} ${height} relative`}
+      className={`pt-12 rounded-3xl flex flex-col p-10 ${width} ${height} relative max-md:w-full`}
     >
       <img className="absolute" src="/course-back-icon.svg" alt="course-icon" />
       <span

@@ -103,6 +103,7 @@ export const WithResponsiveRightSidebar = ({ children }) => {
     <Drawer
       anchor="right"
       open={isRightSidebarOpen}
+      // open={true}
       onClose={() => setIsRightSidebarOpen(false)}
       PaperProps={{
         sx: {

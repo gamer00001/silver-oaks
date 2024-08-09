@@ -196,7 +196,7 @@ const StudentGrades = () => {
         <SearchForm />
       </div> */}
 
-      <div className="flex flex-row justify-start gap-10 items-center mb-8 pt-5">
+      <div className="flex flex-row justify-start gap-10 items-center mb-8 pt-5 lg:mt-4">
         <div class="flex flex-row gap-6">
           <RadioGroup
             selectionOption={state.academicCategory}
@@ -302,9 +302,9 @@ const Table = ({ columns, rows, page }) => {
           <tbody>
             {rows?.map((b, i) => (
               <tr key={i} className="tr">
-                <td className="p-9 td text-center">{b?.name || "--"}</td>
+                <td className="p-9 td text-center">{b?.title || "--"}</td>
                 <td className="p-9 td text-center">{b?.date || "--"}</td>
-                <td className="p-9 td text-center">{b?.marks || "--"}</td>
+                <td className="p-9 td text-center">{b?.gainedMarks || "--"}</td>
                 <td className="p-9 td text-center">{b?.feedback || "--"}</td>
               </tr>
             ))}
