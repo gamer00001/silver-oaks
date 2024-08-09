@@ -12,7 +12,7 @@ const StatsBlock = ({
   return (
     <div
       style={{ backgroundColor: bgColor ?? "" }}
-      className={`bg-[${bgColor}] p-10 rounded-3xl w-2/4`}
+      className={`bg-[${bgColor}] p-10 rounded-3xl w-2/4 max-md:w-full`}
     >
       <span className="text-lg text-[#00000080] font-semibold">{heading}</span>
 

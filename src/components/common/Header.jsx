@@ -65,7 +65,6 @@ const Header = ({ isOpen, setIsOpen }) => {
   const { setIsSidebarOpen, setIsRightSidebarOpen, isNotLargeScreen } =
     useGlobalContext();
   const { pathname } = useLocation();
-
   return (
     <header className="h-full grid grid-cols-[1fr_auto] items-center justify-between">
       <div className="hidden lg:block">
@@ -105,8 +104,8 @@ const Header = ({ isOpen, setIsOpen }) => {
 
         {!isOpen && <UserProfile setIsOpen={setIsOpen} />}
 
-        <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]"></div>
-        <button
+        {/* <div className="grid lg:hidden grid-cols-[auto_auto] justify-start gap-[1.5rem]"></div> */}
+        {/* <button
           onClick={() => setIsRightSidebarOpen(true)}
           className="grid-center text-[3rem] hover:opacity-70 duration-300 transition-opacity"
         >
@@ -115,7 +114,7 @@ const Header = ({ isOpen, setIsOpen }) => {
               !allowedPathsForRightSidebar()?.includes(pathname) && "hidden"
             } lg:hidden`}
           />
-        </button>
+        </button> */}
       </div>
     </header>
   );

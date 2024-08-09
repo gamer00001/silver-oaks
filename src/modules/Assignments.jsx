@@ -31,7 +31,6 @@ const Assignments = ({ forStudent = false }) => {
   const dispatch = useDispatch();
   const [addAssignmentModal, setAddAssignmentModal] = useState(false);
   const [selectedSection, setSelectedSection] = useState();
-  const [term, setTerm] = useState("Term 1");
 
   const { assignmentsData } = useSelector((s) => s.assignmentReducer);
 

@@ -3,11 +3,12 @@ import React from "react";
 const StatsIcon = () => {
   return (
     <svg
-      width="47"
-      height="47"
+      // width="47"
+      // height="47"
       viewBox="0 0 47 47"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="w-[56px] h-[57px] max-md:w-[40px] max-md:h-[40px] object-cover"
     >
       <circle cx="23.5" cy="23.5" r="23.5" fill="#007F3E" />
       <g clip-path="url(#clip0_0_1)">

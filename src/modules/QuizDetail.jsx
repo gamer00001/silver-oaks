@@ -134,7 +134,7 @@ const QuizDetail = ({
           <Loader type="screen" />
         )}
 
-        <div className={`flex flex-row gap-4 justify-center`}>
+        <div className={`flex flex-row gap-4 justify-center `}>
           <QuizIcon />
           <div className={`flex flex-col justify-center`}>
             <div className="flex flex-row gap-2 justify-center items-center">

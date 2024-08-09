@@ -60,11 +60,23 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="p-12">
-      <Grid container className="pb-10">
-        <Grid sm={10} />
+    <div className="p-12 overflow-x-hidden">
+      <div className="mb-10 max-md:w-[200px]">
+        <Dropdown
+          placeholder="Campus"
+          value={state?.selectedCampus}
+          onChange={handleCampus}
+          options={
+            campusesData?.data
+              ? ["All", ...campusesData?.data?.map((item) => item?.campusName)]
+              : []
+          }
+        />
+      </div>
+      {/* <Grid container className="pb-10">
+        <Grid sm={7} />
 
-        <Grid sm={2}>
+        <Grid sm={5}>
           <Dropdown
             placeholder="Campus"
             value={state?.selectedCampus}
@@ -79,8 +91,8 @@ const AdminDashboard = () => {
             }
           />
         </Grid>
-      </Grid>
-      <div className="flex flex-1 gap-6">
+      </Grid> */}
+      <div className="flex md:flex-1 gap-6 max-md:flex-wrap max-md:w-full">
         <StatsCard
           key={1}
           bgColor="#FFEFE7"
@@ -102,7 +114,7 @@ const AdminDashboard = () => {
         />
       </div>
 
-      <Grid container className="pt-10" spacing={4}>
+      <Grid container className="pt-10 w-full" spacing={4}>
         <Grid item xs={12} sm={12} md={12} lg={7}>
           <LineChart
             {...prepareLineChartData(

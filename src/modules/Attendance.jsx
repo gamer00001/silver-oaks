@@ -9,18 +9,20 @@ const Attendance = () => {
 
   return (
     <div>
-      <div className="flex flex-row justify-between items-center mb-8">
+      <div className="flex flex-row justify-between items-center mb-10 mt-14">
         <SearchForm />
-        <MyPagination page={page} totalPages={10 || 0} />
         <MyInput
-                type="date"
-                placeholder="Enter date"
-                className="w-[16rem]"
-                name="date"
-              />
+          type="date"
+          placeholder="Enter date"
+          className="w-[300px]"
+          name="date"
+        />
       </div>
       <div className="grid grid-cols-1 w-full">
         <Table />
+      </div>
+      <div className="flex items-center justify-end mb-10">
+        <MyPagination page={page} totalPages={10 || 0} />
       </div>
     </div>
   );
@@ -33,25 +35,25 @@ const Table = () => {
       status: "P",
     },
     {
-        fullName: "Caleb S",
-        status: "P",
-      },
-      {
-        fullName: "Zoe Roye",
-        status: "A",
-      },
-      {
-        fullName: "Scarlette",
-        status: "P",
-      },
-      {
-        fullName: "Ava Mon",
-        status: "A",
-      },
-      {
-        fullName: "Mason S",
-        status: "A",
-      },
+      fullName: "Caleb S",
+      status: "P",
+    },
+    {
+      fullName: "Zoe Roye",
+      status: "A",
+    },
+    {
+      fullName: "Scarlette",
+      status: "P",
+    },
+    {
+      fullName: "Ava Mon",
+      status: "A",
+    },
+    {
+      fullName: "Mason S",
+      status: "A",
+    },
   ];
 
   return (
@@ -67,8 +69,16 @@ const Table = () => {
           <tbody>
             {data?.map((b, i) => (
               <tr key={i} className="tr">
-                <td className="p-9 td flex flex-row justify-center items-center gap-8"><Student /> {b?.fullName || "--"}</td>
-                <td className={`p-9 td text-center ${b?.status==="A"&&'text-red-800'}`}>{b?.status || "--"}</td>
+                <td className="p-9 td flex flex-row justify-center items-center gap-8">
+                  <Student /> {b?.fullName || "--"}
+                </td>
+                <td
+                  className={`p-9 td text-center ${
+                    b?.status === "A" && "text-red-800"
+                  }`}
+                >
+                  {b?.status || "--"}
+                </td>
               </tr>
             ))}
           </tbody>

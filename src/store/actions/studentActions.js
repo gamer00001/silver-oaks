@@ -16,6 +16,19 @@ export const fetchStudentInfo = asyncCatch(
         handleError(error, dispatch);
       })
 );
+export const fetchTeacherAcademicRecord = asyncCatch(
+  "studentSlice/fetchTeacherAcademicRecord",
+  async ({ config, query, dispatch }) =>
+    axios
+      .get(
+        `${CONSTANTS.VITE_BACKEND_API_URL}/api/students/students/details?term=${query.term}&grade=${query.grade}&section=${query.section}&page=${query.page}&size=10`,
+        config
+      )
+      .then((response) => response)
+      .catch((error) => {
+        handleError(error, dispatch);
+      })
+);
 
 export const fetchStudentDashboardInfo = asyncCatch(
   "studentSlice/fetchStudentDashboardInfo",

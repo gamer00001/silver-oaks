@@ -274,20 +274,16 @@ const ManageTeachers = () => {
         </Button>
       </div>
 
-      <Grid container spacing={4} className="px-12 py-12">
-        <Grid item md={6}>
-          {/* <InputField icon="/search-icon.svg" /> */}
-        </Grid>
-
-        <Grid item md={3}>
+      <div className="px-12 py-12 flex items-center gap-4">
+        <div className="w-[220px] max-md:w-[120px]">
           <Dropdown
             placeholder="Select Grade"
             onChange={handleGrade}
             value={state.selectedGrade}
             options={MOCK_GRADES().map((item) => item.title)}
           />
-        </Grid>
-        <Grid item md={3}>
+        </div>
+        <div className="w-[220px] max-md:w-[120px]">
           <Dropdown
             placeholder="Campus"
             value={state?.selectedCampus}
@@ -298,8 +294,8 @@ const ManageTeachers = () => {
                 : []
             }
           />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
 
       <div className="p-12">
         <CustomTable

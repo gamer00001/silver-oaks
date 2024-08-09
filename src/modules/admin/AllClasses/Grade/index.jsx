@@ -182,7 +182,7 @@ const GradePage = () => {
         </div>
       </div>
 
-      <div className="gap-12 pt-12 grid grid-cols-3 w-full">
+      <div className="gap-12 pt-12 grid md:grid-cols-3 max-md:grid-cols-1 w-full">
         {data?.courseList ? (
           data?.courseList?.map((item, index) => {
             const colorIndex = index % CoursesColors.length;

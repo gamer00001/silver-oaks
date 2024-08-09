@@ -3,11 +3,12 @@ import React from "react";
 function Courses() {
   return (
     <svg
-      width="56"
-      height="57"
+      // width="56"
+      // height="57"
       viewBox="0 0 56 57"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="w-[56px] h-[57px] max-md:w-[40px] max-md:h-[40px] object-cover"
     >
       <circle cx="27.9476" cy="28.4791" r="27.9476" fill="#7A1315" />
       <path

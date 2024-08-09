@@ -9,7 +9,7 @@ const StatsCard = ({
   return (
     <div
       style={{ backgroundColor: bgColor ?? "" }}
-      className={`bg-[#${bgColor}] rounded-xl p-8 flex-1 leading-5`}
+      className={`bg-[#${bgColor}] rounded-xl p-8 md:flex-1 leading-5 max-md:w-full`}
     >
       <div className="flex justify-between gap-6">
         <h1 className="text-4xl font-semibold leading-tight">{title}</h1>

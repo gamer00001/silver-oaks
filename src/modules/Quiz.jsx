@@ -26,6 +26,7 @@ const Quiz = ({
   forAssesment = false,
   forExam = false,
 }) => {
+  const params = useParams();
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const [timeInSeconds, setTimeInSeconds] = useState(60);
@@ -35,7 +36,7 @@ const Quiz = ({
     ogaInfo: {},
     examInfo: {},
   });
-
+  // console.log("These are states ", params);
   const [count, setCount] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -285,7 +286,9 @@ const Quiz = ({
           onSuccess: () => {
             toast.success("Quiz has been submitted!");
             navigate(
-              `/${forStudent ? "enrolled-courses" : "course"}/quizzes/${id}`
+              `/${forStudent ? "enrolled-courses" : "course"}/${
+                params?.courseName
+              }/${params?.courseId}/quizzes/${id}`
             );
           },
           onError: () => navigate("/404", { replace: true }),
@@ -312,7 +315,7 @@ const Quiz = ({
 
   return (
     <div>
-      <div className="flex flex-row gap-2 justify-between items-center">
+      <div className="flex flex-row gap-2 justify-between items-center lg:mt-10">
         {(loading || assesmentData?.loading || singleExamData?.loading) && (
           <Loader type="screen" />
         )}

@@ -15,10 +15,10 @@ export const TeacherCoursesTabs = [
     title: "OGA",
     to: "./oga",
   },
-  {
-    title: "Participants",
-    to: "./participants",
-  },
+  // {
+  //   title: "Participants",
+  //   to: "./participants",
+  // },
   {
     title: "Academic Record",
     to: "./academic-record",

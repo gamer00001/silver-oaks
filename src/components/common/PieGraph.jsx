@@ -58,7 +58,7 @@ const PieGraph = ({ categories, populationSeriesData }) => {
 
   if (!isEmpty(series))
     return (
-      <div className="bg-[#FAFAFA] rounded-xl p-5">
+      <div className="bg-[#FAFAFA] rounded-xl p-7">
         <Grid container className="flex justify-between items-center">
           <Grid item xs={12} sm={8}>
             <h2 className="text-[#7A7A7A] text-xl font-semibold">
@@ -76,8 +76,8 @@ const PieGraph = ({ categories, populationSeriesData }) => {
             options={options}
             series={series}
             type="donut"
-            width={450}
-            height={310}
+            width={400}
+            height={300}
           />
         </div>
       </div>

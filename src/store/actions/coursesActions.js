@@ -16,6 +16,14 @@ export const getCoursesByStudent = asyncCatch(
       config
     )
 );
+export const getCoursesByTeacher = asyncCatch(
+  "courseSlice/getCoursesByTeacher",
+  async ({ config, query }) =>
+    axios.get(
+      `${CONSTANTS.VITE_BACKEND_API_URL}/v1/teacher-courses/by-teacher/${query?.teacherId}`,
+      config
+    )
+);
 
 export const getAllCoursesByGrade = asyncCatch(
   "courseSlice/getAllCoursesByGrade",

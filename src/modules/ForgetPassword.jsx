@@ -45,7 +45,7 @@ const ForgetPassword = () => {
           </h1>
 
           <p className="text-[#363848] text-[1.9rem] leading-[185%]">
-          Enter your email account to reset  your password
+            Enter your email account to reset your password
           </p>
         </div>
 
@@ -63,26 +63,26 @@ const ForgetPassword = () => {
 
           <div>
             <div className="grid grid-cols-2 gap-12">
-            <button
-              className="relative overflow-hidden w-full bg-white text-custom-red border-2 border-custom-red text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={()=>window.open("/login", "_self")}
-            >
-              Cancel
-            </button>
-            <button
-              className="relative overflow-hidden w-full bg-custom-red text-white text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isValid || !dirty || forgetPasswordData?.loading}
-            >
-              {forgetPasswordData?.loading && (
-                <Loader
-                  type="button"
-                  className="!bg-custom-red"
-                  secondaryColor="#F4D06F"
-                  color="#fdbb05"
-                />
-              )}
-              Send Email
-            </button>
+              <button
+                className="relative overflow-hidden w-full bg-white text-custom-red border-2 border-custom-red text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => window.open("/login", "_self")}
+              >
+                Cancel
+              </button>
+              <button
+                className="relative overflow-hidden w-full bg-custom-red text-white text-[1.9rem] font-bold leading-[160%] py-[1.941rem] rounded-[.9rem] text-center enabled:hover:opacity-70 duration-300 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!isValid || !dirty || forgetPasswordData?.loading}
+              >
+                {forgetPasswordData?.loading && (
+                  <Loader
+                    type="button"
+                    className="!bg-custom-red"
+                    secondaryColor="#F4D06F"
+                    color="#fdbb05"
+                  />
+                )}
+                Send Email
+              </button>
             </div>
           </div>
         </form>
