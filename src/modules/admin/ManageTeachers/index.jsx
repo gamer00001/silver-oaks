@@ -274,32 +274,25 @@ const ManageTeachers = () => {
         </Button>
       </div>
 
-      <Grid container spacing={4} className="px-12 py-12">
-        <Grid item md={6}>
-          {/* <InputField icon="/search-icon.svg" /> */}
-        </Grid>
+      <div className="flex justify-end gap-12 py-12 pr-12">
+        <Dropdown
+          placeholder="Select Grade"
+          onChange={handleGrade}
+          value={state.selectedGrade}
+          options={MOCK_GRADES().map((item) => item.title)}
+        />
 
-        <Grid item md={3}>
-          <Dropdown
-            placeholder="Select Grade"
-            onChange={handleGrade}
-            value={state.selectedGrade}
-            options={MOCK_GRADES().map((item) => item.title)}
-          />
-        </Grid>
-        <Grid item md={3}>
-          <Dropdown
-            placeholder="Campus"
-            value={state?.selectedCampus}
-            onChange={handleCampus}
-            options={
-              campusesData?.data
-                ? campusesData?.data?.map((item) => item?.campusName)
-                : []
-            }
-          />
-        </Grid>
-      </Grid>
+        <Dropdown
+          placeholder="Campus"
+          value={state?.selectedCampus}
+          onChange={handleCampus}
+          options={
+            campusesData?.data
+              ? campusesData?.data?.map((item) => item?.campusName)
+              : []
+          }
+        />
+      </div>
 
       <div className="p-12">
         <CustomTable

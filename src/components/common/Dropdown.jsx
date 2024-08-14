@@ -42,11 +42,7 @@ const Dropdown = ({
   }, [value]);
 
   return (
-    <div
-      className="relative inline-block w-full"
-      ref={dropdownRef}
-      onClick={onClick}
-    >
+    <div className="relative inline-block" ref={dropdownRef} onClick={onClick}>
       {showLabel && (
         <div className="text-[#7a7a7a] text-2xl font-semibold mb-4">
           {placeholder}
@@ -56,7 +52,7 @@ const Dropdown = ({
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`bg-[#f4f4f4] text-[#7A7A7A] w-full font-semibold rounded-xl text-3xl inline-flex items-center p-8 ${
+        className={`bg-[#f4f4f4] text-[#7A7A7A] w-max font-semibold rounded-xl text-3xl inline-flex items-center p-6 justify-between ${
           icon ? "px-20" : ""
         }`}
       >
@@ -71,7 +67,7 @@ const Dropdown = ({
         )}
 
         <svg
-          className="fill-current h-8 w-8 ml-8 absolute right-5"
+          className="fill-current h-8 w-8 ml-8 relative right-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
         >

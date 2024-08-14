@@ -281,18 +281,16 @@ const AllClasses = () => {
 
   return (
     <div className="bg-white h-full">
-      <Grid container>
-        <Grid item sm={8} md={8} />
-        <Grid item sm={4} md={4} className="flex justify-end pr-20">
-          <Button
-            variant="secondary"
-            size="large"
-            onClick={() => handleModal("addNewModalIsOpen")}
-          >
-            Add New
-          </Button>
-        </Grid>
-      </Grid>
+      <div className="flex justify-end pr-12">
+        <Button
+          variant="secondary"
+          size="large"
+          onClick={() => handleModal("addNewModalIsOpen")}
+        >
+          Add New
+        </Button>
+      </div>
+
       <TabsComponent
         currentTab={state.currentTab}
         handleTabChange={handleTabChange}

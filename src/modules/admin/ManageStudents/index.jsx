@@ -324,44 +324,33 @@ const ManageStudents = () => {
         </Button>
       </div>
 
-      <Grid container spacing={4} className="px-12 py-12">
-        <Grid item xs={2} sm={2} md={2} lg={4}>
-          {/* <InputField /> */}
-        </Grid>
+      <div className="flex justify-end gap-12 py-12 pr-12">
+        <Dropdown
+          placeholder="Select Grade"
+          onChange={handleGrade}
+          value={state.selectedGrade}
+          options={MOCK_GRADES().map((item) => item.title)}
+        />
+        <Dropdown
+          placeholder="Campus"
+          value={state?.selectedCampus}
+          onChange={handleCampus}
+          options={
+            campusesData?.data
+              ? campusesData?.data?.map((item) => item?.campusName)
+              : []
+          }
+        />
 
-        <Grid item xs={2} sm={2} md={2} />
-
-        <Grid item xs={2} md={2}>
-          <Dropdown
-            placeholder="Select Grade"
-            onChange={handleGrade}
-            value={state.selectedGrade}
-            options={MOCK_GRADES().map((item) => item.title)}
-          />
-        </Grid>
-        <Grid item md={2}>
-          <Dropdown
-            placeholder="Campus"
-            value={state?.selectedCampus}
-            onChange={handleCampus}
-            options={
-              campusesData?.data
-                ? campusesData?.data?.map((item) => item?.campusName)
-                : []
-            }
-          />
-        </Grid>
-        <Grid item md={2}>
-          <Dropdown
-            placeholder="Section"
-            onChange={handleSection}
-            value={state.selectedSection}
-            options={
-              sectionsData?.data?.map((section) => section.sectionName) ?? []
-            }
-          />
-        </Grid>
-      </Grid>
+        <Dropdown
+          placeholder="Section"
+          onChange={handleSection}
+          value={state.selectedSection}
+          options={
+            sectionsData?.data?.map((section) => section.sectionName) ?? []
+          }
+        />
+      </div>
 
       <div className="p-12">
         <CustomTable

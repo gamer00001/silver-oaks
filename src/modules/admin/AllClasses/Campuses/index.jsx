@@ -91,7 +91,7 @@ const CampusesPage = ({ campuses }) => {
         </div>
       </div>
 
-      <div className="gap-12 pt-12 grid grid-cols-3 w-full">
+      <div className="gap-12 pt-12 grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 w-full">
         {campuses?.length > 0 ? (
           campuses?.map((item, index) => {
             const colorIndex = index % CoursesColors.length;

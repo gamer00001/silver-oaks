@@ -138,7 +138,7 @@ const GradePage = () => {
 
   return (
     <div className="px-20">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-20">
         <div>
           {/* <p className="text-black font-semibold text-6xl">{`All Classes > Grade ${gradeId}`}</p> */}
           <p className="text-black font-semibold text-5xl">
@@ -171,18 +171,18 @@ const GradePage = () => {
           <p className="text-black font-semibold text-3xl pt-4">All Subjects</p>
         </div>
 
-        <div>
-          <Button
-            size="large"
-            variant="secondary"
-            onClick={() => handleModal("addNewModalIsOpen")}
-          >
-            Add New Course
-          </Button>
-        </div>
+        {/* <div> */}
+        <Button
+          size="large"
+          variant="secondary"
+          onClick={() => handleModal("addNewModalIsOpen")}
+        >
+          Add New Course
+        </Button>
+        {/* </div> */}
       </div>
 
-      <div className="gap-12 pt-12 grid grid-cols-3 w-full">
+      <div className="gap-12 pt-12 grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2 w-full">
         {data?.courseList ? (
           data?.courseList?.map((item, index) => {
             const colorIndex = index % CoursesColors.length;
